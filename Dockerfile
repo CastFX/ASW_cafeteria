@@ -1,4 +1,4 @@
-FROM ubuntu:xenial 
+FROM node:10.16.0-jessie
 
 ENV WORKINGDIR=/root/app 
 
