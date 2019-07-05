@@ -10,7 +10,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// aspetto che il container di mongo sia 
+// aspetto che il container di mongo sia
 function pausecomp(millis)
 {
     var date = new Date();
@@ -20,11 +20,11 @@ function pausecomp(millis)
 }
 console.log('Taking a break...');
 pausecomp(10000);
-console.log('Ten seconds later, ...'); //connessione al db mongoose.set('useFindAndModify', false); 
+console.log('Ten seconds later, ...'); //connessione al db mongoose.set('useFindAndModify', false);
 mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 	'mongodb://mongodb:27017/dbsa',
 	// 'mongodb://asw_mongodb_1.asw_interna:27017/dbsa', ANDAVA BENE
-	{ useNewUrlParser: true }) .then(() => console.log('MongoDB Connected')) .catch((err) => console.log(err)); 
+	{ useNewUrlParser: true }) .then(() => console.log('MongoDB Connected')) .catch((err) => console.log(err));
 /* sembrava andare mongoose.connect(
 	'mongodb://asw_mongodb_1.asw_interna:27017/dbsa',
 	{ useNewUrlParser: true, useFindAndModify: false, connectTimeoutMS: 30 },
@@ -38,8 +38,20 @@ mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 //mongoose.connect('mongodb://username:password@host:port', { useNewUrlParser: true, useFindAndModify: false });
 
 var routes = require('./src/routes/routes');
-routes(app); 
+routes(app);
 
+//Path globale root
+var path = require('path');
+global.appRoot = path.resolve(__dirname);
+app.use('/static', express.static(__dirname + '/public'));
+
+//importo i css e js che servono
+/*
+<style>
+  @import './public/css/reset.css';
+  @import './public/css/login.css';
+</style>
+*/
 //metto in ascolto il web server
 app.listen(3000, function () {
   console.log('Node API server started on port 3000!');

@@ -18,7 +18,7 @@ exports.align_sequences = function(req, res) {
 			if(alignment.length==0){
 				//Se non presente, calcolo
 				alignment = sa.needleman_wunsch(req.body.seq1, req.body.seq2);
-				
+
 				//E poi inserisco su Db
 				var new_alignment = new Alignment(alignment);
 				new_alignment.save(function(err, alignment) {
@@ -33,4 +33,9 @@ exports.align_sequences = function(req, res) {
 			res.json(alignment);
 		});
 	}
+};
+
+//Login
+exports.show_login = function(req, res) {
+	res.sendFile(appRoot + '/www/login.html');
 };

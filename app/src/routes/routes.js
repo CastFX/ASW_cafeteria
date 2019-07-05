@@ -7,5 +7,7 @@ module.exports = function(app) {
 		})
 		.post(controller.align_sequences);
 
+	app.route('/login')
+		.get(controller.show_login);
 
 };
