@@ -3,7 +3,7 @@ module.exports = function(app) {
 
 	app.route('/')
 		.get(function(req, res) {
-			res.send("Hello World");
+			res.send("Test Jenkins CI");
 		})
 		.post(controller.align_sequences);
 
