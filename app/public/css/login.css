@@ -3,9 +3,6 @@
 }
 
 html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
   background-color: #0A67A3;
 }
 
@@ -25,7 +22,6 @@ html, body {
 .login-icon-field {
   height: 250px;
   width: 100%;
-  /*background-color: red;*/
 }
 
 .login-icon {
@@ -36,7 +32,6 @@ html, body {
   padding: 8px 20px 20px;
   height: 100%;
   width: 100%;
-  /*background-color: green;*/
 }
 
 .row {
@@ -46,7 +41,6 @@ html, body {
 .username-row,.email-row,.corsi-row {
   position: relative;
   height: 40px;
-  /*background-color: pink;*/
   border-bottom: 1px solid;
   margin-bottom: 10px;
 }
@@ -54,7 +48,6 @@ html, body {
 .password-row {
   position: relative;
   height: 40px;
- /* background-color: grey;*/
   border-bottom: 1px solid;
 }
 
@@ -117,7 +110,6 @@ input::-moz-placeholder {
 
 .call-to-action {
   margin: 22px 0;
-  /*background-color: blue;*/
 }
 
 button {
@@ -163,12 +155,12 @@ p a:hover {
   }
 }
 
-/*CHOICE*/
+/*CHOICE LOG IN OR SIGN UP*/
 
 li{
 	font-size:20px;
 	padding-bottom:5px;
-	margin:0 20px 20px 29px;
+	margin:0 20px 20px 27px;
 	display:inline-block;
 	border-bottom:2px solid transparent;
 }
