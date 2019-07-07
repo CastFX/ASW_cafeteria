@@ -5,9 +5,10 @@ module.exports = function(app) {
 		.get(function(req, res) {
 			res.send("Test Jenkins CI_2");
 		})
-		.post(controller.align_sequences);
 
 	app.route('/login')
 		.get(controller.show_login);
-
+	
+	app.route('/hextris')
+		.get(controller.show_game);
 };

@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose')
-var Alignment = require('./src/models/alignmentModels')
+var mongoose = require('mongoose');
 
 //Creo istanza di express (web server)
 var app = express();
@@ -37,7 +36,7 @@ mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 // OK  mongoose.connect('mongodb://mongodb/dbsa', { useNewUrlParser: true, useFindAndModify: false });
 //mongoose.connect('mongodb://username:password@host:port', { useNewUrlParser: true, useFindAndModify: false });
 
-var routes = require('./src/routes/routes');
+var routes = require('src/routes/routes');
 routes(app);
 
 //Path globale root
