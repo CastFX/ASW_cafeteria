@@ -5,9 +5,9 @@ $(function(){
 	});
 
 	$(document).ready(function() {
-	  $(".row").delay(500).velocity("transition.slideLeftIn", {stagger: 500})    
+	  $(".row").delay(500).velocity("transition.slideLeftIn", {stagger: 500})
 	});
-	
+
 	function shake() {
 	  $(".password-row").velocity("callout.shake");
 	}
