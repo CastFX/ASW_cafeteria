@@ -6,8 +6,6 @@ WORKDIR ${WORKINGDIR}
 
 RUN mkdir -p ${WORKINGDIR} && chmod 666 ${WORKINGDIR} 
 
-COPY ./app ${WORKINGDIR}/ 
-
 RUN apt-get -y update && \
 	apt-get -y install apt-utils	&&	\
 	apt-get -y install nodejs	&&	\
@@ -20,6 +18,8 @@ RUN apt-get -y update && \
 	apt-get -y install iproute2	&&	\
 	apt-get -y install curl && \
 	apt-get -y clean 
+
+COPY ./app ${WORKINGDIR}/ 
 
 RUN	npm install 
 
