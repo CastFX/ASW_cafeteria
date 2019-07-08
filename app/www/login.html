@@ -151,7 +151,7 @@ var app = new Vue({
 	},
 	methods: {
 		listCorsi: function(){
-			axios.get("http://localhost:3000/api/corsi")
+			axios.get("api/corsi")
 				.then(response => (this.corsi = response.data)) //Promise
 				.catch(error => (console.log(error))) //Gestione errori approssimativa
 		},
