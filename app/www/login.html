@@ -50,7 +50,7 @@ Inspirations:
 							<span>Sign In</span>
 						</li>
 						<li class="tab-2">
-							<span>Sign Up</span>
+							<span @click="listCorsi">Sign Up</span>
 						</li>
 					</ul>
 				</div>
@@ -118,10 +118,7 @@ Inspirations:
 						</svg>
 					</label>
 					<select name="corsi" class="corsi" id="corsi-signup">
-					  <option value="isf">Ingegneria e Scienze Informatiche</option>
-					  <option value="arc">Architettura</option>
-					  <option value="bio">Biomedica</option>
-					  <option value="ele">Elettronica</option>
+					  <option v-bind:value="corso._id" v-for="corso in corsi" :key="corsi._id">{{ corso._id }}</option>
 					</select>
 				  </div>
 				  <div class="password-row">
@@ -150,25 +147,20 @@ Inspirations:
 var app = new Vue({
 	el:	"#login",
 	data:	{
-		movies: []
+		corsi: []
 	},
 	methods: {
-		listMovies: function(){
-			axios.get("http://localhost:3000/api/movies")
-				.then(response => (this.movies = response.data)) //Promise
+		listCorsi: function(){
+			axios.get("api/corsi")
+				.then(response => (this.corsi = response.data)) //Promise
 				.catch(error => (console.log(error))) //Gestione errori approssimativa
 		},
 		init: function(){
-			//this.listMovies();
+			this.listCorsi();
 		}
 	},
 	mounted(){
-		this.init();
-	},
-	filters: {
-		limit: function(text, length){
-			return text.substring(0, length);
-		}
+		//this.init();
 	}
 });
 </script>

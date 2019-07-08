@@ -8,7 +8,10 @@ module.exports = function(app) {
 
 	app.route('/login')
 		.get(controller.show_login);
-	
+
+	app.route('/api/corsi')
+		.get(controller.list_corsi);
+
 	app.route('/hextris')
 		.get(controller.show_game);
 };
