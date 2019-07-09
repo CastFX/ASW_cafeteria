@@ -12,6 +12,10 @@ module.exports = function(app) {
 	app.route('/api/corsi')
 		.get(controller.list_corsi);
 
+	app.route('/api/utenti')
+		.get(controller.list_utenti)
+		.post(controller.new_utente);
+
 	app.route('/hextris')
 		.get(controller.show_game);
 };

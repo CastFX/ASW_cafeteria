@@ -43,7 +43,6 @@ Inspirations:
 			 </g>
 			 </svg>
 			</div>
-			<form ref="formLogin" class="login-form">
 				<div class="rad">
 					<ul class="auth0-lock-tabs">
 						<li class="tab-1">
@@ -54,6 +53,7 @@ Inspirations:
 						</li>
 					</ul>
 				</div>
+        <form ref="formLogin" class="login-form">
 				<div class="sign-in-htm">
 				  <div class="username-row">
 					<label for="username-signin">
@@ -66,7 +66,7 @@ Inspirations:
 					  C-191.3,356.5-196.9,350.3-203.7,350.3L-203.7,350.3z"/>
 					</svg>
 					</label>
-					<input type="text" name="username" id="username-signin" class="username-input" placeholder="Username" v-model="loginVar.username"/>
+					<input type="text" name="username" id="username-signin" class="username-input" placeholder="Username" v-model="loginVar._id"/>
 				  </div>
 				  <div class="password-row">
 					<label for="password-signin">
@@ -79,7 +79,7 @@ Inspirations:
 					<input type="password" name="password" class="password-input" id="password-signin" placeholder="Password" v-model="loginVar.password"/>
 				  </div>
 				  <div class="call-to-action">
-					<input v-on:click="submitLog" value="Login" class="buttonLog"/>
+					<input type="submit" v-on:click.prevent="submitLog" value="Login" class="buttonLog"/>
 				  </div>
 				</div>
         </form>
@@ -96,7 +96,7 @@ Inspirations:
 					  C-191.3,356.5-196.9,350.3-203.7,350.3L-203.7,350.3z"/>
 					</svg>
 					</label>
-					<input type="text" name="username" class="username-input" id="username-signup" placeholder="Username" v-model="signUpVar.username"/>
+					<input type="text" name="username" class="username-input" id="username-signup" placeholder="Username" v-model="signUpVar._id"/>
 				  </div>
 				  <div class="email-row">
 					<label for="email-signup">
@@ -134,7 +134,7 @@ Inspirations:
 					<input type="password" name="password" class="password-input" id="password-signup" placeholder="Password" v-model="signUpVar.password"/>
 				  </div>
 				  <div class="call-to-action">
-					<input v-on:click="submitSign" value="SignUp" class="buttonLog"/>
+					<input type="submit" v-on:click.prevent="submitSign" value="SignUp" class="buttonLog"/>
 				  </div>
 				</div>
 			</form>
@@ -147,24 +147,30 @@ Inspirations:
 <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 <script>
 var signUpVar = {
-  username:'',
-  email:'',
+  _id:'',
   corso:'',
-  password:''
+  email:'',
+  password:'',
+  sale:''
 };
 var loginVar = {
-  username:'',
+  _id:'',
   password:''
 }
+
 var app = new Vue({
 	el:	"#login",
 	data:	{
 		corsi: [],
-    signUpVar : signUpVar
+    signUpVar : signUpVar,
 	},
 	methods: {
     submitSign: function(){
-      this.$refs.formSign.submit()
+      //this.$refs.formSign.submit()
+      axios.post("/api/utenti", this.signUpVar)
+				.then(response => {
+					alert("Sei registrato!");
+				})
     },
     submitLog: function(){
       this.$refs.formLogin.submit()
@@ -179,7 +185,7 @@ var app = new Vue({
 		}
 	},
 	mounted(){
-		this.init();
+		//this.init();
 	}
 });
 </script>

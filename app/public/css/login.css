@@ -28,7 +28,7 @@ html, body {
   margin: 50px 65px;
 }
 
-.login-form {
+.login-form, .rad {
   padding: 8px 20px 20px;
   height: 100%;
   width: 100%;
