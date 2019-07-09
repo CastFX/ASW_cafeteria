@@ -96,7 +96,7 @@ option{
 }
 
 input:focus,
-button:focus {
+.buttonLog:focus {
   outline: none;
 }
 
@@ -112,7 +112,17 @@ input::-moz-placeholder {
   margin: 22px 0;
 }
 
-button {
+
+.buttonLog {
+  all: initial;
+  * {
+    all: unset;
+  }
+}
+
+.buttonLog {
+  font-family: Comfortaa, Helvetica, sans-serif;
+  text-align: center;
   display: block;
   width: 240px;
   height: 40px;
@@ -127,13 +137,14 @@ button {
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
+  /*Con SCSS puoi usare &hover ecc.*/
 }
 
-button:hover {
+.buttonLog:hover {
   background-color: #FF8E00;
 }
 
-button:active {
+.buttonLog:active {
   background-color: #A65C00;
 }
 
