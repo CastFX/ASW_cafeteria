@@ -27,34 +27,30 @@ exports.list_utenti = function(req, res) {
 	});
 };
 
+
+var length = 32;
+var salt = Crypto.randomBytes(Math.ceil(length/2))
+						.toString('hex') /** convert to hexadecimal format */
+						.slice(0,length);   /** return required number of characters */
+
+var sha512 = function(password, salt){
+	var hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+	hash.update(password);
+	var value = hash.digest('hex');
+	return {
+						salt:salt,
+						passwordHash:value
+				 };
+};
+
+
 //Creazione di un nuovo utente
 exports.new_utente = function(req, res) {
-	var length = 32;
-	var salt = Crypto.randomBytes(Math.ceil(length/2))
-							.toString('hex') /** convert to hexadecimal format */
-							.slice(0,length);   /** return required number of characters */
-
-	var sha512 = function(password, salt){
-		var hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
-		hash.update(password);
-		var value = hash.digest('hex');
-		return {
-							salt:salt,
-							passwordHash:value
-					 };
-	};
-	console.log("BODY");
-	console.log(req.body);
 	var hashedPass = sha512(req.body.password,salt);
 	var new_user = req.body;
 	new_user.password = hashedPass.passwordHash;
 	new_user.sale = hashedPass.salt;
-	console.log("USER");
-	console.log(new_user);
-
 	var new_utente = new Utenti(new_user);
-	console.log("SAVING");
-	console.log(new_utente);
 	new_utente.save(function(err, utente) {
 		if (err)
 			res.send(err);
@@ -62,5 +58,20 @@ exports.new_utente = function(req, res) {
 	});
 };
 
+//login
+exports.login = function(req, res) {
+	Utenti.findOne({_id: req.body._id}, function(err, utente) {
+		if (err || utente == null) {
+			res.status(404).send({ error: 'Wrong Username!' });
+		} else {
+			var hashedPass = sha512(req.body.password, utente.sale);
+			if (hashedPass.passwordHash == utente.password) {
+				res.status(201).json(utente);
+			} else {
+				res.status(404).send({ error: 'Wrong Password!' });
+			}
+		}
+	});
+}
 
 exports.show_game = (req, res) => res.sendFile(appRoot + '/www/hextris.html');

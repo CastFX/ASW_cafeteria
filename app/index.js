@@ -7,6 +7,13 @@ var Utenti = require('./src/models/utenteModels');
 //Creo istanza di express (web server)
 var app = express();
 
+//Preparazione sessione
+/*
+const session = require('express-session');
+app.use(session({secret: 'ssshhhhh'}));
+*/
+
+
 //importo parser per leggere i parametri passati in POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

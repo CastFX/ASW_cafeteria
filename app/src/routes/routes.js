@@ -7,7 +7,8 @@ module.exports = function(app) {
 		})
 
 	app.route('/login')
-		.get(controller.show_login);
+		.get(controller.show_login)
+		.post(controller.login);
 
 	app.route('/api/corsi')
 		.get(controller.list_corsi);

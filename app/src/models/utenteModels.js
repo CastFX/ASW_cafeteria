@@ -3,19 +3,24 @@ var Schema = mongoose.Schema;
 
 var UtentiSchema = new Schema({
   _id: {
-    type: String
+    type: String,
+    required: 'An username is required'
 	},
   corso: {
-    type: String
+    type: String,
+    required: 'A course is required'
   },
   email: {
-    type: String
+    type: String,
+    required: 'An email is required'
   },
   password: {
-    type: String
+    type: String,
+    required: 'A password is required'
   },
   sale: {
-    type: String
+    type: String,
+    required: 'A salt is required'
   },
   date: {
     type: Date,

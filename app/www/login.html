@@ -79,7 +79,7 @@ Inspirations:
 					<input type="password" name="password" class="password-input" id="password-signin" placeholder="Password" v-model="loginVar.password"/>
 				  </div>
 				  <div class="call-to-action">
-					<input type="submit" v-on:click.prevent="submitLog" value="Login" class="buttonLog"/>
+					<input v-on:click.prevent="submitLog" value="Login" class="buttonLog"/>
 				  </div>
 				</div>
         </form>
@@ -134,7 +134,7 @@ Inspirations:
 					<input type="password" name="password" class="password-input" id="password-signup" placeholder="Password" v-model="signUpVar.password"/>
 				  </div>
 				  <div class="call-to-action">
-					<input type="submit" v-on:click.prevent="submitSign" value="SignUp" class="buttonLog"/>
+					<input v-on:click.prevent="submitSign" value="SignUp" class="buttonLog"/>
 				  </div>
 				</div>
 			</form>
@@ -163,6 +163,7 @@ var app = new Vue({
 	data:	{
 		corsi: [],
     signUpVar : signUpVar,
+    loginVar : loginVar
 	},
 	methods: {
     submitSign: function(){
@@ -173,7 +174,11 @@ var app = new Vue({
 				})
     },
     submitLog: function(){
-      this.$refs.formLogin.submit()
+      axios.post("", this.loginVar)
+        .then(response => {
+          alert("Loggato come: "+response.data._id);
+        }) //Promise
+        .catch(error => (alert(error.response.data.error))); //Gestione errori approssimativa
     },
 		listCorsi: function(){
 			axios.get("api/corsi")
