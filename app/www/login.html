@@ -171,7 +171,17 @@ var app = new Vue({
       axios.post("/api/utenti", this.signUpVar)
 				.then(response => {
 					alert("Sei registrato!");
+          this.resetSubmission();
 				})
+    },
+    resetSubmission: function(){
+      this.signUpVar = {
+        _id:'',
+        corso:'',
+        email:'',
+        password:'',
+        sale:''
+			}
     },
     submitLog: function(){
       axios.post("", this.loginVar)
