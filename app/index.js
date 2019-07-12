@@ -4,19 +4,26 @@ var mongoose = require('mongoose');
 var Corsi = require('./src/models/corsiModels');
 var Utenti = require('./src/models/utenteModels');
 
+
 //Creo istanza di express (web server)
 var app = express();
-
-//Preparazione sessione
-/*
-const session = require('express-session');
-app.use(session({secret: 'ssshhhhh'}));
-*/
-
 
 //importo parser per leggere i parametri passati in POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+//Preparazione sessione
+const passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+const session = require("express-session");
+
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(express.urlencoded({ extended: true })); // express body-parser
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // aspetto che il container di mongo sia
 function pausecomp(millis)

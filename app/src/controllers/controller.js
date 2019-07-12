@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Corsi = mongoose.model('Corsi');
 var Utenti = mongoose.model("Utenti");
 var Crypto = require('crypto');
+const passport = require('passport');
 
 
 //Login lista di corsi per signup
@@ -59,6 +60,7 @@ exports.new_utente = function(req, res) {
 };
 
 //login
+/*
 exports.login = function(req, res) {
 	Utenti.findOne({_id: req.body._id}, function(err, utente) {
 		if (err || utente == null) {
@@ -73,5 +75,37 @@ exports.login = function(req, res) {
 		}
 	});
 }
+*/
 
+//sessione
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  Utenti.findById(id, function(err, user) {
+    cb(err, user);
+  });
+});
+
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+		Utenti.findOne({_id: username}, function(err, utente) {
+			if (err)
+				return done(err);
+			if (!utente)
+				return done(null, false);
+			var hashedPass = sha512(password, utente.sale);
+			if (hashedPass.passwordHash == utente.password) {
+				return done(null, utente);
+			} else {
+				return done(null, false);
+			}
+		});
+  }
+));
+
+//Game page
 exports.show_game = (req, res) => res.sendFile(appRoot + '/www/hextris.html');
