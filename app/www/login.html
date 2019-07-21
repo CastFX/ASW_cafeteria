@@ -134,7 +134,7 @@ Inspirations:
 					<input type="password" name="password-sign" class="password-input" id="password-signup" placeholder="Password" v-model="signUpVar.password"/>
 				  </div>
 				  <div class="call-to-action">
-					<input v-on:click.prevent="submitSign" value="SignUp" class="buttonLog"/>
+					<input v-on:click.prevent="checkSign" value="SignUp" class="buttonLog"/>
 				  </div>
 				</div>
 			</form>
@@ -163,11 +163,28 @@ var app = new Vue({
 	data:	{
 		corsi: [],
     signUpVar : signUpVar,
-    loginVar : loginVar
+    loginVar : loginVar,
+    errori : ''
 	},
 	methods: {
+    checkSign: function(){
+      if (signUpVar._id.length  < 4)
+        this.errori = "Almeno 4 caratteri per l'id \n";
+      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(signUpVar.email)))
+        this.errori += "Inserisci una mail valida \n";
+      if (signUpVar.corso == '')
+        this.errori += 'Seleziona un corso \n';
+      if (signUpVar.password < 4)
+        this.errori += 'Password di almeno 4 caratteri';
+      if (this.errori == '')
+        this.submitSign();
+      else
+        {
+          alert(''+this.errori);
+          this.errori = '';
+        }
+    },
     submitSign: function(){
-      //this.$refs.formSign.submit()
       axios.post("/api/utenti", this.signUpVar)
 				.then(response => {
 					alert("Sei registrato!");
@@ -181,8 +198,10 @@ var app = new Vue({
         email:'',
         password:'',
         sale:''
-			}
+			},
+      this.errori = ''
     },
+    /*
     submitLog: function(){
       axios.post("", this.loginVar)
         .then(response => {
@@ -190,6 +209,7 @@ var app = new Vue({
         }) //Promise
         .catch(error => (alert(error.response.data.error))); //Gestione errori approssimativa
     },
+    */
 		listCorsi: function(){
 			axios.get("api/corsi")
 				.then(response => (this.corsi = response.data)) //Promise

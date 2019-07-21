@@ -30,7 +30,7 @@ module.exports = function(app) {
 	app.route('/error').get((req, res) => res.send("error logging in"));
 
 	app.post('/login',
-		 passport.authenticate('local', { failureRedirect: '/error' }),
+		 passport.authenticate('local', { failureRedirect: '/login' }),
 		 function(req, res) {
 		   res.redirect('/success?username='+req.user._id);
 		 });
