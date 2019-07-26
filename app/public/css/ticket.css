@@ -1,0 +1,38 @@
+.media{
+	margin: 10px;
+}
+
+.media-object{
+	vertical-align: middle;
+	height: 90px;
+	width: 120px;
+}
+
+#ticketList{
+	padding-top: 5%;
+}
+
+@media (min-width: 768px ){
+	.media-heading{
+		font-size: 150%;
+	}
+}
+
+
+@media (max-width: 768px) {
+	.media-heading{
+		font-size: 120%;
+	}
+	.media-desc{
+		font-size: 90%;
+	}
+}
+
+[v-cloak] { display: none; }
+
+.text-center{
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	margin: auto;
+}

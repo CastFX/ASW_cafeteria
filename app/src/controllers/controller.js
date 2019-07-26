@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Corsi = mongoose.model('Corsi');
 var Utenti = mongoose.model("Utenti");
+var Tickets = mongoose.model("Tickets");
+var UserTickets = mongoose.model("UserTickets");
+
 var Crypto = require('crypto');
 const passport = require('passport');
 
@@ -14,9 +17,41 @@ exports.list_corsi = function(req, res) {
 	});
 };
 
+//TIPOLOGIE DI TICKET ESISTENTI
+exports.list_tickets = function(req, res) {
+	Tickets.find({}, function(err, tickets) {
+		if (err)
+			res.send(err);
+		res.json(tickets);
+	});
+};
+
+//TUTTI I TICKET DI TUTTI GLI UTENTI
+exports.list_userTicketsTotal = function(req, res) {
+	UserTickets.find({}, function(err, tickets) {
+		if (err)
+			res.send(err);
+		res.json(tickets);
+	});
+};
+
+//TICKET RELATIVI ALL'UTENTE LOGGATO
+exports.list_userTickets = function(req, res) {
+	UserTickets.find({idUtente: req.user._id})
+		.populate('idTipoTicket').select('idTipoTicket -_id').exec(function(err, tickets) {
+		if (err)
+			res.send(err);
+		res.json(tickets);
+	});
+};
+
 //Login route
 exports.show_login = function(req, res) {
 	res.sendFile(appRoot + '/www/login.html');
+};
+
+exports.show_tickets = function(req, res) {
+	res.sendFile(appRoot + '/www/ticket.html');
 };
 
 //Esporta gli utenti

@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Corsi = require('./src/models/corsiModels');
 var Utenti = require('./src/models/utenteModels');
-
+var Tickets = require('./src/models/ticketModels');
+var UserTickets = require('./src/models/userTicketModels');
 
 //Creo istanza di express (web server)
 var app = express();

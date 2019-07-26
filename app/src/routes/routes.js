@@ -18,6 +18,16 @@ module.exports = function(app) {
 		.get(controller.list_utenti)
 		.post(controller.new_utente);
 
+	app.route('/api/tickets')
+		.get(controller.list_tickets);
+
+	app.route('/api/userTicketsTotal')
+		.get(controller.list_userTicketsTotal);
+
+	app.get('/api/userTickets', isLoggedIn, controller.list_userTickets);
+
+	app.get('/tickets', isLoggedIn, controller.show_tickets);
+
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
 	app.route('/hextris', isLoggedIn)

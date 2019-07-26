@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+  <title>Tickets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="static/css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="static/css/ticket.css">
+</head>
+
+<body>
+<div id="app">
+
+  <div v-cloak v-if="dataReady">
+    <div class='container' id ='ticketList'>
+      <div class='row'>
+    	   <div class='col-md-6' v-for="item in tickets">
+    			   <div class='media'>
+    				       <div class='media-left'>
+    					            <img class='media-object' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
+    					     </div>
+    					<div class='media-body'>
+    					       <h3 class='media-heading'>
+    						             <b>{{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%</b>
+    						     </h3>
+    					       <p class="media-desc">{{item.idTipoTicket.description}}</p>
+    					</div>
+    				</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center" v-if="!dataReady">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+</div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+<script>
+var tickets = {
+  idTipoTicket: {
+    type:'',
+    discount:'',
+    description:'',
+    image:''
+  }
+};
+
+var app = new Vue({
+	el:	"#app",
+	data:	{
+		tickets: tickets,
+    dataReady: false
+	},
+	methods: {
+    showAlert: function(item){
+      if(confirm("Vuoi utilizzare il token '"+item.idTipoTicket.type+"' per ottenere uno sconto del "+item.idTipoTicket.discount+"% ?"))
+        alert(" YOU DID IT BOI");
+    },
+		listTicket: function(){
+			axios.get("api/userTickets")
+				.then(response => {this.tickets = response.data; this.dataReady = true}) //Promise
+				.catch(error => (console.log(error))) //Gestione errori approssimativa
+		},
+		init: function(){
+			this.listTicket();
+		}
+	},
+	mounted(){
+		this.init();
+	}
+});
+</script>
+
+</html>
