@@ -17,6 +17,15 @@ exports.list_corsi = function(req, res) {
 	});
 };
 
+
+exports.show_tickets = function(req, res) {
+	res.sendFile(appRoot + '/www/ticket.html');
+};
+
+exports.show_adminTickets = function(req, res) {
+	res.sendFile(appRoot + '/www/ticketAdmin.html');
+};
+
 //TIPOLOGIE DI TICKET ESISTENTI
 exports.list_tickets = function(req, res) {
 	Tickets.find({}, function(err, tickets) {
@@ -45,13 +54,33 @@ exports.list_userTickets = function(req, res) {
 	});
 };
 
+//TICKET RELATIVI A TUTTI GLI UTENTI PER L'ADMIN
+exports.list_adminUserTicketsTotal = function(req, res) {
+	UserTickets.find()
+		.populate('idTipoTicket').exec(function(err, tickets) {
+		if (err)
+			res.send(err);
+		res.json(tickets);
+	});
+};
+
+//ELIMINAZIONE DI UN TICKET UTILIZZATO DA UN UTENTE DA PARTE DELL'ADMIN
+exports.delete_ticket = function(req, res) {
+	UserTickets.findOneAndDelete({_id: req.params.id}, function(error, result) {
+		if (error) {
+			res.send(error);
+		}
+		else {
+			res.json(result);
+		}
+  });
+};
+
+
+
 //Login route
 exports.show_login = function(req, res) {
 	res.sendFile(appRoot + '/www/login.html');
-};
-
-exports.show_tickets = function(req, res) {
-	res.sendFile(appRoot + '/www/ticket.html');
 };
 
 //Esporta gli utenti

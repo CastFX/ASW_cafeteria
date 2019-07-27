@@ -2,16 +2,16 @@
 <html lang="it">
 <head>
 
-  <title>Tickets</title>
+  <title>Tickets Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="static/css/reset.css">
+  <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="static/css/ticket.css">
+  <link rel="stylesheet" href="/static/css/ticket.css">
 </head>
 
 <body>
@@ -29,7 +29,10 @@
     					       <h3 class='media-heading'>
     						             <b>{{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%</b>
     						     </h3>
-    					       <p class="media-desc">{{item.idTipoTicket.description}}</p>
+    					       <p class="media-desc">
+                       {{item.idTipoTicket.description}} </br>
+                       Utente: <b>{{item.idUtente}}</b>
+                     </p>
     					</div>
     				</div>
         </div>
@@ -43,14 +46,31 @@
     </div>
   </div>
 
+
+  <footer class="footer mt-auto py-4">
+    <div class="container d-flex justify-content-center">
+      <form ref="formTicket" class="ticket-form">
+        <div class="ticketChoice-row">
+        <label for="ticketCodeId">
+        </label>
+        <input type="text" name="ticketCode" id="ticketCodeId" class="ticketCodeClass" placeholder="Insert Ticket code" v-model="ticketChoice"/>
+        <button v-on:click.prevent="submitTicket()" class="buttonTicketChoice"> DO IT </button>
+        </div>
+      </form>
+    </div>
+  </footer>
 </div>
 </body>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 <script>
 var tickets = {
+  _id:'',
+  idUtente:'',
   idTipoTicket: {
     type:'',
     discount:'',
@@ -63,18 +83,40 @@ var app = new Vue({
 	el:	"#app",
 	data:	{
 		tickets: tickets,
-    dataReady: false
+    dataReady: false,
+    ticketChoice: ''
 	},
 	methods: {
     showAlert: function(item){
-    //  if(confirm("Vuoi utilizzare il token '"+item.idTipoTicket.type+"' per ottenere uno sconto del "+item.idTipoTicket.discount+"% ?"))
-        alert("Token '"+item.idTipoTicket.type+"' per ottenere uno sconto del "+item.idTipoTicket.discount+"%");
+      if(confirm("Vuoi impostare nell'input il token dell'utente "+item.idTipoTicket.type+"' per fargli ottenere uno sconto del "+item.idTipoTicket.discount+"% ?")) {
+        this.ticketChoice = item._id;
+      }
     },
+    deleteTicket: function(){
+			axios.delete("/api/userTicketsTotal/"+this.ticketChoice)
+				.then(response => {
+          if (response.data != null && response.data._id != null){
+            alert("Hai eliminato: "+response.data._id);
+  					this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
+            this.ticketChoice = '';
+          } else {
+            alert("Codice errato");
+          }
+				})
+        .catch(error => console.log(error));
+		},
 		listTicket: function(){
-			axios.get("api/userTickets")
+			axios.get("/api/admin/userTickets")
 				.then(response => {this.tickets = response.data; this.dataReady = true}) //Promise
 				.catch(error => (console.log(error))) //Gestione errori approssimativa
 		},
+    submitTicket: function() {
+      if (this.ticketChoice != '') {
+          this.deleteTicket();
+      } else {
+        alert("Please enter a code!");
+      }
+    },
 		init: function(){
 			this.listTicket();
 		}

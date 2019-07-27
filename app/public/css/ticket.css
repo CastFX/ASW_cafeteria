@@ -36,3 +36,17 @@
   left: 50%;
 	margin: auto;
 }
+
+
+body{
+		margin-bottom:50px;
+}
+
+footer{
+	overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  bottom: 0;
+	height: 50px;
+  width: 100%;
+}

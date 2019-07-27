@@ -7,9 +7,7 @@ module.exports = function(app) {
 			res.send("Test Jenkins CI_2");
 		})
 
-	app.route('/login')
-		.get(controller.show_login);
-		//.post(controller.login);
+	app.get('/login', isNotLoggedIn, controller.show_login);
 
 	app.route('/api/corsi')
 		.get(controller.list_corsi);
@@ -27,6 +25,14 @@ module.exports = function(app) {
 	app.get('/api/userTickets', isLoggedIn, controller.list_userTickets);
 
 	app.get('/tickets', isLoggedIn, controller.show_tickets);
+
+  //GESTIONE TICKET DELL'ADMIN
+	app.get('/api/admin/userTickets', isAdminLoggedIn, controller.list_adminUserTicketsTotal);
+
+	app.get('/admin/userTickets', isAdminLoggedIn, controller.show_adminTickets);
+
+	app.route('/api/userTicketsTotal/:id')
+		.delete(controller.delete_ticket);
 
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
@@ -53,6 +59,23 @@ module.exports = function(app) {
 	function isLoggedIn(request, response, next) {
     // passport adds this to the request object
   	if (request.isAuthenticated()) {
+        return next();
+    }
+    response.redirect('/login');
+	}
+
+	function isNotLoggedIn(request, response, next) {
+    // passport adds this to the request object
+  	if (!request.isAuthenticated()) {
+        return next();
+    }
+    response.redirect('/success?username='+request.user._id);
+	}
+
+
+	function isAdminLoggedIn(request, response, next) {
+    // passport adds this to the request object
+  	if (request.isAuthenticated() && request.user._id == "admin") {
         return next();
     }
     response.redirect('/login');
