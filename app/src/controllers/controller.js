@@ -210,7 +210,7 @@ exports.prepare_game = (req, res) => {
 				_id: mongoose.Types.ObjectId(),
 				score: 0.0,
 				started: false,
-				date: new Date()
+				date: Date()
 			}
 			utente.games.addToSet(game);
 			utente.save(error => {
