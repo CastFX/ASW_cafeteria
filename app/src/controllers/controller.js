@@ -185,6 +185,17 @@ exports.get_lives = (req, res) => {
 	});
 }
 
+exports.get_played_games = (req, res) => {
+	Utenti.aggregate([
+		{ $match: { _id: req.user._id}}, // query documents (can return more than one element)
+		{ $unwind: '$games'}, //deconstruct the documents
+		{ $sort: { 'games.score': -1}},
+		{ $limit: 3 },
+		{ $group: {_id: req.user._id, games: { $push: '$games' }}}, //reconstruct the documents
+	]).exec((err, games) => res.json(games));
+}
+
+
 exports.prepare_game = (req, res) => {
 	Utenti.findOne({_id: req.user._id}, function(err, utente) {
 		if (err) {
@@ -200,10 +211,6 @@ exports.prepare_game = (req, res) => {
 				score: 0.0,
 				started: false,
 				date: new Date()
-			}
-
-			if (utente.life > 0) {
-				utente.life = utente.life - 1; 
 			}
 			utente.games.addToSet(game);
 			utente.save(error => {
@@ -229,14 +236,50 @@ exports.show_game = (req, res) => {
 		if (!game) {
 			res.json(game);
 		} else {
-			if (game.started) {
-				res.send(403);
-			} else {
-				game.set({"started": true});
-				utente.save();
-				res.sendFile(appRoot + '/www/hextris.html');
-			}
-
+			res.sendFile(appRoot + '/www/hextris.html');
 		}
 	});
+}
+
+exports.start_game = (req, res) => {
+	if (req.params.gameid) {
+		Utenti.findOne({"games._id": req.params.gameid}, function(err, utente) {
+			if (err) {
+				res.send(err);
+			}
+			const game = utente.games.id(req.params.gameid);
+			if (utente.life <= 0 || !game || game.started) {
+				res.sendStatus(403);
+			} else {
+				utente.life--; 
+				game.set({"started": true});
+				utente.save((err, utente) => {
+					res.sendStatus(201);
+				});
+			}
+		});
+	}
+}
+
+exports.submit_score = (req, res) => {
+	if (req.body.gameid && req.body.score && req.body.score >= 0) {
+		Utenti.findOneAndUpdate(
+			{_id: req.user._id, "games._id": req.body.gameid},
+			{
+				"$set" : {
+					"games.$.score" : req.body.score,
+				}
+			},
+			{useFindAndModify: false},
+			function(err,utente) {
+				if (err) {
+					res.send(err);
+					console.log("err");
+				} else {
+					// console.log("okay " + utente);
+					res.sendStatus(201);
+				}
+			}
+		);
+	}
 }

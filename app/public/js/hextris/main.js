@@ -104,12 +104,12 @@ function init(b) {
 		clearSaveState();
 		checkVisualElements(1);
 	}
-	if (highscores.length === 0 ){
-		$("#currentHighScore").text(0);
-	}
-	else {
-		$("#currentHighScore").text(highscores[0])
-	}
+	// if (highscores.length === 0 ){
+	// 	$("#currentHighScore").text(0);
+	// }
+	// else {
+	// 	$("#currentHighScore").text(highscores[0])
+	// }
 	infobuttonfading = true;
 	$("#pauseBtn").attr('src',"/static/images/btn_pause.svg");
 	hideUIElements();
@@ -337,9 +337,20 @@ function isInfringing(hex) {
 function checkGameOver() {
 	for (var i = 0; i < MainHex.sides; i++) {
 		if (isInfringing(MainHex)) {
-			if (highscores.indexOf(score) == -1) {
-				highscores.push(score);
-			}
+			const postData = {
+				"gameid": window.location.pathname.split('/').pop(),
+				"score": score
+			};
+			console.log(postData);
+			axios.post("/api/submitScore", postData)
+				.then(res => {
+					console.log("game submitted: " + res);
+				})
+				.catch(error => (console.log(error))) 
+
+			// if (highscores.indexOf(score) == -1) {
+			// 	highscores.push(score);
+			// }
 			writeHighScores();
 			gameOverDisplay();
 			return true;

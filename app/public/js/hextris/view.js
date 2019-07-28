@@ -146,13 +146,15 @@ function gameOverDisplay() {
 	Cookies.set("visited",true);
 	var c = document.getElementById("canvas");
 	c.className = "blur";
-	updateHighScores();
-	if (highscores.length === 0 ){
-		$("#currentHighScore").text(0);
-	}
-	else {
-		$("#currentHighScore").text(highscores[0])
-	}
+    $("#cScore").text(score);
+	
+	//updateHighScores();
+	// if (highscores.length === 0 ){
+	// 	$("#currentHighScore").text(0);
+	// }
+	// else {
+	// 	$("#currentHighScore").text(highscores[0])
+	// }
 	$("#gameoverscreen").fadeIn();
 	$("#buttonCont").fadeIn();
 	$("#container").fadeIn();
@@ -162,10 +164,10 @@ function gameOverDisplay() {
 }
 
 function updateHighScores (){
-    $("#cScore").text(score);
-    $("#1place").text(highscores[0]);
-    $("#2place").text(highscores[1]);
-    $("#3place").text(highscores[2]);
+    // $("#cScore").text(score);
+    // $("#1place").text(highscores[0]);
+    // $("#2place").text(highscores[1]);
+    // $("#3place").text(highscores[2]);
 }
 
 var pausable = true;

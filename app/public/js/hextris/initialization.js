@@ -206,13 +206,11 @@ function startBtnHandler() {
 			} catch (e) {
 
 			}
-
 			try {
 				document.body.removeEventListener('touchstart', handleTap, false);
 			} catch (e) {
 
 			}
-
 			document.body.addEventListener('touchstart', handleTap, false);
 		} else {
 			try {
@@ -220,13 +218,11 @@ function startBtnHandler() {
 			} catch (e) {
 
 			}
-
 			try {
 				document.body.removeEventListener('mousedown', handleClick, false);
 			} catch (e) {
 
 			}
-
 			document.body.addEventListener('mousedown', handleClick, false);
 		}
 	}, 5);
@@ -237,12 +233,24 @@ function startBtnHandler() {
 		$('#openSideBar').fadeOut(150, "linear");
 	}
 
-	if (importing == 1) {
-		init(1);
-		checkVisualElements(0);
-	} else {
-		resumeGame();
-	}
+	const gameid = window.location.pathname.split('/').pop();
+	axios.get("/api/startGame/" + gameid)
+		.then(res => {
+			console.log("axios startGame okay: " + res);
+			init(1);
+			checkVisualElements(0);
+			// if (importing == 1) {
+			// 	init(1);
+			// 	checkVisualElements(0);
+			// } else {
+			// 	resumeGame();
+			// }
+		})
+		.catch(error => {
+			console.log(error);
+			window.location.href = "/"; //error page todo
+		});
+
 }
 
 function handlePause() {
