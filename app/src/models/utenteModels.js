@@ -16,7 +16,7 @@ var GameSchema = new Schema({
   },
   date: {
     type: Date,
-    default: new Date()
+    default: Date()
   }
 });
 

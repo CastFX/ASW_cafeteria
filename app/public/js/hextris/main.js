@@ -256,9 +256,9 @@ function animLoop() {
 			saveState = JSONfn.parse(saveState);
 			gameState = 2;
 
-			setTimeout(function() {
-				enableRestart();
-			}, 150);
+			// setTimeout(function() {
+			// 	enableRestart();
+			// }, 150);
 
 			if ($('#helpScreen').is(':visible')) {
 				$('#helpScreen').fadeOut(150, "linear");
@@ -341,18 +341,32 @@ function checkGameOver() {
 				"gameid": window.location.pathname.split('/').pop(),
 				"score": score
 			};
-			console.log(postData);
+			// console.log(postData);
 			axios.post("/api/submitScore", postData)
 				.then(res => {
-					console.log("game submitted: " + res);
+					// writeHighScores();
+					var tmpscores = {first: 0, second: 0, third: 0};
+					console.log(res.data);
+					if (res.data) {
+						if (res.data[0] && res.data[0].score) {
+							tmpscores.first = res.data[0].score;
+						}
+						if (res.data[1] && res.data[1].score) {
+							tmpscores.second = res.data[1].score;
+						}
+						if (res.data[2] && res.data[2].score) {
+							tmpscores.third = res.data[2].score;
+						}
+					}
+					app.hscores = tmpscores;
+					gameOverDisplay();
 				})
 				.catch(error => (console.log(error))) 
 
 			// if (highscores.indexOf(score) == -1) {
 			// 	highscores.push(score);
 			// }
-			writeHighScores();
-			gameOverDisplay();
+
 			return true;
 		}
 	}
