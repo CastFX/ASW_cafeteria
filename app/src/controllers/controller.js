@@ -51,7 +51,7 @@ exports.list_userTicketsTotal = function(req, res) {
 //TICKET RELATIVI ALL'UTENTE LOGGATO
 exports.list_userTickets = function(req, res) {
 	UserTickets.find({idUtente: req.user._id})
-		.populate('idTipoTicket').select('idTipoTicket -_id').exec(function(err, tickets) {
+		.populate('idTipoTicket').select('idTipoTicket').exec(function(err, tickets) {
 		if (err)
 			res.send(err);
 		res.json(tickets);
