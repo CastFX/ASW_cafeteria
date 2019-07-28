@@ -8,6 +8,10 @@ var Crypto = require('crypto');
 const passport = require('passport');
 
 
+exports.homepage = (req, res) => {
+	res.sendFile(appRoot + '/www/home.html');
+};
+
 //Login lista di corsi per signup
 exports.list_corsi = function(req, res) {
 	Corsi.find({}, function(err, corsi) {
@@ -171,5 +175,68 @@ passport.use(new LocalStrategy(
   }
 ));
 
+exports.get_lives = (req, res) => {
+	Utenti.findOne({_id: req.user._id}, function(err, utente) {
+		if (err) {
+			res.send(err);
+			return;
+		}
+		res.json(utente.life);
+	});
+}
+
+exports.prepare_game = (req, res) => {
+	Utenti.findOne({_id: req.user._id}, function(err, utente) {
+		if (err) {
+			res.send(err);
+			return;
+		}
+		if (utente.life == 0) {
+			res.json("zero lives left");
+			// res.sendFile(appRoot + '/www/ZeroLives.html');
+		} else {
+			var game = {
+				_id: mongoose.Types.ObjectId(),
+				score: 0.0,
+				started: false,
+				date: new Date()
+			}
+
+			if (utente.life > 0) {
+				utente.life = utente.life - 1; 
+			}
+			utente.games.addToSet(game);
+			utente.save(error => {
+				if (error) {
+					console.log(error);
+				} else {
+					res.json(game._id);
+				}
+			});
+		}
+	});
+}
+
+
 //Game page
-exports.show_game = (req, res) => res.sendFile(appRoot + '/www/hextris.html');
+exports.show_game = (req, res) => {
+	Utenti.findOne({"games._id": req.params.gameid}, function(err, utente) {
+		if (err) {
+			res.send(err);
+			return;
+		}
+		const game = utente.games.id(req.params.gameid);
+		if (!game) {
+			res.json(game);
+		} else {
+			if (game.started) {
+				res.send(403);
+			} else {
+				game.set({"started": true});
+				utente.save();
+				res.sendFile(appRoot + '/www/hextris.html');
+			}
+
+		}
+	});
+}

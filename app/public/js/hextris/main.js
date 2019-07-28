@@ -61,7 +61,7 @@ function resumeGame() {
 	gameState = 1;
 	hideUIElements();
 	$('#pauseBtn').show();
-	$('#restartBtn').hide();
+	// $('#restartBtn').hide();
 	importing = 0;
 	startTime = Date.now();
 	setTimeout(function() {
@@ -77,13 +77,13 @@ function checkVisualElements(arg) {
 	if (arg && $('#openSideBar').is(":visible")) $('#openSideBar').fadeOut(150, "linear");
 	if (!$('#pauseBtn').is(':visible')) $('#pauseBtn').fadeIn(150, "linear");
 	$('#fork-ribbon').fadeOut(150);
-	if (!$('#restartBtn').is(':visible')) $('#restartBtn').fadeOut(150, "linear");
+	// if (!$('#restartBtn').is(':visible')) $('#restartBtn').fadeOut(150, "linear");
 	if ($('#buttonCont').is(':visible')) $('#buttonCont').fadeOut(150, "linear");
 }
 
 function hideUIElements() {
 	$('#pauseBtn').hide();
-	$('#restartBtn').hide();
+	// $('#restartBtn').hide();
 	$('#startBtn').hide();
 }
 
@@ -126,7 +126,7 @@ function init(b) {
 	tweetblock=false;
 	scoreOpacity = 0;
 	gameState = 1;
-	$("#restartBtn").hide();
+	// $("#restartBtn").hide();
 	$("#pauseBtn").show();
 	if (saveState.hex !== undefined) gameState = 1;
 
@@ -220,7 +220,7 @@ function setStartScreen() {
 	}
 
 	$('#pauseBtn').hide();
-	$('#restartBtn').hide();
+	// $('#restartBtn').hide();
 	$('#startBtn').show();
 
 	gameState = 0;
@@ -265,7 +265,7 @@ function animLoop() {
 			}
 
 			if ($('#pauseBtn').is(':visible')) $('#pauseBtn').fadeOut(150, "linear");
-			if ($('#restartBtn').is(':visible')) $('#restartBtn').fadeOut(150, "linear");
+			// if ($('#restartBtn').is(':visible')) $('#restartBtn').fadeOut(150, "linear");
 			if ($('#openSideBar').is(':visible')) $('.openSideBar').fadeOut(150, "linear");
 
 			canRestart = 0;
@@ -337,7 +337,6 @@ function isInfringing(hex) {
 function checkGameOver() {
 	for (var i = 0; i < MainHex.sides; i++) {
 		if (isInfringing(MainHex)) {
-			$.get('http://54.183.184.126/' + String(score))
 			if (highscores.indexOf(score) == -1) {
 				highscores.push(score);
 			}

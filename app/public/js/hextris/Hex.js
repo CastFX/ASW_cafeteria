@@ -20,7 +20,7 @@ function Hex(sideLength) {
 	this.lastColorScored = "#000";
 	this.comboTime = 1;
 	this.texts = [];
-		this.lastRotate = Date.now();
+	this.lastRotate = Date.now();
 	for (var i = 0; i < this.sides; i++) {
 		this.blocks.push([]);
 	}
@@ -105,7 +105,7 @@ function Hex(sideLength) {
 	};
 
 	this.rotate = function(steps) {
-				if(Date.now()-this.lastRotate<75 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ) return;
+		if(Date.now()-this.lastRotate<75 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ) return;
 		if (!(gameState === 1 || gameState === 0)) return;
 		this.position += steps;
 		if (!history[this.ct]) {

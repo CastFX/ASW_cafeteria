@@ -127,7 +127,7 @@ function setMainMenu() {
 	setTimeout(function() {
 		canRestart = 's';
 	}, 500);
-	$('#restartBtn').hide();
+	// $('#restartBtn').hide();
 	if ($("#pauseBtn").replace(/^.*[\\\/]/, '') == "btn_pause.svg") {
 		$("#pauseBtn").attr("src","/static/images/btn_resume.svg");
 	} else {
@@ -186,7 +186,7 @@ function pause(o) {
 	var c = document.getElementById("canvas");
 	if (gameState == -1) {
 		$('#fork-ribbon').fadeOut(300, 'linear');
-		$('#restartBtn').fadeOut(300, "linear");
+		// $('#restartBtn').fadeOut(300, "linear");
 		$('#buttonCont').fadeOut(300, "linear");
 		if ($('#helpScreen').is(':visible')) {
 			$('#helpScreen').fadeOut(300, "linear");
@@ -201,7 +201,7 @@ function pause(o) {
 			pausable =true;
 		}, 400);
 	} else if (gameState != -2 && gameState !== 0 && gameState !== 2) {
-		$('#restartBtn').fadeIn(300, "linear");
+		// $('#restartBtn').fadeIn(300, "linear");
 		$('#buttonCont').fadeIn(300, "linear");
 		$('.helpText').fadeIn(300, 'linear');
 		if (message == 'paused') {

@@ -33,29 +33,29 @@
 		<meta property="twitter:app:url:googleplay" content="https://play.google.com/store/apps/details?id=com.hextris.hextris">
 		<!-- <link rel="icon" type="image/png" href="favicon.ico"> -->
 		<link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="static/css/hextris/fa/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="static/css/hextris/style.css">
-		<script type='text/javascript' src="static/js/hextris/vendor/hammer.min.js"></script>
-		<script type='text/javascript' src="static/js/hextris/vendor/js.cookie.js"></script>
-		<script type='text/javascript' src="static/js/hextris/vendor/jsonfn.min.js"></script>
-		<script type='text/javascript' src="static/js/hextris/vendor/keypress.min.js"></script>
-		<script type='text/javascript' src="static/js/hextris/vendor/jquery.js"></script>
-		<script type='text/javascript' src="static/js/hextris/save-state.js"></script>
-		<script type='text/javascript' src="static/js/hextris/view.js"></script>
-		<script type='text/javascript' src="static/js/hextris/wavegen.js"></script>
-		<script type='text/javascript' src="static/js/hextris/math.js"></script>
-		<script type='text/javascript' src="static/js/hextris/Block.js"></script>
-		<script type='text/javascript' src="static/js/hextris/Hex.js"></script>
-		<script type='text/javascript' src="static/js/hextris/Text.js"></script>
-		<script type='text/javascript' src="static/js/hextris/comboTimer.js"></script>
-		<script type='text/javascript' src="static/js/hextris/checking.js"></script>
-		<script type='text/javascript' src='static/js/hextris/update.js'></script>
-		<script type='text/javascript' src='static/js/hextris/render.js'></script>
-		<script type='text/javascript' src="static/js/hextris/input.js"></script>
-		<script type='text/javascript' src="static/js/hextris/main.js"></script>
-		<script type='text/javascript' src="static/js/hextris/initialization.js"></script>
+		<link rel="stylesheet" href="/static/css/hextris/fa/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/hextris/style.css">
+		<script type='text/javascript' src="/static/js/hextris/vendor/hammer.min.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/vendor/js.cookie.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/vendor/jsonfn.min.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/vendor/keypress.min.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/vendor/jquery.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/save-state.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/view.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/wavegen.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/math.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/Block.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/Hex.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/Text.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/comboTimer.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/checking.js"></script>
+		<script type='text/javascript' src='/static/js/hextris/update.js'></script>
+		<script type='text/javascript' src='/static/js/hextris/render.js'></script>
+		<script type='text/javascript' src="/static/js/hextris/input.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/main.js"></script>
+		<script type='text/javascript' src="/static/js/hextris/initialization.js"></script>
 		<!-- <script type='text/javascript' async src="https://hextris.io/scripts/a.js"></script> -->
-		<script src="static/js/hextris/vendor/sweet-alert.min.js"></script>
+		<script src="/static/js/hextris/vendor/sweet-alert.min.js"></script>
 		<!-- <link rel="stylesheet" href="src/game/style/rrssb.css"/> -->
 	</head>
 	<body>
@@ -68,22 +68,24 @@
 		<img id="openSideBar" class='helpText' src="/static/images/btn_help.svg"/>
 		<div class="faded overlay"></div>
 		<img id="pauseBtn" src="/static/images/btn_pause.svg"/>
-		<img id='restartBtn' src="/static/images/btn_restart.svg"/>
+		<!-- <img id='restartBtn' src="/static/images/btn_restart.svg"/> -->
 		<div id='HIGHSCORE'>HIGH SCORE</div>
 		<div id='highScoreInGameText'>
-			<div id='highScoreInGameTextHeader'>HIGH SCORE</div><div id='currentHighScore'>10292</div>
+			<div id='highScoreInGameTextHeader'>HIGH SCORE</div>
+			<div id='currentHighScore'>{{highscore}}</div>
 		</div>
 		<div id="gameoverscreen">
 			<div id='container'>
 				<div id='gameOverBox' class='GOTitle'>GAME OVER</div>
 				<div id='cScore'>1843</div>
 				<div id='highScoresTitle' class='GOTitle'>HIGH SCORES</div>
-				<div class='score'><span class='scoreNum'>1.</span> <div id="1place" style="display:inline;">0</div></div>
-				<div class='score'><span class='scoreNum'>2.</span> <div id="2place" style="display:inline;">0</div></div>
-				<div class='score'><span class='scoreNum'>3.</span> <div id="3place" style="display:inline;">0</div></div>
+				<div class='score'><span class='scoreNum'>1.</span> <div id="1place" style="display:inline;">{{highscore1}}</div></div>
+				<div class='score'><span class='scoreNum'>2.</span> <div id="2place" style="display:inline;">{{highscore2}}</div></div>
+				<div class='score'><span class='scoreNum'>3.</span> <div id="3place" style="display:inline;">{{highscore3}}</div></div>
 			</div>
 			<div id='bottomContainer'>
-				<img id='restart' src='/static/images/btn_restart.svg' height='57px'>
+				<!-- <img id='restart' src='/static/images/btn_restart.svg' height='57px'> -->
+				<!-- <img id='back' src='' height='57px'> -->
 				<!-- <div id='socialShare'>
 					<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 					<svg width="224.6377px" height="57px"  viewBox="0 0 255 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

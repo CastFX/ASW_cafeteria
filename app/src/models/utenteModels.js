@@ -1,6 +1,26 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var GameSchema = new Schema({
+  type: {
+    type: String,
+    default: "Hextris"
+  },
+  score: {
+    type: Number,
+    default: 0.0
+  },
+  started: {
+    type: Boolean,
+    default: false
+  },
+  date: {
+    type: Date,
+    default: new Date()
+  }
+});
+
+
 var UtentiSchema = new Schema({
   _id: {
     type: String,
@@ -29,7 +49,9 @@ var UtentiSchema = new Schema({
   life: {
     type: Number,
     default: 0
-  }
+  },
+  games: [GameSchema]
+
 }, {collection: 'utenti'});
 
 module.exports = mongoose.model('Utenti', UtentiSchema);

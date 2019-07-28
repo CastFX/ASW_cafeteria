@@ -150,39 +150,37 @@ function addKeyListeners() {
 	});
 
 
-	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-			$("#restart").on('touchstart', function() {
-			init();
-			canRestart = false;
-			$("#gameoverscreen").fadeOut();
-		});
+	// if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	// 		$("#restart").on('touchstart', function() {
+	// 		init();
+	// 		canRestart = false;
+	// 		$("#gameoverscreen").fadeOut();
+	// 	});
 
-	}
-	else {
-		$("#restart").on('mousedown', function() {
-			init();
-			canRestart = false;
-			$("#gameoverscreen").fadeOut();
-		});
+	// }
+	// else {
+	// 	$("#restart").on('mousedown', function() {
+	// 		init();
+	// 		canRestart = false;
+	// 		$("#gameoverscreen").fadeOut();
+	// 	});
 
-	}
-	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-			$("#restartBtn").on('touchstart', function() {
-			init(1);
-			canRestart = false;
-			$("#gameoverscreen").fadeOut();
-		});
+	// }
+	// if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	// 		$("#restartBtn").on('touchstart', function() {
+	// 		init(1);
+	// 		canRestart = false;
+	// 		$("#gameoverscreen").fadeOut();
+	// 	});
 
-	}
-	else {
-		$("#restartBtn").on('mousedown', function() {
-			init(1);
-			canRestart = false;
-			$("#gameoverscreen").fadeOut();
-		});
-
-
-	}
+	// }
+	// else {
+	// 	$("#restartBtn").on('mousedown', function() {
+	// 		init(1);
+	// 		canRestart = false;
+	// 		$("#gameoverscreen").fadeOut();
+	// 	});
+	// }
 
 }
 function inside (point, vs) {

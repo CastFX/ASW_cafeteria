@@ -3,9 +3,7 @@ module.exports = function(app) {
   var passport = require('passport');
 
 	app.route('/')
-		.get(function(req, res) {
-			res.send("Test Jenkins CI_2");
-		})
+		.get(isLoggedIn, controller.homepage);
 
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
@@ -39,7 +37,10 @@ module.exports = function(app) {
 	app.route('/hextris', isLoggedIn)
 		.get(controller.show_game);
   */
-	app.get('/hextris', isLoggedIn, controller.show_game);
+	app.get('/api/createGameSession', isLoggedIn, controller.prepare_game);
+	app.get('/api/lives', isLoggedIn, controller.get_lives);
+
+	app.get('/hextris/game/:gameid', isLoggedIn, controller.show_game);
 
 	//sessione
 	app.route('/success').get((req, res) => res.send("Welcome "+req.query.username+"!!"));
