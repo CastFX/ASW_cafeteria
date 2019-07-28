@@ -49,6 +49,25 @@
     </div>
   </div>
 
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="error">{{ error }}</p>
+
+          <p class="decode-result">Last result: <b>{{ result }}</b></p>
+
+          <qrcode-stream @decode="onDecode" @init="onInit" />
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer mt-auto py-4">
     <div class="container d-flex justify-content-center">
@@ -61,25 +80,6 @@
         </div>
       </form>
       <button data-toggle="modal" data-target=".bd-example-modal-sm"> SCAN IT NOW </button>
-      <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p class="error">{{ error }}</p>
-
-              <p class="decode-result">Last result: <b>{{ result }}</b></p>
-
-              <qrcode-stream @decode="onDecode" @init="onInit" />
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </footer>
 </div>
@@ -122,6 +122,7 @@ var app = new Vue({
 	methods: {
     onDecode (result) {
       this.result = result
+      this.ticketChoice = result;
     },
 
     async onInit (promise) {
