@@ -80,6 +80,11 @@ exports.delete_ticket = function(req, res) {
   });
 };
 
+//PIECHART TESTING
+
+exports.show_piechart = (req, res) => {
+	res.sendFile(appRoot + '/www/pieChart.html');
+};
 
 
 //Login route
@@ -251,7 +256,7 @@ exports.start_game = (req, res) => {
 			if (utente.life <= 0 || !game || game.started) {
 				res.sendStatus(403);
 			} else {
-				utente.life--; 
+				utente.life--;
 				game.set({"started": true});
 				utente.save((err, utente) => {
 					res.sendStatus(201);
@@ -279,7 +284,7 @@ exports.submit_score = (req, res) => {
 					res.send(err);
 					console.log("err");
 				} else {
-					// console.log("okay " + utente);	
+					// console.log("okay " + utente);
 					const top3 = utente.games
 						.sort((a,b) => b.score - a.score)
 						.slice(0,3);

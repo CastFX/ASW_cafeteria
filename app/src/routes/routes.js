@@ -32,6 +32,12 @@ module.exports = function(app) {
 	app.route('/api/userTicketsTotal/:id')
 		.delete(controller.delete_ticket);
 
+  //ROUTE PIE CHART TESTING
+
+	app.route('/pie')
+		.get(controller.show_piechart);
+
+
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
 	app.route('/hextris', isLoggedIn)
