@@ -48,7 +48,7 @@ var UtentiSchema = new Schema({
   },
   life: {
     type: Number,
-    default: 0
+    default: 5
   },
   games: [GameSchema]
 
