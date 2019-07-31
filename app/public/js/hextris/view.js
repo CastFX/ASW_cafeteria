@@ -115,7 +115,7 @@ function showText(text) {
 	if (text == 'gameover') {
 	   //Clay('client.share.any', {text: 'Think you can beat my score of '+ score + ' in Super Cool Game?'})
 		$("#gameoverscreen").fadeIn();
-    	}
+	}
 	$(".overlay").html(messages[text]);
 	$(".overlay").fadeIn("1000", "swing");
 
