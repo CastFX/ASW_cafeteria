@@ -5,7 +5,7 @@
      position: relative;
      width: 360px;
  }
- .tooltip {
+ .tooltipClass {
      background: #eee;
      box-shadow: 0 0 5px #999999;
      color: #333;
@@ -35,8 +35,20 @@
  /* NEW */
  h1 {
      /* NEW */
-     font-size: 14px;
+     font-size: 150%;
      /* NEW */
      text-align: center;
      /* NEW */
+ }
+
+ div{
+   margin-bottom: 5px;
+ }
+
+ .text-center{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   margin-left: -10px; /* margin is -0.5 * dimension */
+   margin-top: -25px;
  }

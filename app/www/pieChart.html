@@ -4,8 +4,8 @@
 <head>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="static/css/reset.css">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
   <link rel="stylesheet" href="static/css/pieChart.css">
   <script src="https://d3js.org/d3.v3.js"></script>
@@ -16,6 +16,11 @@
 <body>
   <div id="app">
     <h1>Ranking dei Corsi</h1>
+    <div class="text-center" v-if="loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading data...</span>
+      </div>
+    </div>
     <div id="chart"></div>
   </div>
 </body>
@@ -29,7 +34,7 @@
 var app = new Vue({
 	el:	"#app",
 	data:	{
-    datasetExample: [
+    datasetExampleNotUsed: [
           {label:'Monday',count:379130},
           {label:'Tuesday',count:424923},
           {label:'Wednesday',count:430728},
@@ -38,11 +43,14 @@ var app = new Vue({
                      {label:'Saturday',count:368239},
                          {label:'Sunday',count:282701}
       ],
-      dataset: [],
-      utenti: [],
+    dataset: [],
+    utenti: [],
+    loading: false
+
 	},
 	methods: {
 		init: function(){
+        this.loading = true;
         this.setDataset();
 		},
     setDataset: function(){
@@ -60,8 +68,10 @@ var app = new Vue({
               } else {
                 this.dataset.push({label:this.utenti[i].corso, count: score});
               }
+            }
           }
-        }
+          this.loading = false;
+
           this.makePieChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
@@ -73,10 +83,10 @@ var app = new Vue({
               var height = 360;
               var radius = Math.min(width, height) / 2;
               var donutWidth = 75;
-              var legendRectSize = 18;
-              var legendSpacing = 4;
+              var legendRectSize = 40;
+              var legendSpacing = 15;
 
-              var color = d3.scale.category20b();
+              var color = d3.scale.category20();
 
               var svg = d3.select('#chart')
                   .append('svg')
@@ -99,7 +109,7 @@ var app = new Vue({
 
               var tooltip = d3.select('#chart')
                   .append('div')
-                  .attr('class', 'tooltip');
+                  .attr('class', 'tooltipClass');
 
               tooltip.append('div')
                   .attr('class', 'label');
@@ -123,22 +133,22 @@ var app = new Vue({
                       .attr('fill', function (d, i) {
                         return color(d.data.label);
                       })
+
                   .each(function (d) {
                       this._current = d;
-                  }); // NEW
+                  });
 
                   path.on('mouseover', function (d) {
                       var total = d3.sum(dataset.map(function (d) {
                           return (d.enabled) ? d.count : 0; // UPDATED
                       }));
                       var percent = Math.round(1000 * d.data.count / total) / 10;
-                      tooltip.select('.label').html(d.data.label);
-                      tooltip.select('.count').html(d.data.count);
-                      tooltip.select('.percent').html(percent + '%');
-                      tooltip.style('display', 'block');
+                      tooltip.select('.label').html("<b>Corso</b>: "+d.data.label);
+                      tooltip.select('.count').html("<b>Score</b>: "+d.data.count);
+                      tooltip.select('.percent').html("<b>%</b>: "+percent + '%');
+                      tooltip.style('display', 'block')
+                      tooltip.style('min-width', '150px');
                   });
-
-
 
                   path.on('mouseout', function () {
                       tooltip.style('display', 'none');
@@ -154,7 +164,7 @@ var app = new Vue({
                       var offset = height * color.domain().length / 2;
                       var horz = -2 * legendRectSize;
                       var vert = i * height - offset;
-                      return 'translate(' + (horz-65) + ',' + (vert+250) + ')';
+                      return 'translate(' + (horz-55) + ',' + (vert+300) + ')';
                   });
 
                   legend.append('rect')
@@ -198,6 +208,8 @@ var app = new Vue({
                   legend.append('text')
                       .attr('x', legendRectSize + legendSpacing)
                       .attr('y', legendRectSize - legendSpacing)
+                      .style("font-size", "110%")
+                      .style("font-weight", "bold")
                       .text(function (d) {
                       return d;
                   });
