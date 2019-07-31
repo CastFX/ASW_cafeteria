@@ -15,7 +15,7 @@
 <title>Pie Chart</title>
 <body>
   <div id="app">
-    <h1>Tickets Posseduti Dagli Utenti</h1>
+    <h1>Ranking dei Corsi</h1>
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
@@ -51,28 +51,24 @@ var app = new Vue({
 	methods: {
 		init: function(){
         this.loading = true;
-        this.setTickets();
         this.setDataset();
 		},
-    setTickets: function(){
-      axios.get("api/tickets")
-      	.then(response => {
-          var tickets = response.data;
-          for (i = 0; i<tickets.length; i++){
-            this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 0});
-          }
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
-    },
     setDataset: function(){
-      axios.get("api/admin/userTickets")
+      axios.get("api/utenti")
 				.then(response => {
           this.utenti = response.data
           for (i = 0; i<this.utenti.length; i++){
-              if (this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%")) != -1){
-                this.dataset[this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%"))].count += 1;
-              } else {
-                this.dataset.push({label: this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%", count: 1});
+            var score = 0;
+            if (this.utenti[i]._id != "admin"){
+              for (j = 0; j<this.utenti[i].games.length; j++){
+                score += this.utenti[i].games[j].score;
               }
+              if (this.dataset.findIndex(item => item.label == this.utenti[i].corso) != -1){
+                this.dataset[this.dataset.findIndex(item => item.label == this.utenti[i].corso)].count += score;
+              } else {
+                this.dataset.push({label:this.utenti[i].corso, count: score});
+              }
+            }
           }
           this.loading = false;
 
@@ -149,8 +145,8 @@ var app = new Vue({
                           return (d.enabled) ? d.count : 0; // UPDATED
                       }));
                       var percent = Math.round(1000 * d.data.count / total) / 10;
-                      tooltip.select('.label').html("<b>Tipo</b>: "+d.data.label);
-                      tooltip.select('.count').html("<b>Tot</b>: "+d.data.count);
+                      tooltip.select('.label').html("<b>Corso</b>: "+d.data.label);
+                      tooltip.select('.count').html("<b>Score</b>: "+d.data.count);
                       tooltip.select('.percent').html("<b>%</b>: "+percent + '%');
                       tooltip.style('display', 'block')
                       tooltip.style('min-width', '150px');
