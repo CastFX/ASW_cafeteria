@@ -79,7 +79,7 @@ var app = new Vue({
 
               var dataset = this.dataset;
 
-              var width = 360;
+              var width = 370;
               var height = 360;
               var radius = Math.min(width, height) / 2;
               var donutWidth = 75;
@@ -133,6 +133,8 @@ var app = new Vue({
                       .attr('fill', function (d, i) {
                         return color(d.data.label);
                       })
+                      .style('stroke', 'black')
+                      .style('stroke-width', '1px')
 
                   .each(function (d) {
                       this._current = d;
@@ -171,7 +173,7 @@ var app = new Vue({
                       .attr('width', legendRectSize)
                       .attr('height', legendRectSize)
                       .style('fill', color)
-                      .style('stroke', color) // UPDATED (removed semicolon)
+                      .style('stroke', "black")
                   .on('click', function (label) { // NEW
                       var rect = d3.select(this); // NEW
                       var enabled = true; // NEW
