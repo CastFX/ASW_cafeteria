@@ -34,9 +34,7 @@ module.exports = function(app) {
 
   //ROUTE PIE CHART TESTING
 
-	app.route('/pie')
-		.get(controller.show_piechart);
-
+	app.get('/pie', isAdminLoggedIn, controller.show_piechart);
 
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
