@@ -8,28 +8,123 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/home.css">
 </head>
 
 <body>
+<!-- cookie ads ??? -->
+<main>
 <div id="app">
-
-    <div v-cloak v-if="dataReady">
-        <div class='container' id ='homepage'>
-            <h1>Lives left: {{lives}}</h1>
-            <a href="#" class="hexbutton yellowgreen" v-on:click='startGame' :disabled="lives <= 0">Play</a>
-            <a href="/pie" id="Rankings" class="hexbutton orange">Rankings</a>
-        </div>
+  <header>
+    <div class="container" id="home_logo">
+      <div id="home_btn_area">
+        <button id="home_btn" v-on:click="refresh_home">
+          <img class="img-responsive" src="static/images/btn_logo_onhover.png" />
+          <img class="img-responsive" id="site_logo" src="static/images/btn_logo_main.png"/>
+        </button>
+      </div>
     </div>
-
-    <div class="text-center" v-if="!dataReady">
-        <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-        </div>
+    <div class="container" id="banner">
+      <h1 class="display-3 font-weight-bold">CAMPUS CESENA CAFÈ</h1>
     </div>
+  </header>
+  <section>
+    <div class="container text-center">
+      <h1>Lives left: {{lives}}</h1>
+    </div>
+    <div class="container button_section" v-cloak v-if="dataReady">
+      <button type=""class="btn btn-primary btn-lg" v-on:click='startGame' :disabled="lives <= 0"> PLAY </button>
+    </div>
+  </section>
+  <section>
+    <div class="container button_section" v-cloak v-if="dataReady">
+      <button class="btn btn-primary btn-lg" v-on:click='' :disabled="lives <= 0"> REDEEM </button>
+    </div>
+  </section>
+  <section>
+    <div class="container button_section" v-cloak v-if="dataReady">
+      <button class="btn btn-primary btn-lg" v-on:click='goPie'> RANKINGS </button>
+    </div>
+  </section>
+  <section id="description">
+    <div class="container">
+      <p>
+        Ciao! Siamo la caffetteria del campus di Cesena, compra da noi!
+        <br/>Diventate ciccioni e fate vincere la vostra facoltà.
+        <br/>Ne vale la pena trust :D.
+      </p>
+    </div>
+  </section>
+</div>
+</main>
+<footer id="footer">
+  <div id="contacts_and_socials">
+    <div class="container footer_elem">
+      <p>
+        <br>
+        Via Cesare Pavese, </br>
+        Cesena (FC), </br>
+        Italia
+        </br></br>
+        cafecampuscesena@gmail.com
+        </br>
+        0123456789
+      </p>
+    </div>
+    <div class="container footer_elem">
+      </br>
+      <div class="social_link">
+        <button class="social_btn" onclick="window.open('http://facebook.com','_blank')">
+          <img id="go_fb" class="social_img" src="static/images/facebook_logo.png"/>
+        </button>
+      </div>
+      <div class="social_link">
+        <button class="social_btn" onclick="window.open('http://twitter.com','_blank')">
+          <img id="go_tw" class="social_img" src="static/images/twitter_logo.png"/>
+        </button>
+      </div>
+      <div class="social_link">
+        <button class="social_btn" onclick="window.open('http://instagram.com','_blank')">
+          <img id="go_ig" class="social_img" src="static/images/instagram_logo.png"/>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="text-center" v-if="!dataReady">
+    <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+    </div>
+</div>
 
 </div>
 </body>
+
+<!-- TODO da aggiustare perchè con lo zoom basso
+non funziona rip e poi in generale è un po' monco
+ed è jquery-->
+<script>
+  $(document).ready(function() {
+    var $win = $(window);
+    var $stat = $('#description');
+    $win.on('scroll', function () {
+      var scrollTop = $win.scrollTop();
+      $stat.each(function () {
+        var $self = $(this);
+        var prev=$self.offset();
+        console.log(scrollTop);
+        console.log(prev.top);
+        if ((scrollTop - prev.top) > -500) {
+          $self.css('opacity', '1').addClass('description_animate');
+        } else {
+          $self.css('opacity', '0').removeClass('description_animate');
+        }
+      });
+    }).scroll();
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -48,11 +143,10 @@ var app = new Vue({
 	el:	"#app",
 	data:	{
 		lives: 0,
-        dataReady: false
+    dataReady: false
 	},
 	methods: {
         startGame: function(event) {
-            
             axios.get("api/createGameSession")
                 .then(response => {
                     console.log("click on startGame");
@@ -60,21 +154,37 @@ var app = new Vue({
                 })
                 .catch(error => console.log(error))
         },
+        goPie: function(event) {
+          window.location.href = "/pie";
+        },
         setLives: function() {
             axios.get("api/lives")
                 .then(response => {
-                    this.lives = response.data; 
+                    this.lives = response.data;
                     this.dataReady = true;
                 })
                 .catch(error => (console.log(error))) //Gestione errori approssimativa
         },
-		init: function(){
-			this.setLives();
-		}
-	},
-	mounted(){
-		this.init();
-	}
+        refresh_home: function(event) {
+            window.history.go();
+        },/*
+        go_to_facebook: function() {
+            console.log("go to facebook");
+            window.open("https://www.facebook.com", "_blank");
+        },
+        go_to_twitter: function() {
+            window.open("https://twitter.com", '_blank');
+        },
+        go_to_instagram: function() {
+            window.open("https://www.instagram.com", '_blank');
+        },*/
+        init: function(){
+          this.setLives();
+         },
+    },
+    mounted(){
+      this.init();
+    }
 });
 </script>
 

@@ -1,0 +1,255 @@
+// <body> var
+$background_color: blue;
+// <section> var
+$button_section_height: 180px;
+
+// mains tags
+html {
+  background-color: grey;
+}
+body, footer {
+  background-color: $background_color;
+  margin: 0 auto;
+  //font-family: TODO
+  //font-size: TODO
+  //color: TODO
+}
+
+// how to: THE BIG SCROLLPAGE
+@media (min-width: 1601px) and (max-width: 5000px) {
+  body, footer {
+    width: 1606px !important;
+  }
+}
+@media (min-width: 830px) and (max-width: 1050px) {
+  body, footer {
+    width: 750px !important;
+  }
+}
+
+// home button section
+#home_logo {
+  // relative così sta a fianco al banner
+  position: relative;
+  padding-left: 40px;
+  padding-top: 20px;
+  float: left;
+  // TODO QUESTO NON è MOBILE FIRST
+  height: 270px;
+  width: 270px;
+}
+#home_btn_area {
+  // absolute così le due immagini (home_btn) fanno overlap
+  position: absolute;
+  float: left;
+  // TODO QUESTO NON è MOBILE FIRST
+  height: 270px;
+  width: 270px;
+}
+#home_btn {
+  padding: 0;
+  border: none;
+  & img {
+    position: absolute;
+    border-radius: 50%;
+    /*
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    */
+    -webkit-transition: opacity 0.75s ease-in-out;
+    -moz-transition: opacity 0.75s ease-in-out;
+    -o-transition: opacity 0.75s ease-in-out;
+    transition: opacity 0.75s ease-in-out;
+  }
+}
+#site_logo:hover {
+  opacity:0;
+}
+// banner
+#banner {
+  padding-top: 100px;
+  text-align: center;
+  color: yellow;
+  // TODO QUESTO NON è MOBILE FIRST
+  padding-bottom: 76px;
+}
+
+// sections's button
+.button_section {
+  height: $button_section_height;
+  text-align: center;
+  & button {
+    width: 75%;
+    height: 150px;
+  }
+}
+// description
+#description {
+  position: relative;
+  text-align: center;
+  //max-height: $button_section_height;
+  //height: auto;
+  height: $button_section_height;
+  opacity: 0;
+}
+.description_animate {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-name: description_animation;
+  animation-name: description_animation;
+}
+@-webkit-keyframes description_animation { // Safari 4.0 - 8.0
+  0%   {left:0px; top:$button_section_height;}
+  100% {left:0px; top:0px;}
+}
+@keyframes description_animation { // Standard syntax
+  0%   {left:0px; top:$button_section_height;}
+  100% {left:0px; top:0px;}
+}
+
+// footer
+footer {
+  width: 100%;
+  padding-bottom: 20px;
+  float: left;
+  background-color: yellow;
+  // deve stare davanti all'animazione della description
+  position: absolute;
+  z-index: 1;
+}
+#contacts_and_social {
+
+}
+.footer_elem {
+  text-align: center;
+  width: 50%;
+  float: left;
+}
+.social_link {
+  text-align: left;
+  width: 140px;
+  height: 150px;
+  float: left;
+  border-radius: 30%;
+  &:hover {
+    background-color: $background_color;
+  }
+}
+.social_btn {
+  padding: 0;
+  border: none;
+  margin-top: 20px;
+  & img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 30%;
+  }
+  // padding per mettere al centro img
+  margin-left: 20px;
+}
+
+
+
+
+
+
+
+
+/* css di casta */
+/* General hexbutton Style */
+.hexbutton{
+    position: relative;
+      display:block;
+      background: transparent;
+      width:200px;
+      height:60px;
+      line-height:60px;
+      text-align:center;
+      font-size:15px;
+      text-decoration:none;
+      text-transform:uppercase;
+      margin:40px auto;
+  }
+  .hexbutton:before, .hexbutton:after {
+      width:200px;
+    left: 0px;
+      height:27px;
+    z-index: -1;
+  }
+  .violet{ color: violet; }
+  .indigo{ color: indigo; }
+  .slateblue{ color: slateblue; }
+  .mediumseagreen{ color: mediumseagreen; }
+  .yellowgreen{ color: yellowgreen; }
+  .orange{ color: orange; }
+  .indianred{ color: indianred; }
+  /* hexbutton Border Style */
+  .violet:before,.violet:after {
+      border: 3px solid violet;
+  }
+  .indigo:before,.indigo:after {
+      border: 3px solid indigo;
+  }
+  .slateblue:before,.slateblue:after {
+      border: 3px solid slateblue;
+  }
+  .mediumseagreen:before,.mediumseagreen:after {
+      border: 3px solid mediumseagreen;
+  }
+  .yellowgreen:before,.yellowgreen:after {
+      border: 3px solid yellowgreen;
+  }
+  .orange:before,.orange:after {
+      border: 3px solid orange;
+  }
+  .indianred:before,.indianred:after {
+      border: 3px solid indianred;
+  }
+
+  .hexbutton:before{
+    position: absolute;
+    content: '';
+    border-bottom: none;
+    -webkit-transform: perspective(15px) rotateX(5deg);
+    -moz-transform: perspective(15px) rotateX(5deg);
+    transform: perspective(15px) rotateX(5deg);
+  }
+  .hexbutton:after{
+    position: absolute;
+    top: 32px;
+    content: '';
+    border-top: none;
+    -webkit-transform: perspective(15px) rotateX(-5deg);
+    -moz-transform: perspective(15px) rotateX(-5deg);
+    transform: perspective(15px) rotateX(-5deg);
+  }
+
+  /* hexbutton Hover Style */
+  .violet:hover:before, .violet:hover:after {
+      background: violet;
+  }
+  .indigo:hover:before, .indigo:hover:after {
+      background: indigo;
+  }
+  .mediumseagreen:hover:before, .mediumseagreen:hover:after {
+      background: mediumseagreen;
+  }
+  .slateblue:hover:before, .slateblue:hover:after {
+      background: slateblue;
+  }
+  .yellowgreen:hover:before, .yellowgreen:hover:after {
+      background: yellowgreen;
+  }
+  .orange:hover:before, .orange:hover:after {
+      background: orange;
+  }
+  .indianred:hover:before, .indianred:hover:after {
+      background: indianred;
+  }
+
+  .hexbutton:hover{
+      color:#fff;
+  }
