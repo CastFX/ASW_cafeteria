@@ -15,12 +15,17 @@
 <title>Pie Chart</title>
 <body>
   <div id="app">
-    <h1>Tickets Posseduti Dagli Utenti</h1>
+    <h1 v-cloak>{{title}}</h1>
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
       </div>
     </div>
+    <div class="container d-flex justify-content-center buttonContainer">
+      <button @click="setUserTickets()"> User Tickets </button>
+      <button @click="showModal()"> Total Tickets </button>
+    </div>
+
     <div id="chart"></div>
   </div>
 </body>
@@ -45,25 +50,29 @@ var app = new Vue({
       ],
     dataset: [],
     utenti: [],
-    loading: false
+    loading: false,
+    title: 'Tickets Posseduti Dagli Utenti'
 
 	},
 	methods: {
 		init: function(){
         this.loading = true;
-        this.setTickets();
-        this.setDataset();
+        this.setUserTickets();
 		},
-    setTickets: function(){
+    setUserTickets: function(){
+      document.getElementById('chart').innerHTML = "";
+      this.title = 'Tickets Posseduti Dagli Utenti';
+      this.loading = true;
       axios.get("api/tickets")
       	.then(response => {
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
             this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 0});
           }
+          this.setUserDataset();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
-    setDataset: function(){
+    setUserDataset: function(){
       axios.get("api/admin/userTickets")
 				.then(response => {
           this.utenti = response.data
@@ -75,7 +84,6 @@ var app = new Vue({
               }
           }
           this.loading = false;
-
           this.makePieChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
@@ -105,11 +113,15 @@ var app = new Vue({
                   .innerRadius(radius - donutWidth)
                   .outerRadius(radius);
 
+
+
+
               var pie = d3.layout.pie()
                   .value(function (d) {
                   return d.count;
               })
                   .sort(null);
+
 
               var tooltip = d3.select('#chart')
                   .append('div')
@@ -170,7 +182,7 @@ var app = new Vue({
                       var offset = height * color.domain().length / 2;
                       var horz = -2 * legendRectSize;
                       var vert = i * height - offset;
-                      return 'translate(' + (horz-55) + ',' + (vert+300) + ')';
+                      return 'translate(' + (horz-20) + ',' + (vert+330) + ')';
                   });
 
                   legend.append('rect')
@@ -219,6 +231,7 @@ var app = new Vue({
                       .text(function (d) {
                       return d;
                   });
+
 
       function responsivefy(svg) {
       // get container + svg aspect ratio

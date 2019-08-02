@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<meta charset="utf-8">
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/reset.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+  <link rel="stylesheet" href="static/css/barChart.css">
+  <script src="https://d3js.org/d3.v3.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+
+</head>
+<title>Bar Chart</title>
+<body>
+  <div id="app">
+    <h1>Ranking dei Corsi</h1>
+    <div class="text-center" v-if="loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading data...</span>
+      </div>
+    </div>
+    <div id="chart"></div>
+  </div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+<script>
+
+var app = new Vue({
+	el:	"#app",
+	data:	{
+    datasetExampleNotUsed: [
+          {label:'Monday',count:379130},
+          {label:'Tuesday',count:424923},
+          {label:'Wednesday',count:430728},
+              {label:'Thursday',count:432138},
+                 {label:'Friday',count:428295},
+                     {label:'Saturday',count:368239},
+                         {label:'Sunday',count:282701}
+      ],
+    dataset: [],
+    utenti: [],
+    loading: false
+
+	},
+	methods: {
+		init: function(){
+        this.loading = true;
+        this.setDataset();
+		},
+    setDataset: function(){
+      axios.get("api/utenti")
+				.then(response => {
+          this.utenti = response.data
+          for (i = 0; i<this.utenti.length; i++){
+            var score = 0;
+            if (this.utenti[i]._id != "admin"){
+              for (j = 0; j<this.utenti[i].games.length; j++){
+                score += this.utenti[i].games[j].score;
+              }
+              if (this.dataset.findIndex(item => item.label == this.utenti[i].corso) != -1){
+                this.dataset[this.dataset.findIndex(item => item.label == this.utenti[i].corso)].count += score;
+              } else {
+                this.dataset.push({label:this.utenti[i].corso, count: score});
+              }
+            }
+          }
+          this.loading = false;
+
+          this.makeBarChart();
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    makeBarChart: function(){
+
+
+
+    var margin = {top: 40, right: 20, bottom: 30, left: 50},
+    width = 800 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+    var dataset = this.dataset;
+
+  //  var formatPercent = d3.format(".0%");
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        //.tickFormat(formatPercent);
+
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong>Score:</strong> <span style='color:red'>" + d.count + "</span>";
+      })
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .call(responsivefy)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.call(tip);
+
+
+    function drawBar(data) {
+      x.domain(data.map(function(d) { return d.label; }));
+      y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("Score");
+
+      svg.selectAll(".bar")
+          .data(data)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) { return x(d.label); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) { return y(d.count); })
+          .attr("height", function(d) { return height - y(d.count); })
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide)
+
+    }
+
+    function type(d) {
+      d.count = +d.count;
+      return d;
+    }
+
+
+    dataset.sort(function(a, b) {
+      return d3.descending(a.count, b.count)
+    })
+
+    x.domain(dataset.map(function(d) {
+      return d.label;
+    }));
+
+    drawBar(this.dataset);
+
+
+
+      function responsivefy(svg) {
+      // get container + svg aspect ratio
+      var container = d3.select(svg.node().parentNode),
+          width = parseInt(svg.style("width")),
+          height = parseInt(svg.style("height")),
+          aspect = width / height;
+
+      // add viewBox and preserveAspectRatio properties,
+      // and call resize so that svg resizes on inital page load
+      svg.attr("viewBox", "0 0 " + width + " " + height)
+          .attr("perserveAspectRatio", "xMinYMid")
+          .call(resize);
+
+      // to register multiple listeners for same event type,
+      // you need to add namespace, i.e., 'click.foo'
+      // necessary if you call invoke this function for multiple svgs
+      // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+      d3.select(window).on("resize." + container.attr("id"), resize);
+
+      // get width of container and resize svg to fit it
+      function resize() {
+          var targetWidth = parseInt(container.style("width"));
+          svg.attr("width", targetWidth);
+          svg.attr("height", Math.round(targetWidth / aspect));
+      }
+    }
+  }
+	},
+	mounted(){
+		this.init();
+	}
+});
+
+</script>
+
+</html>

@@ -86,6 +86,9 @@ exports.show_piechart = (req, res) => {
 	res.sendFile(appRoot + '/www/pieChart.html');
 };
 
+exports.show_bar = (req, res) => {
+	res.sendFile(appRoot + '/www/barChart.html');
+};
 
 //Login route
 exports.show_login = function(req, res) {
