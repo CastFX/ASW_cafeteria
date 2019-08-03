@@ -64,3 +64,26 @@ body {
   margin-left: -10px;
   margin-top: -25px;
 }
+
+.titleCorsi{
+  color: white;
+  font-size: 200%;
+}
+
+.subtitleCorsi{
+  color: white;
+  font-size: 180%;
+}
+
+.subsubtitleCorsi{
+  color: white;
+  font-size: 150%;
+}
+
+.pieButton, .barButton {
+  color:white;
+}
+
+.pieIcon, .barIcon{
+  font-size: 50px;
+}
