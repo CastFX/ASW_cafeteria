@@ -184,3 +184,8 @@ li{
 .tab-1{
 	border-color:#1161ee;
 }
+
+path{
+  stroke-width: 20px;
+  stroke: white;
+}
