@@ -2,8 +2,12 @@
   box-sizing: border-box;
 }
 
-html, body {
-  background-color: #0A67A3;
+html,body {
+  margin: 0 0 0 0;
+  background: linear-gradient(180deg, rgba(6,0,107,1) 0%, rgba(6,0,107,1) 0%, rgba(15,26,120,1) 37%, rgba(14,158,185,1) 100%);
+  height:100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -16,7 +20,7 @@ html, body {
   margin-left: auto;
   margin-right: auto;
   margin-top:30px;
-  background-color: rgb(3,42,106,.80);
+  background: linear-gradient(0deg, rgba(6,0,107,1) 16%, rgba(15,26,120,1) 37%, rgba(14,158,185,1) 100%);
 }
 
 .login-icon-field {
