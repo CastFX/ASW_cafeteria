@@ -2,12 +2,13 @@
   box-sizing: border-box;
 }
 
-html,body {
-  margin: 0 0 0 0;
-  background: linear-gradient(180deg, rgba(6,0,107,1) 0%, rgba(6,0,107,1) 0%, rgba(15,26,120,1) 37%, rgba(14,158,185,1) 100%);
-  height:100%;
+html{
+  height: 100%;
   width: 100%;
-  overflow: hidden;
+}
+
+body{
+  background: rgba(10,70,130,1);
 }
 
 .container {
