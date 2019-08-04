@@ -5,6 +5,7 @@
   <title>Tickets Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -71,6 +72,10 @@
     </div>
   </div>
 
+  <button class="float" data-toggle="modal" data-target=".bd-example-modal-sm" @click="showModal()">
+    <i class="fa fa-qrcode my-float"></i>
+  </button>
+
   <footer class="footer mt-auto py-4">
     <div class="container d-flex justify-content-center">
       <form ref="formTicket" class="ticket-form">
@@ -81,7 +86,6 @@
         <button v-on:click.prevent="submitTicket()" class="buttonTicketChoice"> DO IT </button>
         </div>
       </form>
-      <button data-toggle="modal" data-target=".bd-example-modal-sm" @click="showModal()"> SCAN IT NOW </button>
     </div>
   </footer>
 </div>
