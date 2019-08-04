@@ -34,7 +34,8 @@ module.exports = function(app) {
 
   //ROUTE PIE CHART TESTING
 
-	app.get('/pie', isAdminLoggedIn, controller.show_piechart);
+	app.route('/pie')
+		.get(controller.show_piechart);
 
 	app.route('/bar')
 		.get(controller.show_bar);
@@ -80,7 +81,7 @@ module.exports = function(app) {
   	if (!request.isAuthenticated()) {
         return next();
     }
-    response.redirect('/success?username='+request.user._id);
+    response.redirect('/');
 	}
 
 
