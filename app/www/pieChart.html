@@ -4,6 +4,7 @@
 <head>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
@@ -25,7 +26,12 @@
       <button @click="setUserTickets()"> User Tickets </button>
       <button @click="showModal()"> Total Tickets </button>
     </div>
-
+    <div class="container d-flex justify-content-center buttonContainer">
+      <select v-cloak name="utentiSelect" class="utenti" id="utenti-find" v-model="utenteChoice">
+        <option v-for="utente in utentiSelect" v-bind:value="utente._id" :key="utente._id">{{ utente._id }}</option>
+      </select>
+      <button @click="searchUser()"> <i class="fa fa-search"></i> </button>
+    </div>
     <div id="chart"></div>
   </div>
 </body>
@@ -51,14 +57,34 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets Posseduti Dagli Utenti'
-
+    title: 'Tickets Posseduti Dagli Utenti',
+    utentiSelect: [],
+    utenteChoice: ''
 	},
 	methods: {
 		init: function(){
         this.loading = true;
+        this.setUserFinder();
         this.setUserTickets();
 		},
+    searchUser: function(){
+      if (this.utenteChoice != ''){
+        this.setSingleUserTickets();
+      } else {
+        alert("Seleziona un utente");
+      }
+    },
+    setUserFinder: function(){
+      axios.get("api/utenti")
+				.then(response => (this.utentiSelect = response.data)) //Promise
+				.catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    setSingleUserTickets: function() {
+      document.getElementById('chart').innerHTML = "";
+      this.title = "Tickets Posseduti Dall' Utente "+this.utenteChoice;
+      this.loading = true;
+      this.setSingleUserDataset();
+    },
     setUserTickets: function(){
       document.getElementById('chart').innerHTML = "";
       this.title = 'Tickets Posseduti Dagli Utenti';
@@ -72,7 +98,32 @@ var app = new Vue({
           this.setUserDataset();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
+    setSingleUserDataset: function() {
+      for (i = 0; i<this.dataset.length; i++){
+        this.dataset[i].count = 0;
+      }
+      axios.get("api/admin/userTickets")
+        .then(response => {
+          this.utenti = response.data;
+          this.utenti = this.utenti.filter(this.filterByUser);
+          for (i = 0; i<this.utenti.length; i++){
+              if (this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%")) != -1){
+                this.dataset[this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%"))].count += 1;
+              } else {
+                this.dataset.push({label: this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%", count: 1});
+              }
+          }
+          this.loading = false;
+          this.makePieChart();
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    filterByUser: function(value){
+      return value.idUtente == this.utenteChoice;
+    },
     setUserDataset: function(){
+      for (i = 0; i<this.dataset.length; i++){
+        this.dataset[i].count = 0;
+      }
       axios.get("api/admin/userTickets")
 				.then(response => {
           this.utenti = response.data
