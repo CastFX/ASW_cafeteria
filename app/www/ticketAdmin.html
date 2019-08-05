@@ -6,33 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/ticket.css">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
 <div id="app">
-
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <a class="navbar-brand" href="/tickets">Tickets</a>
+    <input class="form-control order-2 inputSearch ml-auto" placeholder="Insert ticket code" v-model="ticketChoice">
+    <button class="btn buttonSubmit order-3" v-on:click.prevent="submitTicket()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+  </nav>
   <div v-cloak v-if="dataReady">
     <div class='container' id ='ticketList'>
       <div class='row'>
     	   <div class='col-md-6' v-for="item in tickets">
     			   <div class='media'>
-    				       <div class='media-left'>
-    					            <img class='media-object' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
-    					     </div>
+    					  <img class='align-self-center mr-3 imageClass' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
     					<div class='media-body'>
-    					       <h3 class='media-heading'>
-    						             <b>{{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%</b>
-    						     </h3>
-    					       <p class="media-desc">
+    					       <h5 class='mt-0'>
+    						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%
+    						     </h5>
+    					       <p class="mb-0">
                        {{item.idTipoTicket.description}} </br>
                        Utente: <b>{{item.idUtente}}</b>
                      </p>
@@ -75,19 +75,6 @@
   <button class="float" data-toggle="modal" data-target=".bd-example-modal-sm" @click="showModal()">
     <i class="fa fa-qrcode my-float"></i>
   </button>
-
-  <footer class="footer mt-auto py-4">
-    <div class="container d-flex justify-content-center">
-      <form ref="formTicket" class="ticket-form">
-        <div class="ticketChoice-row">
-        <label for="ticketCodeId">
-        </label>
-        <input type="text" name="ticketCode" id="ticketCodeId" class="ticketCodeClass" placeholder="Insert Ticket code" v-model="ticketChoice"/>
-        <button v-on:click.prevent="submitTicket()" class="buttonTicketChoice"> DO IT </button>
-        </div>
-      </form>
-    </div>
-  </footer>
 </div>
 </body>
 
