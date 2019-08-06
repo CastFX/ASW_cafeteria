@@ -30,7 +30,6 @@
     	   <div class='col-md-6' v-for="item in tickets">
     			   <div class='media'>
     					  <img class='align-self-center mr-3 imageClass' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type data-toggle="modal" data-target=".bd-example-modal-sm" @click="loadQR(item)">
-                <i class="fa fa-qrcode qrIconList align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="loadQR(item)"></i>
                           <!-- Small modal -->
                           <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-sm">
@@ -51,8 +50,12 @@
     					       <h5 class='mt-0'>
     						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%
     						     </h5>
-    					       <p class="mb-0">{{item.idTipoTicket.description}}</p>
-    					</div>
+                     <p class="mb-0">{{item.idTipoTicket.description}}</p>
+                     <div class ='media-bottom mt-2 mb-2'>
+                        <button type="button" class="btn btn-outline-primary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="loadQR(item)">Show QR</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="loadQR(item)">Show Code</button>
+                    </div>
+              </div>
     				</div>
         </div>
       </div>
