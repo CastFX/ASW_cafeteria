@@ -36,7 +36,7 @@
      font-weight: bold;
  }
 
- div{
+ .tooltipClass,.label,.count,.percent{
    margin-bottom: 5px;
  }
 
@@ -54,3 +54,16 @@
  }
 
 [v-cloak] { display: none; }
+
+.pieButton, .ticketButton {
+  color:white;
+}
+
+.pieIcon, .ticketIcon{
+  font-size: 36px;
+}
+
+.titleCollapsePie{
+  color: white;
+  font-size: 130%;
+}

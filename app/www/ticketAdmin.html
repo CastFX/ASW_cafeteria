@@ -15,12 +15,21 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
-<body>
+<body class="bodyAdmin">
 <div id="app">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-     <a class="navbar-brand" href="/admin/userTickets">Tickets</a>
-    <input class="form-control order-2 inputSearch ml-auto" placeholder="Insert ticket code" v-model="ticketChoice">
-    <button class="btn buttonSubmit order-3" v-on:click.prevent="submitTicket()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <p class="titleCollapseAdmin">Usa le icone sottostanti per navigare i grafici: PieChart</p>
+      <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/admin/userTickets">Tickets</a>
+    <input class="form-control order-2 inputSearch ml-auto" id="inputTicketID" placeholder="Insert ticket code" v-model="ticketChoice">
+    <button class="btn buttonSubmit order-3" id="buttonSubmitID" v-on:click.prevent="submitTicket()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+    <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa fa-reorder"></i>
+    </button>
   </nav>
   <div v-cloak v-if="dataReady">
     <div class='container' id ='ticketList'>
@@ -28,13 +37,14 @@
     	   <div class='col-md-6' v-for="item in tickets">
     			   <div class='media'>
     					  <img class='align-self-center mr-3 imageClass' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
-    					<div class='media-body'>
+              <div class='media-body'>
     					       <h5 class='mt-0'>
     						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%
     						     </h5>
     					       <p class="mb-0">
                        {{item.idTipoTicket.description}} </br>
                        Utente: <b>{{item.idUtente}}</b>
+                       (Premi l'immagine per caricare il codice!)
                      </p>
     					</div>
     				</div>
@@ -179,8 +189,19 @@ var app = new Vue({
         alert("Please enter a code!");
       }
     },
+    setEnterKey: function() {
+      document.getElementById("inputTicketID").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("buttonSubmitID").click();
+        }
+      });
+    },
 		init: function(){
 			this.listTicket();
+      this.setEnterKey();
 		}
 	},
 	mounted(){

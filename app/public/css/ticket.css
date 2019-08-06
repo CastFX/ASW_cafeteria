@@ -62,7 +62,7 @@ footer{
 	height:60px;
 	bottom:30px;
 	right:30px;
-	background-color:#0C9;
+	background: #343a40;
 	color:#FFF;
 	border-radius:50px;
 	text-align:center;
@@ -78,6 +78,14 @@ footer{
 	margin-top:3px;
 }
 
+.qrIconList{
+	font-size: 80px;
+	position: absolute;
+	left: 56px;
+	margin-top: 3px;
+	opacity: 0.70;
+}
+
 .inputSearch{
 	width: 150px;
 }
@@ -89,4 +97,21 @@ footer{
 .buttonSubmit, .buttonSearch{
 	color: white;
 	font-weight: bold;
+}
+
+.bodyAdmin{
+	margin-bottom: 100px;
+}
+
+.pieButton, .ticketButton {
+  color:white;
+}
+
+.pieIcon, .ticketIcon{
+  font-size: 36px;
+}
+
+.titleCollapseAdmin{
+  color: white;
+  font-size: 130%;
 }
