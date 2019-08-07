@@ -1,92 +1,94 @@
-.media{
-	margin: 10px;
-	box-shadow: 5px 10px 8px #888888;
-	background-color: #faf9f5;
+.media {
+  margin: 10px;
+  box-shadow: 5px 10px 8px #888888;
+  background-color: #faf9f5;
+}
+.media .imageClass {
+  width: 120px;
+  min-height: 110px;
+  margin: 2px;
 }
 
-.imageClass{
-	width: 120px;
-	min-height: 90px;
-	margin: 2px;
+#ticketList {
+  padding-top: 5%;
 }
 
-#ticketList{
-	padding-top: 5%;
+@media (min-width: 768px) {
+  .mt-0 {
+    font-size: 100%;
+  }
+
+  .mb-0 {
+    font-size: 80%;
+  }
 }
-
-@media (min-width: 768px ){
-	.mt-0{
-		font-size: 100%;
-	}
-	.mb-0{
-		font-size: 80%;
-	}
-}
-
-
 @media (max-width: 768px) {
-	.mt-0{
-		font-size: 100%;
-	}
-	.mb-0{
-		font-size: 80%;
-	}
+  .mt-0 {
+    font-size: 100%;
+  }
+
+  .mb-0 {
+    font-size: 80%;
+  }
+}
+[v-cloak] {
+  display: none;
 }
 
-[v-cloak] { display: none; }
-
-.text-center{
-	position: absolute;
+.text-center {
+  position: absolute;
   top: 50%;
   left: 50%;
-	margin: auto;
+  margin: auto;
 }
 
-
-body{
-		margin-bottom:50px;
-}
-
-footer{
-	overflow: hidden;
-  background-color: #333;
+.float {
   position: fixed;
-  bottom: 0;
-	height: 50px;
-  width: 100%;
+  width: 60px;
+  height: 60px;
+  bottom: 30px;
+  right: 30px;
+  background: #343a40;
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+}
+.float:focus {
+  outline-style: none;
+}
+.float .my-float {
+  font-size: 35px;
+  margin-top: 3px;
 }
 
-.float{
-	position:fixed;
-	width:60px;
-	height:60px;
-	bottom:30px;
-	right:30px;
-	background-color:#0C9;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+.inputSearch {
+  width: 150px;
 }
 
-.float:focus{
-	outline-style: none;
+.iconArrow {
+  font-size: 30px;
 }
 
-.my-float{
-	font-size: 35px;
-	margin-top:3px;
+.buttonSubmit, .buttonSearch {
+  color: white;
+  font-weight: bold;
 }
 
-.inputSearch{
-	width: 150px;
+.bodyAdmin {
+  margin-bottom: 100px;
 }
 
-.iconArrow{
-	font-size: 30px;
+.pieButton {
+  color: white;
+}
+.pieButton .pieIcon {
+  font-size: 36px;
 }
 
-.buttonSubmit, .buttonSearch{
-	color: white;
-	font-weight: bold;
+.titleCollapseAdmin {
+  color: white;
+  font-size: 130%;
 }
+
+/*# sourceMappingURL=ticket.css.map */

@@ -34,7 +34,7 @@ module.exports = function(app) {
 
   //ROUTE PIE CHART TESTING
 
-	app.get('/pie', isAdminLoggedIn, controller.show_piechart);
+	app.get('/admin/pie', isAdminLoggedIn, controller.show_piechart);
 
 	app.route('/bar')
 		.get(controller.show_bar);
@@ -58,8 +58,9 @@ module.exports = function(app) {
 	app.post('/login',
 		 passport.authenticate('local', { failureRedirect: '/login' }),
 		 function(req, res) {
-		res.redirect("/");
-		//    res.redirect('/success?username='+req.user._id);
+			 if (req.user._id == "admin"){
+				 res.redirect("/admin/userTickets")
+			 } else {res.redirect("/");}
 		 });
 
 	app.get('/logout', (request, response) => {

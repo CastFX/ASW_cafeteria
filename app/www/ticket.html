@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="static/css/reset.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="static/css/ticket.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="static/css/ticket.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -21,8 +21,8 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
      <a class="navbar-brand" href="/tickets">Tickets</a>
-    <input class="form-control order-2 inputSearch ml-auto" placeholder="Search" v-model="search">
-    <button class="btn buttonSearch order-3" @click="listTicket()"><i class="fa fa-search searchIcon"></i></button>
+    <input class="form-control order-2 inputSearch ml-auto" id="inputSearchID" placeholder="Search" v-model="search">
+    <button class="btn buttonSearch order-3" id="buttonSearchID" @click="listTicket()"><i class="fa fa-search searchIcon"></i></button>
   </nav>
   <div v-cloak v-if="dataReady">
     <div class='container' id ='ticketList'>
@@ -36,7 +36,7 @@
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h4 class="modal-title" id="mySmallModalLabel">Make it scan to coffee boi</h4>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="listTicket()">
                                     <span aria-hidden="true">×</span>
                                   </button>
                                 </div>
@@ -50,9 +50,29 @@
     					       <h5 class='mt-0'>
     						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%
     						     </h5>
-    					       <p class="mb-0">{{item.idTipoTicket.description}}</p>
-    					</div>
+                     <p class="mb-0">{{item.idTipoTicket.description}}</p>
+                     <div class ='media-bottom mt-2 mb-2'>
+                        <button type="button" class="btn btn-outline-primary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="loadQR(item)">Show QR</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm align-self-center" data-toggle="modal" data-target=".bd-code-modal-sm" @click="showCode(item)">Show Code</button>
+                    </div>
+              </div>
     				</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bd-code-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelCode" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="mySmallModalLabelCode">Codice del ticket</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{codeModal}}</p>
         </div>
       </div>
     </div>
@@ -87,12 +107,16 @@ var app = new Vue({
 	data:	{
 		tickets: tickets,
     dataReady: false,
-    search: ''
+    search: '',
+    codeModal: ''
 	},
 	methods: {
     loadQR: function(item){
         document.getElementById("qrcode").innerHTML = "";
         new QRCode(document.getElementById("qrcode"), item._id);
+    },
+    showCode: function(item){
+      this.codeModal = item._id;
     },
     filterTicket: function(value){
       return value.idTipoTicket.type.toLowerCase().includes(this.search.toLowerCase()) || value.idTipoTicket.discount == this.search;
@@ -108,7 +132,18 @@ var app = new Vue({
         }) //Promise
 				.catch(error => (console.log(error))) //Gestione errori approssimativa
 		},
+    setEnterKey: function() {
+      document.getElementById("inputSearchID").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("buttonSearchID").click();
+        }
+      });
+    },
 		init: function(){
+      this.setEnterKey();
 			this.listTicket();
 		}
 	},
