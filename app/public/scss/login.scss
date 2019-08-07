@@ -2,13 +2,13 @@
   box-sizing: border-box;
 }
 
-html {
+html{
   height: 100%;
   width: 100%;
 }
 
-body {
-  background: #0a4682;
+body{
+  background: rgba(10,70,130,1);
 }
 
 .container {
@@ -20,23 +20,23 @@ body {
   max-width: 280px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 30px;
-  background: linear-gradient(0deg, #06006b 16%, #0f1a78 37%, #0e9eb9 100%);
-}
-.login-icon-field {
-  height: 250px;
-  width: 100%;
-}
-.login-icon {
-  margin: 50px 65px;
-}
-.login-form, .login .rad {
-  padding: 8px 20px 20px;
-  height: 100%;
-  width: 100%;
+  margin-top:30px;
+  background: linear-gradient(0deg, rgba(6,0,107,1) 16%, rgba(15,26,120,1) 37%, rgba(14,158,185,1) 100%);
+  &-icon-field {
+    height: 250px;
+    width: 100%;
+  }
+  &-icon {
+      margin: 50px 65px;
+  }
+  &-form, .rad {
+    padding: 8px 20px 20px;
+    height: 100%;
+    width: 100%;
+  }
 }
 
-.username-row, .email-row, .corsi-row {
+.username-row,.email-row,.corsi-row {
   position: relative;
   height: 40px;
   border-bottom: 1px solid;
@@ -51,7 +51,7 @@ body {
 
 .password-icon,
 .user-icon, .mail-icon,
-.corsi-icon {
+.corsi-icon{
   margin: 5px;
 }
 
@@ -59,7 +59,7 @@ body {
 .user-icon .user-path,
 .mail-icon .mail-path,
 .corsi-icon .corsi-path {
-  fill: rgba(10, 10, 10, 0);
+  fill: rgba(10,10,10,0);
   stroke: #fff;
   stroke-width: 3.5;
   stroke-linecap: round;
@@ -67,18 +67,18 @@ body {
   stroke-miterlimit: 10;
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
-  -webkit-animation: dash 2s 0.3s linear forwards;
-  animation: dash 2s 0.3s linear forwards;
+  -webkit-animation: dash 2s .3s linear forwards;
+  animation: dash 2s .3s linear forwards;
 }
 
 .user-icon .user-path,
 .mail-icon .mail-path,
-.corsi-icon .mail-path {
-  -webkit-animation: dash 2s 0.8s linear forwards;
-  animation: dash 2s 0.8s linear forwards;
+.corsi-icon .mail-path{
+  -webkit-animation: dash 2s .8s linear forwards;
+  animation: dash 2s .8s linear forwards;
 }
 
-input, .corsi {
+input, .corsi{
   position: absolute;
   width: 195px;
   height: 30px;
@@ -89,31 +89,34 @@ input, .corsi {
   font-family: Comfortaa, Helvetica, sans-serif;
 }
 
-option {
-  background-color: rgba(3, 42, 106, 0.8);
+option{
+	background-color:rgb(3,42,106,.80);
 }
 
-input:focus, .buttonLog:focus {
-  outline: none;
+input, .buttonLog {
+  &:focus {
+    outline: none;
+  }
 }
 
 input::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255,255,255,.4);
 }
 
 input::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255,255,255,.4);
 }
 
 .call-to-action {
   margin: 22px 0;
 }
 
+
 .buttonLog {
   all: initial;
-}
-.buttonLog * {
-  all: unset;
+  * {
+    all: unset;
+  }
 }
 
 .buttonLog {
@@ -128,18 +131,18 @@ input::-moz-placeholder {
   background-color: #FF6C00;
   border: none;
   border-radius: 20px;
-  transition: background-color 0.1s ease-in-out;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  transition: background-color .10s ease-in-out;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
   /*Con SCSS puoi usare &hover ecc.*/
-}
-.buttonLog:hover {
-  background-color: #FF8E00;
-}
-.buttonLog:active {
-  background-color: #A65C00;
+  &:hover {
+    background-color: #FF8E00;
+  }
+  &:active {
+    background-color: #A65C00;
+  }
 }
 
 label,
@@ -153,27 +156,28 @@ p a:hover {
     stroke-dashoffset: 0;
   }
 }
+
 @keyframes dash {
   to {
     stroke-dashoffset: 0;
   }
 }
+
 /*CHOICE LOG IN OR SIGN UP*/
-li {
-  font-size: 20px;
-  padding-bottom: 5px;
-  margin: 0 20px 20px 27px;
-  display: inline-block;
-  border-bottom: 2px solid transparent;
+
+li{
+	font-size:20px;
+	padding-bottom:5px;
+	margin:0 20px 20px 27px;
+	display:inline-block;
+	border-bottom:2px solid transparent;
 }
 
-.tab-1 {
-  border-color: #1161ee;
+.tab-1{
+	border-color:#1161ee;
 }
 
-path {
+path{
   stroke-width: 20px;
   stroke: white;
 }
-
-/*# sourceMappingURL=login.css.map */

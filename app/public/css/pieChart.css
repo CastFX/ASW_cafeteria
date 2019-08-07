@@ -1,69 +1,74 @@
 #chart {
-     height: 360px;
-     margin: 0 auto;
-     position: relative;
-     width: 360px;
- }
-
- .tooltipClass {
-     background: #eee;
-     box-shadow: 0 0 5px #999999;
-     color: #333;
-     display: none;
-     font-size: 12px;
-     left: 130px;
-     padding: 10px;
-     position: absolute;
-     text-align: center;
-     top: 95px;
-     width: 80px;
-     z-index: 10;
- }
- .legend {
-     font-size: 12px;
- }
- rect {
-     cursor: pointer;
-     stroke-width: 2;
- }
- rect.disabled {
-     fill: transparent !important;
- }
-
- h1 {
-     font-size: 150%;
-     text-align: center;
-     font-weight: bold;
- }
-
- .tooltipClass,.label,.count,.percent{
-   margin-bottom: 5px;
- }
-
- .text-center{
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   margin-left: -10px;
-   margin-top: -25px;
- }
-
- .buttonContainer{
-   margin-top: 10px;
-   margin-bottom: 20px;
- }
-
-[v-cloak] { display: none; }
-
-.pieButton, .ticketButton {
-  color:white;
+  height: 360px;
+  margin: 0 auto;
+  position: relative;
+  width: 360px;
 }
 
-.pieIcon, .ticketIcon{
+.tooltipClass {
+  background: #eee;
+  box-shadow: 0 0 5px #999999;
+  color: #333;
+  display: none;
+  font-size: 12px;
+  left: 130px;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  top: 95px;
+  width: 80px;
+  z-index: 10;
+}
+
+.legend {
+  font-size: 12px;
+}
+
+rect {
+  cursor: pointer;
+  stroke-width: 2;
+}
+rect.disabled {
+  fill: transparent !important;
+}
+
+h1 {
+  font-size: 150%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tooltipClass, .label, .count, .percent {
+  margin-bottom: 5px;
+}
+
+.text-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -25px;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.pieButton, .ticketButton {
+  color: white;
+}
+.pieButton .pieIcon, .pieButton .ticketIcon, .ticketButton .pieIcon, .ticketButton .ticketIcon {
   font-size: 36px;
 }
 
-.titleCollapsePie{
+.titleCollapsePie {
   color: white;
   font-size: 130%;
 }
+
+/*# sourceMappingURL=piechart.css.map */
