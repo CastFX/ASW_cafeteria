@@ -67,15 +67,8 @@ body {
   stroke-miterlimit: 10;
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
-  -webkit-animation: dash 2s 0.3s linear forwards;
-  animation: dash 2s 0.3s linear forwards;
-}
-
-.user-icon .user-path,
-.mail-icon .mail-path,
-.corsi-icon .mail-path {
-  -webkit-animation: dash 2s 0.8s linear forwards;
-  animation: dash 2s 0.8s linear forwards;
+  -webkit-animation: dash 1s 0.3s linear forwards;
+  animation: dash 1s 0.3s linear forwards;
 }
 
 input, .corsi {
