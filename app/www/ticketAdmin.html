@@ -39,13 +39,14 @@
     					  <img class='align-self-center mr-3 imageClass' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
               <div class='media-body'>
     					       <h5 class='mt-0'>
-    						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}%
+    						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}% per l'utente: <b>{{item.idUtente}}</b>
     						     </h5>
     					       <p class="mb-0">
                        {{item.idTipoTicket.description}} </br>
-                       Utente: <b>{{item.idUtente}}</b>
-                       (Premi l'immagine per caricare il codice!)
                      </p>
+                     <div class ='media-bottom mt-2 mb-2'>
+                        <button type="button" class="btn btn-outline-primary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="showAlert(item)">Get Code</button>
+                    </div>
     					</div>
     				</div>
         </div>
