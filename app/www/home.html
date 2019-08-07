@@ -16,38 +16,43 @@
 <!-- cookie ads ??? -->
 <main>
 <div id="app">
+
   <header>
-    <div class="container" id="home_logo">
-      <div id="home_btn_area">
-        <button id="home_btn" v-on:click="refresh_home">
-          <img class="img-responsive" src="static/images/btn_logo_onhover.png" />
-          <img class="img-responsive" id="site_logo" src="static/images/btn_logo_main.png"/>
-        </button>
-      </div>
+    <div class="pt-2 pl-5" id="home_logo">
+      <button class="p-0" id="home_btn" v-on:click="refresh_home">
+        <img class="img-responsive" src="static/images/btn_logo_onhover.png" />
+        <img class="img-responsive" id="site_logo" src="static/images/btn_logo_main.png"/>
+      </button>
     </div>
-    <div class="container" id="banner">
-      <h1 class="display-3 font-weight-bold">CAMPUS CESENA CAFÈ</h1>
+    <div class="text-center">
+      <h1 id="banner" class="display-2 font-weight-bold">CAMPUS CESENA CAFÈ</h1>
     </div>
   </header>
-  <section>
-    <div class="container text-center">
-      <h1>Lives left: {{lives}}</h1>
-    </div>
-    <div class="container button_section" v-cloak v-if="dataReady">
-      <button type=""class="btn btn-primary btn-lg" v-on:click='startGame' :disabled="lives <= 0"> PLAY </button>
-    </div>
-  </section>
-  <section>
-    <div class="container button_section" v-cloak v-if="dataReady">
-      <button class="btn btn-primary btn-lg" v-on:click='' :disabled="lives <= 0"> REDEEM </button>
+
+  <section class="second_bg_color text-center">
+    <div class="container" v-cloak v-if="dataReady">
+      <div>
+        <h1 id="lives_left" v-bind:class="{some_lives_left: lives > 0, 'no_lives_left': lives <= 0}" class="w-75 py-3 mx-auto">LIVES LEFT: {{lives}}</h1>
+      </div>
+      <div class="py-3 button_section">
+        <button type=""class="btn btn-primary btn-lg main_page_btn" v-on:click="startGame" v-bind:class="{play_btn_no_lives : lives <= 0}"> PLAY </button>
+      </div>
     </div>
   </section>
-  <section>
-    <div class="container button_section" v-cloak v-if="dataReady">
-      <button class="btn btn-primary btn-lg" v-on:click='goPie'> RANKINGS </button>
+
+  <section class="first_bg_color">
+    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+      <button class="btn btn-primary btn-lg main_page_btn" v-on:click='goPie'> RANKINGS </button>
     </div>
   </section>
-  <section id="description">
+
+  <section class="second_bg_color" id="redeem_section">
+    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+      <button class="btn btn-primary btn-lg main_page_btn" v-on:click=''> REDEEM </button>
+    </div>
+  </section>
+
+  <section class="first_bg_color" id="description">
     <div class="container">
       <p>
         Ciao! Siamo la caffetteria del campus di Cesena, compra da noi!
@@ -58,7 +63,7 @@
   </section>
 </div>
 </main>
-<footer id="footer">
+<footer id="footer" class="second_bg_color">
   <div id="contacts_and_socials">
     <div class="container footer_elem">
       <p>
@@ -114,8 +119,8 @@ ed è jquery-->
       $stat.each(function () {
         var $self = $(this);
         var prev=$self.offset();
-        console.log(scrollTop);
-        console.log(prev.top);
+        //console.log(scrollTop);
+        //console.log(prev.top);
         if ((scrollTop - prev.top) > -500) {
           $self.css('opacity', '1').addClass('description_animate');
         } else {
@@ -147,12 +152,16 @@ var app = new Vue({
 	},
 	methods: {
         startGame: function(event) {
+          if(this.lives > 0) {
             axios.get("api/createGameSession")
                 .then(response => {
                     console.log("click on startGame");
                     window.location.href = "/hextris/game/" + response.data;
                 })
                 .catch(error => console.log(error))
+          } else {
+              window.location.href = "#redeem_section";
+          }
         },
         goPie: function(event) {
           window.location.href = "/pie";

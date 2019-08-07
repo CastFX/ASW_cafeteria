@@ -1,18 +1,28 @@
-// <body> var
-$background_color: blue;
-// <section> var
+// colors and backgrounds
+$first_color: rgba(20, 80, 140, 1);
+$first_bg: linear-gradient(to bottom right, $first_color, rgba(50, 110, 170, 1));
+$second_color: rgba(80, 80, 80, 1);
+$second_bg: linear-gradient(to bottom right, $second_color, rgba(40, 40, 40, 1));
+$some_lives_color: rgba(0, 140, 0, 1);
+$no_lives_color: rgba(170, 0, 0, 1);
+// section's var
 $button_section_height: 180px;
 
 // mains tags
 html {
-  background-color: grey;
+  background-color: rgba(30,30,30,1);
+  color: white;
+  scroll-behavior: smooth;
+}
+header {
+  height: 280px;
 }
 body, footer {
-  background-color: $background_color;
+  background-color: $first_color;
+  background: $first_bg;
   margin: 0 auto;
-  //font-family: TODO
-  //font-size: TODO
-  //color: TODO
+  font-family: Georgia, serif; // TODO cambia
+  color: white;
 }
 
 // how to: THE BIG SCROLLPAGE
@@ -21,43 +31,41 @@ body, footer {
     width: 1606px !important;
   }
 }
-@media (min-width: 830px) and (max-width: 1050px) {
+@media (min-width: 830px) and (max-width: 1170px) {
   body, footer {
     width: 750px !important;
   }
 }
 
-// home button section
-#home_logo {
-  // relative così sta a fianco al banner
-  position: relative;
-  padding-left: 40px;
-  padding-top: 20px;
-  float: left;
-  // TODO QUESTO NON è MOBILE FIRST
-  height: 270px;
-  width: 270px;
+// adattamento a mobile
+@media screen and (max-width: 1170px) {
+  #home_logo {
+    display: none !important;
+  }
+  header {
+    height: 256px;
+  }
+  #banner {
+    font-size: 70px;
+  }
+  #lives_left {
+    font-size: 30px;
+  }
+  .main_page_btn {
+    font-size: 30px !important;
+  }
 }
-#home_btn_area {
-  // absolute così le due immagini (home_btn) fanno overlap
-  position: absolute;
-  float: left;
-  // TODO QUESTO NON è MOBILE FIRST
-  height: 270px;
-  width: 270px;
+
+// home logo code
+#home_logo {
+  float: left; // così sta a sinistra di h1
+  width: 250px; // width deve essere sempre uguale a circa: img width + padding-left di #home_logo
 }
 #home_btn {
-  padding: 0;
   border: none;
   & img {
-    position: absolute;
+    position: absolute; // absolute così le due immagini (home_btn) fanno overlap
     border-radius: 50%;
-    /*
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    width: auto;
-    */
     -webkit-transition: opacity 0.75s ease-in-out;
     -moz-transition: opacity 0.75s ease-in-out;
     -o-transition: opacity 0.75s ease-in-out;
@@ -67,25 +75,77 @@ body, footer {
 #site_logo:hover {
   opacity:0;
 }
-// banner
-#banner {
-  padding-top: 100px;
-  text-align: center;
-  color: yellow;
-  // TODO QUESTO NON è MOBILE FIRST
-  padding-bottom: 76px;
+
+// manage blinking lives_left border
+#lives_left {
+  font-size: 60px;
+  border-style: solid;
+  border-width: 20px;
+  -webkit-animation-duration: 1.2s;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+}
+.some_lives_left {
+  -webkit-animation-name: some_lives_left;
+  animation-name: some_lives_left;
+}
+.no_lives_left {
+  -webkit-animation-name: no_lives_left;
+  animation-name: no_lives_left;
+}
+@-webkit-keyframes some_lives_left { // Safari 4.0 - 8.0
+  0%   {border-color: $second_color}
+  100% {border-color: $some_lives_color}
+}
+@keyframes some_lives_left { // Standard syntax
+  0%   {border-color: $second_color}
+  100% {border-color: $some_lives_color}
+}
+@-webkit-keyframes no_lives_left { // Safari 4.0 - 8.0
+  0%   {border-color:$second_color;}
+  100% {border-color:$no_lives_color;}
+}
+@keyframes no_lives_left { // Standard syntax
+  0%   {border-color:$second_color;}
+  100% {border-color:$no_lives_color;}
 }
 
-// sections's button
+// sections's
+section {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.first_bg_color {
+  background-color: $first_color;
+  background: $first_bg;
+}
+.second_bg_color {
+  background-color: $second_color;
+  background: $second_bg;
+}
 .button_section {
   height: $button_section_height;
-  text-align: center;
   & button {
     width: 75%;
     height: 150px;
   }
 }
-// description
+
+.main_page_btn {
+  font-size: 60px;
+  background-color: #FF6C00;
+  &:hover {
+    background-color: #FFae00;
+  }
+}
+
+.play_btn_no_lives {
+  &:hover {
+    background-color: #555555;
+  }
+}
+
 #description {
   position: relative;
   text-align: center;
@@ -114,7 +174,6 @@ footer {
   width: 100%;
   padding-bottom: 20px;
   float: left;
-  background-color: yellow;
   // deve stare davanti all'animazione della description
   position: absolute;
   z-index: 1;
@@ -134,7 +193,7 @@ footer {
   float: left;
   border-radius: 30%;
   &:hover {
-    background-color: $background_color;
+    background-color: $some_lives_color;
   }
 }
 .social_btn {
@@ -150,106 +209,3 @@ footer {
   // padding per mettere al centro img
   margin-left: 20px;
 }
-
-
-
-
-
-
-
-
-/* css di casta */
-/* General hexbutton Style */
-.hexbutton{
-    position: relative;
-      display:block;
-      background: transparent;
-      width:200px;
-      height:60px;
-      line-height:60px;
-      text-align:center;
-      font-size:15px;
-      text-decoration:none;
-      text-transform:uppercase;
-      margin:40px auto;
-  }
-  .hexbutton:before, .hexbutton:after {
-      width:200px;
-    left: 0px;
-      height:27px;
-    z-index: -1;
-  }
-  .violet{ color: violet; }
-  .indigo{ color: indigo; }
-  .slateblue{ color: slateblue; }
-  .mediumseagreen{ color: mediumseagreen; }
-  .yellowgreen{ color: yellowgreen; }
-  .orange{ color: orange; }
-  .indianred{ color: indianred; }
-  /* hexbutton Border Style */
-  .violet:before,.violet:after {
-      border: 3px solid violet;
-  }
-  .indigo:before,.indigo:after {
-      border: 3px solid indigo;
-  }
-  .slateblue:before,.slateblue:after {
-      border: 3px solid slateblue;
-  }
-  .mediumseagreen:before,.mediumseagreen:after {
-      border: 3px solid mediumseagreen;
-  }
-  .yellowgreen:before,.yellowgreen:after {
-      border: 3px solid yellowgreen;
-  }
-  .orange:before,.orange:after {
-      border: 3px solid orange;
-  }
-  .indianred:before,.indianred:after {
-      border: 3px solid indianred;
-  }
-
-  .hexbutton:before{
-    position: absolute;
-    content: '';
-    border-bottom: none;
-    -webkit-transform: perspective(15px) rotateX(5deg);
-    -moz-transform: perspective(15px) rotateX(5deg);
-    transform: perspective(15px) rotateX(5deg);
-  }
-  .hexbutton:after{
-    position: absolute;
-    top: 32px;
-    content: '';
-    border-top: none;
-    -webkit-transform: perspective(15px) rotateX(-5deg);
-    -moz-transform: perspective(15px) rotateX(-5deg);
-    transform: perspective(15px) rotateX(-5deg);
-  }
-
-  /* hexbutton Hover Style */
-  .violet:hover:before, .violet:hover:after {
-      background: violet;
-  }
-  .indigo:hover:before, .indigo:hover:after {
-      background: indigo;
-  }
-  .mediumseagreen:hover:before, .mediumseagreen:hover:after {
-      background: mediumseagreen;
-  }
-  .slateblue:hover:before, .slateblue:hover:after {
-      background: slateblue;
-  }
-  .yellowgreen:hover:before, .yellowgreen:hover:after {
-      background: yellowgreen;
-  }
-  .orange:hover:before, .orange:hover:after {
-      background: orange;
-  }
-  .indianred:hover:before, .indianred:hover:after {
-      background: indianred;
-  }
-
-  .hexbutton:hover{
-      color:#fff;
-  }
