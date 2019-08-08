@@ -269,41 +269,188 @@ exports.start_game = (req, res) => {
 	}
 }
 
-exports.submit_score = (req, res) => {
-	if (req.body.gameid && req.body.score >= 0) {
-		Utenti.findOneAndUpdate(
-			{_id: req.user._id, "games._id": req.body.gameid},
-			{
-				"$set" : {
-					"games.$.score" : req.body.score,
-				}
-			},
-			{
-				useFindAndModify: false,
-				new: true,
-			},
-			function(err,utente) {
-				if (err) {
-					res.send(err);
-					console.log("err");
-				} else {
-					// console.log("okay " + utente);
-					const top3 = utente.games
-						.sort((a,b) => b.score - a.score)
-						.slice(0,3);
-					res.status(201).json(top3);
-
-
-					// Utenti.aggregate([
-					// 	{ $match: { _id: req.user._id}}, // query documents (can return more than one element)
-					// 	{ $unwind: '$games'}, //deconstruct the documents
-					// 	{ $sort: { 'games.score': -1}},
-					// 	{ $limit: 3 },
-					// 	{ $group: {_id: req.user._id, games: { $push: '$games' }}}, //reconstruct the documents
-					// ]).exec((err, games) => res.json(games));
-					// res.sendStatus(201);
+calculatePercentile = async (score) => {
+	
+	return Utenti.aggregate([
+	{$unwind : "$games" },
+	{$project: {
+		_id:1,
+		lessThanScore: {
+			$cond: {
+				if: { $eq: ["$games.score", 0] },
+				then: 0,
+				else: {  
+					$cond: { 
+						if: { $lt: ["$games.score", score] },
+						then: 1,
+						else: 0,
+					}
 				}
 			}
-		);
+		},
+		scoreCount:{
+			$cond: { 
+				if: { $eq: [ "$games.score", 0 ] }, 
+				then: null,
+				else: 1}}
+		}
+	},
+	{$group : {
+		_id : null,
+		totalScores : { $sum : "$scoreCount" },
+		countLess : { $sum : "$lessThanScore"}
+	}},
+	{$project : {
+		percentile : { $divide : ["$countLess", "$totalScores"] }
+	}}]);
+}
+
+getRandomizedDiscount = (discount_odds) => {
+	const rand = Math.random();
+	if (rand >= discount_odds[50]) {
+		return 50;
+	} else if (rand >= discount_odds[33]) {
+		return 33;
+	} else if (rand >= discount_odds[25]) {
+		return 25;
+	} else if (rand >= discount_odds[10]) {
+		return 10;
+	} else {
+		return 0;
+	}
+}
+
+generateWinTicket = (score, percentile, gameid, userid) => {
+	//regardless of score
+	odds = {
+		50 : 0.96,	//4%
+		33 : 0.90,	//6%
+		25 : 0.80,	//10%
+		10 : 0.60,	//20%
+		0 :	0		//60%
+	};
+	var discount = getRandomizedDiscount(odds);
+	if (percentile >= 95 && score >= 4000) {
+		discount = 50;		//100%
+	} else if (percentile >= 80 && score >= 3000) {
+		odds[50] = 0.90;	//10%
+		odds[33] = 0.75;	//15%
+		odds[25] = 0.40;	//25%
+		odds[10] = 0;		//40%
+		odds[0] = 0;		//0%
+	} else if (percentile >= 70 && score >= 2500) {
+		odds[50] = 0.92;	//8%
+		odds[33] = 0.80;	//12%
+		odds[25] = 0.60;	//20%
+		odds[10] = 0.30;	//30%
+		odds[0] = 0;		//30%
+	} else if (percentile >= 60 && score >= 2000) {
+		odds[50] = 0.95;	//5%
+		odds[33] = 0.85;	//10%
+		odds[25] = 0.70;	//15%
+		odds[10] = 0.40;	//30%
+		odds[0] = 0;		//40%
+	} else if (percentile >= 50 && score >= 1500) {
+		odds[50] = 0.95;	//5%
+		odds[33] = 0.88;	//7%
+		odds[25] = 0.75;	//13%
+		odds[10] = 0.50;	//25%
+		odds[0] = 0; 		//50%
+	}
+	const newDiscount = getRandomizedDiscount(odds);
+	discount = newDiscount > discount ? newDiscount : discount;
+	if (discount == 0) {
+		return false;
+	}
+	const discountedItems = ["brioche",	"coffee", "juice", "sandwich"];
+	const selectedType = discountedItems[Math.floor(Math.random() * discountedItems.length)];
+	return {
+		type : selectedType, 
+		discount: discount,
+		description : "Discount on your next " + selectedType,
+		image : "/static/images/"+ selectedType + ".png",
+		gameid: gameid,
+		// userid: mongoose.Types.ObjectId(userid)
+		userid: userid,
+		percentile: percentile
+	};
+}
+
+exports.submit_score = async (req, res) => {
+	if (req.body.gameid && req.body.score >= 0) {
+		try {
+			const gameid = req.body.gameid;
+			const userid = req.user._id;
+			const score = req.body.score;
+			const percentileData = await calculatePercentile(score);
+			const percentile = percentileData[0].percentile;
+			const ticketData = generateWinTicket(score, percentile, gameid, userid);
+
+			if (!ticketData) {
+				const user = await Utenti.findOne({_id: userid});
+				res.status(201).json({
+					games: user.games
+						.sort((a,b) => b.score - a.score)
+						.slice(0,3),
+					ticket: false
+				});
+			} else {
+
+				const savedTicket = await new Tickets(ticketData).save();
+				new UserTickets({
+					idUtente: userid,
+					idTipoTicket: savedTicket._id
+				}).save();
+				const user = await Utenti.findOneAndUpdate(
+					{_id: userid, "games._id": gameid},
+					{
+						"$set" : {
+							"games.$.score" : score,
+							"games.$.ticket" : savedTicket._id,
+						}
+					},
+					{
+						useFindAndModify: false,
+						new: true,
+					}
+				);
+				res.status(201).json({
+					games: user.games
+						.sort((a,b) => b.score - a.score)
+						.slice(0,3),
+					ticket: ticketData
+				});
+				// 	Utenti.findOneAndUpdate(
+				// 		{_id: userid, "games._id": gameid},
+				// 		{
+				// 			"$set" : {
+				// 				"games.$.score" : score,
+				// 				"games.$.ticket" : savedTicket.id,
+				// 			}
+				// 		},
+				// 		{
+				// 			useFindAndModify: false,
+				// 			new: true,
+				// 		},
+				// 		(err,user) => {
+				// 			if (err) {
+				// 				res.send(err);
+				// 				console.log("err");
+				// 				return;
+				// 			}
+				// 			res.status(201).json({
+				// 				games: user.games
+				// 					.sort((a,b) => b.score - a.score)
+				// 					.slice(0,3),
+				// 				ticket: ticketData
+				// 			});
+				// 		}
+				// 	);
+				// });
+			}
+		} catch (e) {
+			console.log(e);
+		}
+		
 	}
 }

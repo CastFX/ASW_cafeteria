@@ -347,18 +347,26 @@ function checkGameOver() {
 					// writeHighScores();
 					var tmpscores = {first: 0, second: 0, third: 0};
 					console.log(res.data);
-					if (res.data) {
-						if (res.data[0] && res.data[0].score) {
-							tmpscores.first = res.data[0].score;
+					if (res.data.games) {
+						if (res.data.games[0] && res.data.games[0].score) {
+							tmpscores.first = res.data.games[0].score;
 						}
-						if (res.data[1] && res.data[1].score) {
-							tmpscores.second = res.data[1].score;
+						if (res.data.games[1] && res.data.games[1].score) {
+							tmpscores.second = res.data.games[1].score;
 						}
-						if (res.data[2] && res.data[2].score) {
-							tmpscores.third = res.data[2].score;
+						if (res.data.games[2] && res.data.games[2].score) {
+							tmpscores.third = res.data.games[2].score;
 						}
 					}
 					app.hscores = tmpscores;
+					if (res.data.ticket) {
+						app.ticket = {
+							type: res.data.ticket.type,
+							discount: res.data.ticket.discount,
+							image: res.data.ticket.image,
+							percentile: (res.data.ticket.percentile * 100).toFixed(2)
+						}
+					}
 					gameOverDisplay();
 				})
 				.catch(error => (console.log(error))) 

@@ -13,6 +13,13 @@ var TicketSchema = new Schema({
   },
   image: {
     type: String
+  },
+  gameid: {
+    type: String
+  },
+  userid: {
+    type: String,
+    // ref: 'Utenti'
   }
 }, {collection: 'tickets'});
 
