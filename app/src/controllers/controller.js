@@ -39,15 +39,6 @@ exports.list_tickets = function(req, res) {
 	});
 };
 
-//TUTTI I TICKET DI TUTTI GLI UTENTI
-exports.list_userTicketsTotal = function(req, res) {
-	UserTickets.find({}, function(err, tickets) {
-		if (err)
-			res.send(err);
-		res.json(tickets);
-	});
-};
-
 //TICKET RELATIVI ALL'UTENTE LOGGATO
 exports.list_userTickets = function(req, res) {
 	UserTickets.find({idUtente: req.user._id})
@@ -270,7 +261,7 @@ exports.start_game = (req, res) => {
 }
 
 calculatePercentile = async (score) => {
-	
+
 	return Utenti.aggregate([
 	{$unwind : "$games" },
 	{$project: {
@@ -279,8 +270,8 @@ calculatePercentile = async (score) => {
 			$cond: {
 				if: { $eq: ["$games.score", 0] },
 				then: 0,
-				else: {  
-					$cond: { 
+				else: {
+					$cond: {
 						if: { $lt: ["$games.score", score] },
 						then: 1,
 						else: 0,
@@ -289,8 +280,8 @@ calculatePercentile = async (score) => {
 			}
 		},
 		scoreCount:{
-			$cond: { 
-				if: { $eq: [ "$games.score", 0 ] }, 
+			$cond: {
+				if: { $eq: [ "$games.score", 0 ] },
 				then: null,
 				else: 1}}
 		}
@@ -365,7 +356,7 @@ generateWinTicket = (score, percentile, gameid, userid) => {
 	const discountedItems = ["brioche",	"coffee", "juice", "sandwich"];
 	const selectedType = discountedItems[Math.floor(Math.random() * discountedItems.length)];
 	return {
-		type : selectedType, 
+		type : selectedType,
 		discount: discount,
 		description : "Discount on your next " + selectedType,
 		image : "/static/images/"+ selectedType + ".png",
@@ -451,6 +442,6 @@ exports.submit_score = async (req, res) => {
 		} catch (e) {
 			console.log(e);
 		}
-		
+
 	}
 }

@@ -166,7 +166,7 @@ var app = new Vue({
       }
     },
     deleteTicket: function(){
-			axios.delete("/api/userTicketsTotal/"+this.ticketChoice)
+			axios.delete("/api/userTickets/"+this.ticketChoice)
 				.then(response => {
           if (response.data != null && response.data._id != null){
             alert("Hai eliminato: "+response.data._id);
