@@ -75,12 +75,11 @@ h1 {
   font-size: 150%;
 }
 
-.barButton {
+.barButton, .pieButton {
   color: white;
 }
-
-.barIcon {
+.barButton .barIcon, .barButton .pieIcon, .pieButton .barIcon, .pieButton .pieIcon {
   font-size: 36px;
 }
 
-/*# sourceMappingURL=barchart.css.map */
+/*# sourceMappingURL=barChart.css.map */

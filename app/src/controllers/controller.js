@@ -71,10 +71,12 @@ exports.delete_ticket = function(req, res) {
   });
 };
 
-//PIECHART TESTING
-
 exports.show_piechart = (req, res) => {
 	res.sendFile(appRoot + '/www/pieChart.html');
+};
+
+exports.show_pie_user = (req, res) => {
+	res.sendFile(appRoot + '/www/pieChartUser.html');
 };
 
 exports.show_bar = (req, res) => {

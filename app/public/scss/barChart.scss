@@ -76,10 +76,9 @@ body {
   font-size: 150%;
 }
 
-.barButton {
+.barButton, .pieButton {
   color:white;
-}
-
-.barIcon{
-  font-size: 36px;
+  .barIcon, .pieIcon{
+    font-size: 36px;
+  }
 }

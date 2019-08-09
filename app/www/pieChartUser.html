@@ -19,19 +19,21 @@
 <title>Pie Chart</title>
 <body>
   <div id="app">
+    <div class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
       <div class="bg-dark p-4">
-        <p class="titleCollapsePie">Usa le icone sottostanti per navigare: PieChart, Tickets.</p>
-        <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
-        <a href="/admin/userTickets" class="btn btn-default ticketButton"><i class="fa fa-th-list ticketIcon"></i></a>
+        <p class="titleCollapsePie">Usa le icone sottostanti per navigare: PieChart, BarChart</p>
+        <a href="/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+        <a href="/bar" class="btn btn-default barButton"><i class="fa fa-bar-chart barIcon"></i></a>
       </div>
     </div>
     <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="/admin/userTickets">Pie Tickets</a>
+      <a class="navbar-brand" href="/pie">Pie Tickets</a>
       <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-reorder"></i>
       </button>
     </nav>
+    </div>
     <h1 v-cloak>{{title}}</h1>
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
@@ -41,12 +43,6 @@
     <div class="container d-flex justify-content-center buttonContainer">
       <button @click="setUserTickets()"> User Tickets </button>
       <button @click="setUserTicketsTotal()"> Total Tickets </button>
-    </div>
-    <div class="container d-flex justify-content-center buttonContainer">
-      <select v-cloak name="utentiSelect" class="utenti" id="utenti-find" v-model="utenteChoice">
-        <option v-for="utente in utentiSelect" v-bind:value="utente._id" :key="utente._id">{{ utente._id }}</option>
-      </select>
-      <button @click="searchUser()"> <i class="fa fa-search"></i> </button>
     </div>
     <div id="chart"></div>
   </div>
@@ -73,50 +69,18 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets Posseduti Dagli Utenti',
-    utentiSelect: [],
-    utenteChoice: '',
-    actual: true
+    title: 'Tickets Posseduti Dagli Utenti'
 	},
 	methods: {
 		init: function(){
         this.loading = true;
-        this.setUserFinder();
         this.setUserTickets();
 		},
-    searchUser: function(){
-      if (this.utenteChoice != ''){
-        if (this.actual == true){
-          this.setSingleUserTickets();
-        } else {
-          this.setSingleUserTicketsTotal();
-        }
-      } else {
-        alert("Seleziona un utente");
-      }
-    },
-    setUserFinder: function(){
-      axios.get("/api/utenti")
-				.then(response => (this.utentiSelect = response.data)) //Promise
-				.catch(error => (console.log(error))) //Gestione errori approssimativa
-    },
-    setSingleUserTickets: function() {
-      document.getElementById('chart').innerHTML = "";
-      this.title = "Tickets Posseduti Dall' Utente "+this.utenteChoice;
-      this.loading = true;
-      this.setSingleUserDataset();
-    },
-    setSingleUserTicketsTotal: function() {
-      document.getElementById('chart').innerHTML = "";
-      this.title = "Tickets Totali Dell' Utente "+this.utenteChoice;
-      this.loading = true;
-      this.setSingleUserTotalDataset();
-    },
     setUserTicketsTotal: function(){
       this.actual = false;
       //Crea il pie chart dei ticket complessivi
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Totali Degli Utenti';
+      this.title = 'Tickets Totali';
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
@@ -136,12 +100,11 @@ var app = new Vue({
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     setUserTickets: function(){
-      this.actual = true;
       //Crea il pie chart dei ticket attualmente in possesso agli utenti
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Posseduti Dagli Utenti';
+      this.title = 'Tickets In Possesso';
       this.loading = true;
-      axios.get("/api/admin/userTickets")
+      axios.get("/api/userTickets")
       	.then(response => {
           for (i = 0; i<this.dataset.length; i++){
             this.dataset[i].count = 0;
@@ -157,50 +120,6 @@ var app = new Vue({
           this.loading = false;
           this.makePieChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
-    },
-    setSingleUserTotalDataset: function() {
-      axios.get("/api/tickets")
-      	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
-          var tickets = response.data;
-          tickets = tickets.filter(this.filterByUserTotal);
-          for (i = 0; i<tickets.length; i++){
-            if (this.dataset.findIndex(item => item.label == tickets[i].type+" "+tickets[i].discount+"%")!=-1) {
-              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].type+" "+tickets[i].discount+"%"))].count += 1;
-            } else {
-              this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 1});
-            }
-          }
-          this.loading = false;
-          this.makePieChart();
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
-    },
-    setSingleUserDataset: function() {
-      axios.get("/api/admin/userTickets")
-      	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
-          var tickets = response.data;
-          tickets = tickets.filter(this.filterByUser);
-          for (i = 0; i<tickets.length; i++){
-            if (this.dataset.findIndex(item => item.label == tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%")!=-1) {
-              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%"))].count += 1;
-            } else {
-              this.dataset.push({label: tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%", count: 1});
-            }
-          }
-          this.loading = false;
-          this.makePieChart();
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
-    },
-    filterByUser: function(value){
-      return value.idUtente == this.utenteChoice;
-    },
-    filterByUserTotal: function(value){
-      return value.userid == this.utenteChoice;
     },
     makePieChart: function(){
 

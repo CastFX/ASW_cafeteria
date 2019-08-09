@@ -59,10 +59,10 @@ h1 {
   display: none;
 }
 
-.pieButton, .ticketButton {
+.pieButton, .ticketButton, .barButton {
   color: white;
 }
-.pieButton .pieIcon, .pieButton .ticketIcon, .ticketButton .pieIcon, .ticketButton .ticketIcon {
+.pieButton .pieIcon, .pieButton .ticketIcon, .pieButton .barIcon, .ticketButton .pieIcon, .ticketButton .ticketIcon, .ticketButton .barIcon, .barButton .pieIcon, .barButton .ticketIcon, .barButton .barIcon {
   font-size: 36px;
 }
 
@@ -71,4 +71,4 @@ h1 {
   font-size: 130%;
 }
 
-/*# sourceMappingURL=piechart.css.map */
+/*# sourceMappingURL=pieChart.css.map */
