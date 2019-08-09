@@ -45,6 +45,9 @@
       <button @click="setUserTickets()"> User Tickets </button>
       <button @click="setUserTicketsTotal()"> Total Tickets </button>
     </div>
+    <div class="container d-flex justify-content-center">
+      <p v-cloak class="risparmiUser"> <b> You potentially save: {{risparmio}} Euro </b> </p>
+    </div>
     <div id="chart"></div>
   </div>
 </body>
@@ -70,13 +73,25 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets Posseduti Dagli Utenti'
+    title: 'Tickets Posseduti Dagli Utenti',
+    risparmio: 0
 	},
 	methods: {
 		init: function(){
         this.loading = true;
+        this.countSaving();
         this.setUserTickets();
 		},
+    countSaving: function(){
+      axios.get("/api/tickets")
+      	.then(response => {
+          var tickets = response.data;
+          for (i = 0; i<tickets.length; i++){
+            this.risparmio += tickets[i].discount/100;
+          }
+          this.risparmio = this.risparmio.toFixed(2);
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
     setUserTicketsTotal: function(){
       this.actual = false;
       //Crea il pie chart dei ticket complessivi
