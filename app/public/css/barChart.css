@@ -1,4 +1,16 @@
 @charset "UTF-8";
+.barButton, .pieButton, .homeButton, .ticketButton {
+  color: white;
+}
+
+.barIcon, .pieIcon, .ticketIcon {
+  font-size: 36px;
+}
+
+.homeIcon {
+  font-size: 30px;
+}
+
 body {
   font: 10px sans-serif;
 }
@@ -73,13 +85,6 @@ h1 {
 .subsubtitleCorsi {
   color: white;
   font-size: 150%;
-}
-
-.barButton, .pieButton {
-  color: white;
-}
-.barButton .barIcon, .barButton .pieIcon, .pieButton .barIcon, .pieButton .pieIcon {
-  font-size: 36px;
 }
 
 /*# sourceMappingURL=barChart.css.map */

@@ -1,3 +1,15 @@
+.barButton, .pieButton, .homeButton, .ticketButton {
+  color: white;
+}
+
+.barIcon, .pieIcon, .ticketIcon {
+  font-size: 36px;
+}
+
+.homeIcon {
+  font-size: 30px;
+}
+
 #chart {
   height: 360px;
   margin: 0 auto;
@@ -57,13 +69,6 @@ h1 {
 
 [v-cloak] {
   display: none;
-}
-
-.pieButton, .ticketButton, .barButton {
-  color: white;
-}
-.pieButton .pieIcon, .pieButton .ticketIcon, .pieButton .barIcon, .ticketButton .pieIcon, .ticketButton .ticketIcon, .ticketButton .barIcon, .barButton .pieIcon, .barButton .ticketIcon, .barButton .barIcon {
-  font-size: 36px;
 }
 
 .titleCollapsePie {

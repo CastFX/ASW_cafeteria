@@ -1,3 +1,5 @@
+@import "navIcons.scss";
+
 #chart {
      height: 360px;
      margin: 0 auto;
@@ -55,13 +57,6 @@
  }
 
 [v-cloak] { display: none; }
-
-.pieButton, .ticketButton, .barButton {
-  color:white;
-  .pieIcon, .ticketIcon, .barIcon{
-    font-size: 36px;
-  }
-}
 
 .titleCollapsePie{
   color: white;
