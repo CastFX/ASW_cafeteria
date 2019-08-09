@@ -41,7 +41,7 @@
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
       <button @click="setUserTickets()"> User Tickets </button>
-      <button @click="showModal()"> Total Tickets </button>
+      <button @click="setUserTicketsTotal()"> Total Tickets </button>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
       <select v-cloak name="utentiSelect" class="utenti" id="utenti-find" v-model="utenteChoice">
@@ -76,7 +76,8 @@ var app = new Vue({
     loading: false,
     title: 'Tickets Posseduti Dagli Utenti',
     utentiSelect: [],
-    utenteChoice: ''
+    utenteChoice: '',
+    actual: true
 	},
 	methods: {
 		init: function(){
@@ -86,7 +87,11 @@ var app = new Vue({
 		},
     searchUser: function(){
       if (this.utenteChoice != ''){
-        this.setSingleUserTickets();
+        if (this.actual == true){
+          this.setSingleUserTickets();
+        } else {
+          this.setSingleUserTicketsTotal();
+        }
       } else {
         alert("Seleziona un utente");
       }
@@ -102,33 +107,91 @@ var app = new Vue({
       this.loading = true;
       this.setSingleUserDataset();
     },
-    setUserTickets: function(){
+    setSingleUserTicketsTotal: function() {
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Posseduti Dagli Utenti';
+      this.title = "Tickets Totali Dell' Utente "+this.utenteChoice;
+      this.loading = true;
+      this.setSingleUserTotalDataset();
+    },
+    setUserTicketsTotal: function(){
+      this.actual = false;
+      //Crea il pie chart dei ticket complessivi
+      document.getElementById('chart').innerHTML = "";
+      this.title = 'Tickets Totali Degli Utenti';
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
+          for (i = 0; i<this.dataset.length; i++){
+            this.dataset[i].count = 0;
+          }
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
-            this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 0});
+            if (this.dataset.findIndex(item => item.label == tickets[i].type+" "+tickets[i].discount+"%")!=-1) {
+              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].type+" "+tickets[i].discount+"%"))].count += 1;
+            } else {
+              this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 1});
+            }
           }
-          this.setUserDataset();
+          this.loading = false;
+          this.makePieChart();
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    setUserTickets: function(){
+      this.actual = true;
+      //Crea il pie chart dei ticket attualmente in possesso agli utenti
+      document.getElementById('chart').innerHTML = "";
+      this.title = 'Tickets Posseduti Dagli Utenti';
+      this.loading = true;
+      axios.get("/api/admin/userTickets")
+      	.then(response => {
+          for (i = 0; i<this.dataset.length; i++){
+            this.dataset[i].count = 0;
+          }
+          var tickets = response.data;
+          for (i = 0; i<tickets.length; i++){
+            if (this.dataset.findIndex(item => item.label == tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%")!=-1) {
+              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%"))].count += 1;
+            } else {
+              this.dataset.push({label: tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%", count: 1});
+            }
+          }
+          this.loading = false;
+          this.makePieChart();
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    setSingleUserTotalDataset: function() {
+      axios.get("/api/tickets")
+      	.then(response => {
+          for (i = 0; i<this.dataset.length; i++){
+            this.dataset[i].count = 0;
+          }
+          var tickets = response.data;
+          tickets = tickets.filter(this.filterByUserTotal);
+          for (i = 0; i<tickets.length; i++){
+            if (this.dataset.findIndex(item => item.label == tickets[i].type+" "+tickets[i].discount+"%")!=-1) {
+              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].type+" "+tickets[i].discount+"%"))].count += 1;
+            } else {
+              this.dataset.push({label: tickets[i].type+" "+tickets[i].discount+"%", count: 1});
+            }
+          }
+          this.loading = false;
+          this.makePieChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     setSingleUserDataset: function() {
-      for (i = 0; i<this.dataset.length; i++){
-        this.dataset[i].count = 0;
-      }
       axios.get("/api/admin/userTickets")
-        .then(response => {
-          this.utenti = response.data;
-          this.utenti = this.utenti.filter(this.filterByUser);
-          for (i = 0; i<this.utenti.length; i++){
-              if (this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%")) != -1){
-                this.dataset[this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%"))].count += 1;
-              } else {
-                this.dataset.push({label: this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%", count: 1});
-              }
+      	.then(response => {
+          for (i = 0; i<this.dataset.length; i++){
+            this.dataset[i].count = 0;
+          }
+          var tickets = response.data;
+          tickets = tickets.filter(this.filterByUser);
+          for (i = 0; i<tickets.length; i++){
+            if (this.dataset.findIndex(item => item.label == tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%")!=-1) {
+              this.dataset[this.dataset.findIndex(item => item.label == (tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%"))].count += 1;
+            } else {
+              this.dataset.push({label: tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%", count: 1});
+            }
           }
           this.loading = false;
           this.makePieChart();
@@ -137,23 +200,8 @@ var app = new Vue({
     filterByUser: function(value){
       return value.idUtente == this.utenteChoice;
     },
-    setUserDataset: function(){
-      for (i = 0; i<this.dataset.length; i++){
-        this.dataset[i].count = 0;
-      }
-      axios.get("/api/admin/userTickets")
-				.then(response => {
-          this.utenti = response.data
-          for (i = 0; i<this.utenti.length; i++){
-              if (this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%")) != -1){
-                this.dataset[this.dataset.findIndex(item => item.label == (this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%"))].count += 1;
-              } else {
-                this.dataset.push({label: this.utenti[i].idTipoTicket.type+" "+this.utenti[i].idTipoTicket.discount+"%", count: 1});
-              }
-          }
-          this.loading = false;
-          this.makePieChart();
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    filterByUserTotal: function(value){
+      return value.userid == this.utenteChoice;
     },
     makePieChart: function(){
 
