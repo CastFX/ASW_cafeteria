@@ -5,6 +5,12 @@ $second_color: rgba(80, 80, 80, 1);
 $second_bg: linear-gradient(to bottom right, $second_color, rgba(40, 40, 40, 1));
 $some_lives_color: rgba(0, 140, 0, 1);
 $no_lives_color: rgba(170, 0, 0, 1);
+// TODO EH
+$new_color: rgba(20, 80, 140, 1);//rgb(95,44,130);
+$new_background: linear-gradient(to bottom right, $new_color, rgb(73,160,157));
+
+// header's var
+$header_height: 280px;
 // section's var
 $button_section_height: 180px;
 
@@ -15,11 +21,11 @@ html {
   scroll-behavior: smooth;
 }
 header {
-  height: 280px;
+  height: $header_height;
 }
 body, footer {
-  background-color: $first_color;
-  background: $first_bg;
+  background-color: $new_color;
+  background: $new_background;
   margin: 0 auto;
   font-family: Georgia, serif; // TODO cambia
   color: white;
@@ -76,6 +82,39 @@ body, footer {
   opacity:0;
 }
 
+// TODO
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+.uni-bg, .play-bg, .tickets-bg, .redeem-bg {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.uni-bg {
+  background-image: url("../images/uni_background.png");
+  min-height: $header_height;
+}
+.play-bg {
+  background-image: url("../images/play_background.png");
+  min-height: $button_section_height + 100px;
+}
+.tickets-bg {
+  background-image: url("../images/tickets_background.png");
+  min-height: $button_section_height + 100px;
+}
+.redeem-bg {
+  background-image: url("../images/redeem_background.png");
+  min-height: $button_section_height + 100px;
+}
+
 // manage blinking lives_left border
 #lives_left {
   font-size: 60px;
@@ -109,6 +148,7 @@ body, footer {
 @keyframes no_lives_left { // Standard syntax
   0%   {border-color:$second_color;}
   100% {border-color:$no_lives_color;}
+
 }
 
 // sections's
@@ -116,14 +156,18 @@ section {
   padding-top: 30px;
   padding-bottom: 30px;
 }
+/*
 .first_bg_color {
   background-color: $first_color;
   background: $first_bg;
 }
+*/
+/*
 .second_bg_color {
   background-color: $second_color;
   background: $second_bg;
 }
+*/
 .button_section {
   height: $button_section_height;
   & button {
