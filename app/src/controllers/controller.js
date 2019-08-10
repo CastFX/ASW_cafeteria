@@ -330,7 +330,7 @@ generateWinTicket = (score, percentile, gameid, userid) => {
 		0 :	0		//60%
 	};
 	var discount = getRandomizedDiscount(odds);
-	if (percentile >= 95 && score >= 4000) {
+	if (percentile >= 0.95 && score >= 4000) {
 		discount = 50;		//100%
 	} else if (percentile >= 80 && score >= 3000) {
 		odds[50] = 0.90;	//10%
@@ -338,19 +338,19 @@ generateWinTicket = (score, percentile, gameid, userid) => {
 		odds[25] = 0.40;	//25%
 		odds[10] = 0;		//40%
 		odds[0] = 0;		//0%
-	} else if (percentile >= 70 && score >= 2500) {
+	} else if (percentile >= 0.70 && score >= 2500) {
 		odds[50] = 0.92;	//8%
 		odds[33] = 0.80;	//12%
 		odds[25] = 0.60;	//20%
 		odds[10] = 0.30;	//30%
 		odds[0] = 0;		//30%
-	} else if (percentile >= 60 && score >= 2000) {
+	} else if (percentile >= 0.60 && score >= 2000) {
 		odds[50] = 0.95;	//5%
 		odds[33] = 0.85;	//10%
 		odds[25] = 0.70;	//15%
 		odds[10] = 0.40;	//30%
 		odds[0] = 0;		//40%
-	} else if (percentile >= 50 && score >= 1500) {
+	} else if (percentile >= 0.50 && score >= 1500) {
 		odds[50] = 0.95;	//5%
 		odds[33] = 0.88;	//7%
 		odds[25] = 0.75;	//13%
