@@ -60,6 +60,12 @@
     </div>
   </div>
 
+  <modal v-cloak v-if="ticketDeleted" @close="ticketDeleted = false">
+    <h3 slot="header"><span class="congratz">Ticket used!</span></h3>
+     <img slot="image" v-bind:src=deleteImage v-bind:alt=deleteImage>
+    <h5 v-cloak slot="body">{{deleteString}}</h5>
+  </modal>
+
   <div id="myModal" v-if="modalVisible" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -100,6 +106,45 @@
 <link rel="stylesheet" href="https://unpkg.com/vue-qrcode-reader@1.3.1/dist/vue-qrcode-reader.css">
 <script>
 
+Vue.component('modal', {
+    template: `
+    <transition name="modal">
+    <div class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container">
+
+      <div class="modal-header">
+        <slot name="header">
+        default header
+        </slot>
+      </div>
+
+      <div class="modal-body">
+        <slot name="image">
+          default image
+        </slot>
+        <slot name="body">
+        default body
+        </slot>
+      </div>
+      <div class="modal-footer">
+        <slot name="footer">
+        <div class="modal-default-links">
+          <button class="btnModalDelete" @click="$emit('close')">
+          OK
+          </button>
+        </div>
+        </slot>
+      </div>
+      </div>
+    </div>
+    </div>
+  </transition>
+`,
+});
+
+
+
 Vue.use(VueQrcodeReader)
 
 var tickets = {
@@ -123,7 +168,10 @@ var app = new Vue({
     error: '',
     result: '',
     modalVisible: false,
-    loading: false
+    loading: false,
+    ticketDeleted: false,
+    deleteString: '',
+    deleteImage: ''
 	},
 	methods: {
     onDecode (result) {
@@ -161,7 +209,7 @@ var app = new Vue({
       this.modalVisible = false;
     },
     showAlert: function(item){
-      if(confirm("Vuoi impostare nell'input il token dell'utente "+item.idTipoTicket.type+"' per fargli ottenere uno sconto del "+item.idTipoTicket.discount+"% ?")) {
+      if(confirm("Do you want to fill the input with the code of the user "+item.idUtente+" for the item "+item.idTipoTicket.type+" with discount "+item.idTipoTicket.discount+"% ?")) {
         this.ticketChoice = item._id;
       }
     },
@@ -179,7 +227,10 @@ var app = new Vue({
                     break;
                   }
                 }
-                alert("Ticket Utilizzato: "+result._id+" per l'utente "+result.userid+" di tipo "+result.type+" con sconto del "+result.discount+"%");
+                //alert("Ticket Utilizzato: "+result._id+" per l'utente "+result.userid+" di tipo "+result.type+" con sconto del "+result.discount+"%");
+                this.deleteString = "Ticket for a/an "+result.type+" with discount of "+result.discount+"%"+" for the user "+result.userid;
+                this.deleteImage = result.image;
+                this.ticketDeleted = true;
                 this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
                 this.ticketChoice = '';
               })

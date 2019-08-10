@@ -97,12 +97,23 @@ var app = new Vue({
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     makeBarChart: function(){
+    if (screen.width < 768) {
+      var margin = {top: 100, right: 20, bottom: 30, left: 80};
+      width = 800 - margin.left - margin.right;
+      height = 1000 - margin.top - margin.bottom;
+      fontSizeX = "200%";
+      fontSizeY = "230%";
+      score = "-0.60em";
+    } else {
+      var margin = {top: 30, right: 20, bottom: 30, left: 80};
+      width = 800 - margin.left - margin.right;
+      height = 300 - margin.top - margin.bottom;
+      fontSizeX = "100%";
+      fontSizeY = "100%";
+      score = "0.40em";
+    }
 
-
-
-    var margin = {top: 40, right: 20, bottom: 30, left: 50},
-    width = 800 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    var isf = "Ing. S. Info.";
     var dataset = this.dataset;
 
   //  var formatPercent = d3.format(".0%");
@@ -140,21 +151,29 @@ var app = new Vue({
 
 
     function drawBar(data) {
-      x.domain(data.map(function(d) { return d.label; }));
+      x.domain(data.map(function(d) {
+        if (d.label == "Ingegneria e Scienze Informatiche"){
+          return isf;
+        } else {
+          return d.label;
+        }
+      }));
       y.domain([0, d3.max(data, function(d) { return d.count; })]);
 
       svg.append("g")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
+          .style("font-size",fontSizeX)
           .call(xAxis);
 
       svg.append("g")
           .attr("class", "y axis")
+          .style("font-size",fontSizeY)
           .call(yAxis)
         .append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 6)
-          .attr("dy", ".71em")
+          .attr("dy", score)
           .style("text-anchor", "end")
           .text("Score");
 
@@ -162,7 +181,13 @@ var app = new Vue({
           .data(data)
         .enter().append("rect")
           .attr("class", "bar")
-          .attr("x", function(d) { return x(d.label); })
+          .attr("x", function(d) {
+            if (d.label == "Ingegneria e Scienze Informatiche"){
+              return x(isf);
+            } else {
+              return x(d.label);
+            }
+          })
           .attr("width", x.rangeBand())
           .attr("y", function(d) { return y(d.count); })
           .attr("height", function(d) { return height - y(d.count); })
@@ -182,7 +207,11 @@ var app = new Vue({
     })
 
     x.domain(dataset.map(function(d) {
-      return d.label;
+      if (d.label == "Ingegneria e Scienze Informatiche"){
+        return isf;
+      } else {
+        return d.label;
+      }
     }));
 
     drawBar(this.dataset);
