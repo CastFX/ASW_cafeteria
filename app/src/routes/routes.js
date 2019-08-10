@@ -41,6 +41,9 @@ module.exports = function(app) {
 	app.route('/bar')
 		.get(controller.show_bar);
 
+	app.route('/pie')
+		.get(controller.show_pie_user);
+
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
 	app.route('/hextris', isLoggedIn)

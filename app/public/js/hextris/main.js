@@ -360,12 +360,14 @@ function checkGameOver() {
 					}
 					app.hscores = tmpscores;
 					if (res.data.ticket) {
-						app.ticket = {
-							type: res.data.ticket.type,
-							discount: res.data.ticket.discount,
-							image: res.data.ticket.image,
-							percentile: (res.data.ticket.percentile * 100).toFixed(2)
-						}
+						setTimeout(() => {
+							app.ticket = {
+								type: res.data.ticket.type,
+								discount: res.data.ticket.discount,
+								image: res.data.ticket.image,
+								percentile: (res.data.ticket.percentile * 100).toFixed(2)
+							};
+						},600);
 					}
 					gameOverDisplay();
 				})

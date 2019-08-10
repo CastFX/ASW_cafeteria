@@ -1,3 +1,15 @@
+.barButton, .pieButton, .homeButton, .ticketButton {
+  color: white;
+}
+
+.barIcon, .pieIcon, .ticketIcon {
+  font-size: 36px;
+}
+
+.homeIcon {
+  font-size: 30px;
+}
+
 .media {
   margin: 10px;
   box-shadow: 5px 10px 8px #888888;
@@ -77,13 +89,6 @@
 
 .bodyAdmin {
   margin-bottom: 100px;
-}
-
-.pieButton {
-  color: white;
-}
-.pieButton .pieIcon {
-  font-size: 36px;
 }
 
 .titleCollapseAdmin {
