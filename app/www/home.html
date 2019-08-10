@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-
   <title>Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
@@ -16,9 +15,7 @@
 <!-- cookie ads ??? -->
 <main>
 <div id="app">
-
   <header>
-
     <div class="pt-2 pl-5" id="home_logo">
       <button class="p-0" id="home_btn" v-on:click="refresh_home">
         <img class="img-responsive" src="static/images/btn_logo_onhover.png"/>
@@ -26,7 +23,8 @@
       </button>
     </div>
     <div class="text-center">
-      <h1 id="banner" class="display-2 font-weight-bold">CAMPUS CESENA CAFÈ</h1>
+      <h1 id="banner" class="display-2 pt-4 pb-3 font-weight-bold">CAMPUS CESENA CAFÈ</h1>
+      <h3> Il divertimento durante la vostra pausa. </h3>
     </div>
   </header>
 
@@ -34,27 +32,40 @@
     <div class="uni-bg">
       <div class="caption"></div>
     </div>
+    <div class="container text-center py-5" id="description">
+      <p>
+        Benvenuto ! Siamo la caffetteria del campus di Cesena, compra da noi!
+        Diventate ciccioni e fate vincere la vostra facoltà.
+        Ne vale la pena trust :D. bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+      </p>
+    </div>
   </section>
 
-  <section class="first_bg_color text-center">
-    <div class="container" v-cloak v-if="dataReady">
-      <div>
+  <section class="text-center">
+    <div class="play-bg">
+      <div class="caption"></div>
+    </div>
+    <div class="container py-4" v-cloak v-if="dataReady">
+      <div class="py-3">
         <h1 id="lives_left" v-bind:class="{some_lives_left: lives > 0, 'no_lives_left': lives <= 0}" class="w-75 py-3 mx-auto">LIVES LEFT: {{lives}}</h1>
       </div>
-      <div class="py-3 button_section">
+      <div class="py-3 btn_container">
         <button type=""class="btn btn-primary btn-lg main_page_btn" v-on:click="startGame" v-bind:class="{play_btn_no_lives : lives <= 0}"> PLAY </button>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="play-bg">
+    <div class="rankings-bg">
       <div class="caption"></div>
     </div>
-  </section>
-
-  <section class="first_bg_color">
-    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+    <div class="container text-center py-5 btn_container" v-cloak v-if="dataReady">
       <button class="btn btn-primary btn-lg main_page_btn" v-on:click='goPie'> RANKINGS </button>
     </div>
   </section>
@@ -63,10 +74,7 @@
     <div class="tickets-bg">
       <div class="caption"></div>
     </div>
-  </section>
-
-  <section class="second_bg_color">
-    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+    <div class="container text-center py-5 btn_container" v-cloak v-if="dataReady">
       <button class="btn btn-primary btn-lg main_page_btn" v-on:click='goTickets'> TICKETS </button>
     </div>
   </section>
@@ -75,27 +83,16 @@
     <div class="redeem-bg">
       <div class="caption"></div>
     </div>
-  </section>
-
-  <section class="first_bg_color" id="redeem_section">
-    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+    <div class="container text-center py-5 btn_container" v-cloak v-if="dataReady">
       <button class="btn btn-primary btn-lg main_page_btn" v-on:click=''> REDEEM </button>
     </div>
   </section>
 
-  <section class="second_bg_color" id="description">
-    <div class="container">
-      <p>
-        Ciao! Siamo la caffetteria del campus di Cesena, compra da noi!
-        <br/>Diventate ciccioni e fate vincere la vostra facoltà.
-        <br/>Ne vale la pena trust :D.
-      </p>
-    </div>
-  </section>
 </div>
 </main>
-<footer id="footer" class="first_bg_color">
-  <div id="contacts_and_socials">
+
+<footer>
+  <div>
     <div class="container footer_elem">
       <p>
         <br>
@@ -128,12 +125,6 @@
     </div>
   </div>
 </footer>
-
-<div class="text-center" v-if="!dataReady">
-    <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-    </div>
-</div>
 
 </div>
 </body>

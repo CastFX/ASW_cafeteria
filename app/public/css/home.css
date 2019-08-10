@@ -9,42 +9,40 @@ header {
 }
 
 body, footer {
-  background-color: #14508c;
-  background: linear-gradient(to bottom right, #14508c, #49a09d);
+  background-color: #0a325a;
   margin: 0 auto;
-  font-family: Georgia, serif;
   color: white;
+  font-family: Georgia, serif;
 }
 
-@media (min-width: 1601px) and (max-width: 5000px) {
-  body, footer {
-    width: 1606px !important;
+body {
+  background: linear-gradient(135deg, #0a325a, #325a82);
+  background-size: 400% 400%;
+  -webkit-animation: backgroundAnimation 8s ease infinite;
+  -moz-animation: backgroundAnimation 8s ease infinite;
+  animation: backgroundAnimation 8s ease infinite;
+}
+
+@-webkit-keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 2%;
+  }
+  50% {
+    background-position: 100% 99%;
+  }
+  100% {
+    background-position: 0% 2%;
   }
 }
-@media (min-width: 830px) and (max-width: 1170px) {
-  body, footer {
-    width: 750px !important;
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 2%;
   }
-}
-@media screen and (max-width: 1170px) {
-  #home_logo {
-    display: none !important;
+  50% {
+    background-position: 100% 99%;
   }
-
-  header {
-    height: 256px;
-  }
-
-  #banner {
-    font-size: 70px;
-  }
-
-  #lives_left {
-    font-size: 30px;
-  }
-
-  .main_page_btn {
-    font-size: 30px !important;
+  100% {
+    background-position: 0% 2%;
   }
 }
 #home_logo {
@@ -73,12 +71,12 @@ body, footer {
   left: 0;
   top: 50%;
   width: 100%;
-  text-align: center;
   color: #000;
 }
 
-.uni-bg, .play-bg, .tickets-bg, .redeem-bg {
+.uni-bg, .play-bg, .rankings-bg, .tickets-bg, .redeem-bg {
   position: relative;
+  min-height: 180px;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -87,118 +85,26 @@ body, footer {
 
 .uni-bg {
   background-image: url("../images/uni_background.png");
-  min-height: 280px;
 }
 
 .play-bg {
   background-image: url("../images/play_background.png");
-  min-height: 280px;
+}
+
+.rankings-bg {
+  background-image: url("../images/rankings_background.png");
 }
 
 .tickets-bg {
   background-image: url("../images/tickets_background.png");
-  min-height: 280px;
 }
 
 .redeem-bg {
   background-image: url("../images/redeem_background.png");
-  min-height: 280px;
-}
-
-#lives_left {
-  font-size: 60px;
-  border-style: solid;
-  border-width: 20px;
-  -webkit-animation-duration: 1.2s;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  -webkit-animation-iteration-count: infinite;
-}
-
-.some_lives_left {
-  -webkit-animation-name: some_lives_left;
-  animation-name: some_lives_left;
-}
-
-.no_lives_left {
-  -webkit-animation-name: no_lives_left;
-  animation-name: no_lives_left;
-}
-
-@-webkit-keyframes some_lives_left {
-  0% {
-    border-color: #505050;
-  }
-  100% {
-    border-color: #008c00;
-  }
-}
-@keyframes some_lives_left {
-  0% {
-    border-color: #505050;
-  }
-  100% {
-    border-color: #008c00;
-  }
-}
-@-webkit-keyframes no_lives_left {
-  0% {
-    border-color: #505050;
-  }
-  100% {
-    border-color: #aa0000;
-  }
-}
-@keyframes no_lives_left {
-  0% {
-    border-color: #505050;
-  }
-  100% {
-    border-color: #aa0000;
-  }
-}
-section {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-/*
-.first_bg_color {
-  background-color: $first_color;
-  background: $first_bg;
-}
-*/
-/*
-.second_bg_color {
-  background-color: $second_color;
-  background: $second_bg;
-}
-*/
-.button_section {
-  height: 180px;
-}
-.button_section button {
-  width: 75%;
-  height: 150px;
-}
-
-.main_page_btn {
-  font-size: 60px;
-  background-color: #FF6C00;
-}
-.main_page_btn:hover {
-  background-color: #FFae00;
-}
-
-.play_btn_no_lives:hover {
-  background-color: #555555;
 }
 
 #description {
   position: relative;
-  text-align: center;
-  height: 180px;
-  opacity: 0;
 }
 
 .description_animate {
@@ -228,12 +134,78 @@ section {
     top: 0px;
   }
 }
+#lives_left {
+  font-size: 60px;
+  border-style: solid;
+  border-width: 20px;
+  -webkit-animation-duration: 1.2s;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+}
+
+.some_lives_left {
+  -webkit-animation-name: some_lives_left;
+  animation-name: some_lives_left;
+}
+
+.no_lives_left {
+  -webkit-animation-name: no_lives_left;
+  animation-name: no_lives_left;
+}
+
+@-webkit-keyframes some_lives_left {
+  0% {
+    border-color: #325a82;
+  }
+  100% {
+    border-color: #008c00;
+  }
+}
+@keyframes some_lives_left {
+  0% {
+    border-color: #325a82;
+  }
+  100% {
+    border-color: #008c00;
+  }
+}
+@-webkit-keyframes no_lives_left {
+  0% {
+    border-color: #325a82;
+  }
+  100% {
+    border-color: #aa0000;
+  }
+}
+@keyframes no_lives_left {
+  0% {
+    border-color: #325a82;
+  }
+  100% {
+    border-color: #aa0000;
+  }
+}
+.btn_container button {
+  width: 75%;
+  height: 150px;
+}
+
+.main_page_btn {
+  font-size: 60px;
+  background-color: #FF6C00;
+}
+.main_page_btn:hover {
+  background-color: #FFae00;
+}
+
+.play_btn_no_lives:hover {
+  background-color: #555555;
+}
+
 footer {
   width: 100%;
-  padding-bottom: 20px;
   float: left;
-  position: absolute;
-  z-index: 1;
 }
 
 .footer_elem {
@@ -258,12 +230,45 @@ footer {
   border: none;
   margin-top: 20px;
   margin-left: 20px;
+  margin-top: 24px;
 }
 .social_btn img {
   position: absolute;
   width: 100px;
   height: 100px;
   border-radius: 30%;
+}
+
+@media (min-width: 1601px) and (max-width: 5000px) {
+  body, footer {
+    width: 1606px !important;
+  }
+}
+@media (min-width: 830px) and (max-width: 1170px) {
+  body, footer {
+    width: 750px !important;
+  }
+}
+@media screen and (max-width: 1170px) {
+  #home_logo {
+    display: none !important;
+  }
+
+  header {
+    height: 200px;
+  }
+
+  #banner {
+    font-size: 50px;
+  }
+
+  #lives_left {
+    font-size: 30px;
+  }
+
+  .main_page_btn {
+    font-size: 30px !important;
+  }
 }
 
 /*# sourceMappingURL=home.css.map */
