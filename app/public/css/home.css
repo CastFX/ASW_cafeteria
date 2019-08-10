@@ -10,7 +10,7 @@ header {
 
 body, footer {
   background-color: #14508c;
-  background: linear-gradient(to bottom right, #14508c, #326eaa);
+  background: linear-gradient(to bottom right, #14508c, #49a09d);
   margin: 0 auto;
   font-family: Georgia, serif;
   color: white;
@@ -66,6 +66,43 @@ body, footer {
 
 #site_logo:hover {
   opacity: 0;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.uni-bg, .play-bg, .tickets-bg, .redeem-bg {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.uni-bg {
+  background-image: url("../images/uni_background.png");
+  min-height: 280px;
+}
+
+.play-bg {
+  background-image: url("../images/play_background.png");
+  min-height: 280px;
+}
+
+.tickets-bg {
+  background-image: url("../images/tickets_background.png");
+  min-height: 280px;
+}
+
+.redeem-bg {
+  background-image: url("../images/redeem_background.png");
+  min-height: 280px;
 }
 
 #lives_left {
@@ -125,16 +162,18 @@ section {
   padding-bottom: 30px;
 }
 
+/*
 .first_bg_color {
-  background-color: #14508c;
-  background: linear-gradient(to bottom right, #14508c, #326eaa);
+  background-color: $first_color;
+  background: $first_bg;
 }
-
+*/
+/*
 .second_bg_color {
-  background-color: #505050;
-  background: linear-gradient(to bottom right, #505050, #282828);
+  background-color: $second_color;
+  background: $second_bg;
 }
-
+*/
 .button_section {
   height: 180px;
 }

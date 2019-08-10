@@ -18,9 +18,10 @@
 <div id="app">
 
   <header>
+
     <div class="pt-2 pl-5" id="home_logo">
       <button class="p-0" id="home_btn" v-on:click="refresh_home">
-        <img class="img-responsive" src="static/images/btn_logo_onhover.png" />
+        <img class="img-responsive" src="static/images/btn_logo_onhover.png"/>
         <img class="img-responsive" id="site_logo" src="static/images/btn_logo_main.png"/>
       </button>
     </div>
@@ -29,7 +30,13 @@
     </div>
   </header>
 
-  <section class="second_bg_color text-center">
+  <section>
+    <div class="uni-bg">
+      <div class="caption"></div>
+    </div>
+  </section>
+
+  <section class="first_bg_color text-center">
     <div class="container" v-cloak v-if="dataReady">
       <div>
         <h1 id="lives_left" v-bind:class="{some_lives_left: lives > 0, 'no_lives_left': lives <= 0}" class="w-75 py-3 mx-auto">LIVES LEFT: {{lives}}</h1>
@@ -40,19 +47,43 @@
     </div>
   </section>
 
+  <section>
+    <div class="play-bg">
+      <div class="caption"></div>
+    </div>
+  </section>
+
   <section class="first_bg_color">
     <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
       <button class="btn btn-primary btn-lg main_page_btn" v-on:click='goPie'> RANKINGS </button>
     </div>
   </section>
 
-  <section class="second_bg_color" id="redeem_section">
+  <section>
+    <div class="tickets-bg">
+      <div class="caption"></div>
+    </div>
+  </section>
+
+  <section class="second_bg_color">
+    <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
+      <button class="btn btn-primary btn-lg main_page_btn" v-on:click='goTickets'> TICKETS </button>
+    </div>
+  </section>
+
+  <section>
+    <div class="redeem-bg">
+      <div class="caption"></div>
+    </div>
+  </section>
+
+  <section class="first_bg_color" id="redeem_section">
     <div class="container text-center py-3 button_section" v-cloak v-if="dataReady">
       <button class="btn btn-primary btn-lg main_page_btn" v-on:click=''> REDEEM </button>
     </div>
   </section>
 
-  <section class="first_bg_color" id="description">
+  <section class="second_bg_color" id="description">
     <div class="container">
       <p>
         Ciao! Siamo la caffetteria del campus di Cesena, compra da noi!
@@ -63,7 +94,7 @@
   </section>
 </div>
 </main>
-<footer id="footer" class="second_bg_color">
+<footer id="footer" class="first_bg_color">
   <div id="contacts_and_socials">
     <div class="container footer_elem">
       <p>
@@ -165,6 +196,9 @@ var app = new Vue({
         },
         goPie: function(event) {
           window.location.href = "/pie";
+        },
+        goTickets: function(event) {
+          window.location.href = "/tickets";
         },
         setLives: function() {
             axios.get("api/lives")

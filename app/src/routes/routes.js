@@ -17,10 +17,13 @@ module.exports = function(app) {
 	app.route('/api/tickets')
 		.get(controller.list_tickets);
 
-	app.route('/api/userTicketsTotal')
-		.get(controller.list_userTicketsTotal);
-
 	app.get('/api/userTickets', isLoggedIn, controller.list_userTickets);
+	app.delete('/api/userTickets/:id', isAdminLoggedIn, controller.delete_ticket);
+
+/*
+	app.route('/api/userTickets/:id')
+		.delete(controller.delete_ticket);
+*/
 
 	app.get('/tickets', isLoggedIn, controller.show_tickets);
 
@@ -29,8 +32,7 @@ module.exports = function(app) {
 
 	app.get('/admin/userTickets', isAdminLoggedIn, controller.show_adminTickets);
 
-	app.route('/api/userTicketsTotal/:id')
-		.delete(controller.delete_ticket);
+
 
   //ROUTE PIE CHART TESTING
 
@@ -38,6 +40,9 @@ module.exports = function(app) {
 
 	app.route('/bar')
 		.get(controller.show_bar);
+
+	app.route('/pie')
+		.get(controller.show_pie_user);
 
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*

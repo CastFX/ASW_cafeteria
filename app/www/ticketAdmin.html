@@ -166,12 +166,24 @@ var app = new Vue({
       }
     },
     deleteTicket: function(){
-			axios.delete("/api/userTicketsTotal/"+this.ticketChoice)
+			axios.delete("/api/userTickets/"+this.ticketChoice)
 				.then(response => {
           if (response.data != null && response.data._id != null){
-            alert("Hai eliminato: "+response.data._id);
-  					this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
-            this.ticketChoice = '';
+            console.log(response.data);
+            axios.get("/api/tickets")
+              .then(responseTicket => {
+                var result = '';
+                for (i=0; i<responseTicket.data.length; i++) {
+                  if (responseTicket.data[i]._id == response.data.idTipoTicket){
+                    result = responseTicket.data[i];
+                    break;
+                  }
+                }
+                alert("Ticket Utilizzato: "+result._id+" per l'utente "+result.userid+" di tipo "+result.type+" con sconto del "+result.discount+"%");
+                this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
+                this.ticketChoice = '';
+              })
+              .catch(error => console.log(error));
           } else {
             alert("Codice errato");
           }
