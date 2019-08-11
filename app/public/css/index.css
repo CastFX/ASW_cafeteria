@@ -12264,8 +12264,9 @@ html {
 }
 
 /*# sourceMappingURL=bootstrap-grid.min.css.map */
-/* fancy box style */
+/* fancy box style 
 @charset "UTF-8";
+*/
 
 body.fancybox-active {
 	overflow: hidden
@@ -12380,6 +12381,7 @@ body.fancybox-iosfix {
 	overflow: hidden;
 	direction: ltr;
 	z-index: 99994;
+	transform: translateZ(0);
 	-webkit-transform: translateZ(0)
 }
 
@@ -13169,6 +13171,7 @@ ul.bxslider {
 }
 
 .bx-viewport {
+	transform: translateZ(0);
 	-webkit-transform: translatez(0)
 }
 
