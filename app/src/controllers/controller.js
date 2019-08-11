@@ -12,6 +12,10 @@ exports.homepage = (req, res) => {
 	res.sendFile(appRoot + '/www/home.html');
 };
 
+exports.home = (req, res) => {
+	res.sendFile(appRoot + '/www/index.html')
+}
+
 //Login lista di corsi per signup
 exports.list_corsi = function(req, res) {
 	Corsi.find({}, function(err, corsi) {

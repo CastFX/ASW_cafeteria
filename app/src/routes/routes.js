@@ -4,6 +4,9 @@ module.exports = function(app) {
 
 	app.route('/')
 		.get(isLoggedIn, controller.homepage);
+	
+	app.route('/home')
+		.get(controller.home);
 
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
