@@ -42,8 +42,12 @@
       </div>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
-      <button @click="setUserTickets()"> User Tickets </button>
-      <button @click="setUserTicketsTotal()"> Total Tickets </button>
+      <button @click="setUserTickets()" class="btn btn-outline-primary btn-sm align-self-center"> User Tickets </button>
+      <span class="spacingButton"></span>
+      <button @click="setUserTicketsTotal()" class="btn btn-outline-secondary btn-sm align-self-center"> Total Tickets </button>
+    </div>
+    <div class="container d-flex justify-content-center">
+      <p v-cloak class="risparmiUser"> <b> You saved: {{risparmioUsed}} Euro </b> </p>
     </div>
     <div class="container d-flex justify-content-center">
       <p v-cloak class="risparmiUser"> <b> You potentially save: {{risparmio}} Euro </b> </p>
@@ -74,7 +78,8 @@ var app = new Vue({
     utenti: [],
     loading: false,
     title: 'Tickets Posseduti Dagli Utenti',
-    risparmio: 0
+    risparmio: 0,
+    risparmioUsed: 0
 	},
 	methods: {
 		init: function(){
@@ -85,11 +90,33 @@ var app = new Vue({
     countSaving: function(){
       axios.get("/api/tickets")
       	.then(response => {
-          var tickets = response.data;
-          for (i = 0; i<tickets.length; i++){
-            this.risparmio += tickets[i].discount/100;
+          var ticketsSaving = response.data;
+          for (i = 0; i<ticketsSaving.length; i++){
+            if (ticketsSaving[i].type == "brioche" || ticketsSaving[i].type == "juice"){ //1 euro
+              this.risparmio += (ticketsSaving[i].discount/100);
+            } else if (ticketsSaving[i].type == "coffee"){ //0.80
+              this.risparmio += ((ticketsSaving[i].discount*0.80)/100);
+            } else if (ticketsSaving[i].type == "sandwich"){ //4 euro
+              this.risparmio += ((ticketsSaving[i].discount*4)/100);
+            }
           }
+
           this.risparmio = this.risparmio.toFixed(2);
+          this.risparmioUsed = this.risparmio;
+          axios.get("/api/userTickets")
+          	.then(response => {
+              var notUsed = response.data;
+              for (i = 0; i<notUsed.length; i++){
+                if (notUsed[i].idTipoTicket.type == "brioche" || notUsed[i].idTipoTicket.type == "juice"){ //1 euro
+                  this.risparmioUsed -= (notUsed[i].idTipoTicket.discount/100);
+                } else if (notUsed[i].idTipoTicket.type == "coffee"){ //0.80
+                  this.risparmioUsed -= ((notUsed[i].idTipoTicket.discount*0.80)/100);
+                } else if (notUsed[i].idTipoTicket.type == "sandwich"){ //4 euro
+                  this.risparmioUsed -= ((notUsed[i].idTipoTicket.discount*4)/100);
+                }
+              }
+              this.risparmioUsed = this.risparmioUsed.toFixed(2);
+            }).catch(error => (console.log(error))) //Gestione errori approssimativa
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     setUserTicketsTotal: function(){
@@ -100,9 +127,7 @@ var app = new Vue({
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
             if (this.dataset.findIndex(item => item.label == tickets[i].type+" "+tickets[i].discount+"%")!=-1) {
@@ -122,9 +147,7 @@ var app = new Vue({
       this.loading = true;
       axios.get("/api/userTickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
             if (this.dataset.findIndex(item => item.label == tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%")!=-1) {
