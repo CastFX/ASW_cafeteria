@@ -2,14 +2,16 @@ module.exports = function(app) {
 	var controller = require('../controllers/controller');
   var passport = require('passport');
 
-	app.route('/')
-		.get(isLoggedIn, controller.homepage);
+	// app.route('/')
+	// 	.get(isLoggedIn, controller.homepage);
 	
-	app.route('/home')
+	app.route('/')
 		.get(controller.home);
 
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
+	app.get("/api/homeData", controller.get_home_data);
+	
 	app.route('/api/corsi')
 		.get(controller.list_corsi);
 

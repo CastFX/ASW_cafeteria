@@ -16,6 +16,43 @@ exports.home = (req, res) => {
 	res.sendFile(appRoot + '/www/index.html')
 }
 
+get_rankings = async() => {
+	try {
+		const utenti = await Utenti.find({});
+		for (i = 0; i < utenti.length; i++) {
+			var score = 0;
+			dataset = [];
+			if (utenti[i]._id != "admin") {
+				for (j = 0; j < utenti[i].games.length; j++) {
+					score += utenti[i].games[j].score;
+				}
+				if (dataset.findIndex(item => item.label == utenti[i].corso) != -1) {
+					dataset[dataset.findIndex(item => item.label == utenti[i].corso)].count += score;
+				} else {
+					dataset.push({label:utenti[i].corso, count: score});
+				}
+			}
+		}
+		return {isError: false, dataset: dataset};
+	} catch (error) {
+		return {isError: true, error: error};
+	}
+}
+
+exports.get_home_data = async (req, res) => {
+	const rankings = await get_rankings();
+	if (rankings.isError) {
+		console.log(rankings.error);
+		res.send(rankings.error);
+		return;
+	}
+	res.json({
+		isLoggedIn: req.isAuthenticated(),
+		rankings: rankings.dataset
+	});
+}
+
+
 //Login lista di corsi per signup
 exports.list_corsi = function(req, res) {
 	Corsi.find({}, function(err, corsi) {
@@ -196,8 +233,11 @@ exports.get_played_games = (req, res) => {
 		{ $unwind: '$games'}, //deconstruct the documents
 		{ $sort: { 'games.score': -1}},
 		{ $limit: 3 },
-		{ $group: {_id: req.user._id, games: { $push: '$games' }}}, //reconstruct the documents
-	]).exec((err, games) => res.json(games));
+		{ $group: {_id: req.user._id, lives: { $first: '$life'}, games: { $push: '$games' }}}, //reconstruct the documents
+	]).exec((err, games) => {
+		if (err) { res.send(err); }
+		else { res.json(games); }
+	});
 }
 
 

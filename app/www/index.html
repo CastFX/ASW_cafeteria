@@ -31,302 +31,380 @@
     <script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/static/js/all-plugins.js"></script>
     <script type="text/javascript" src="/static/js/plugin-active.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 </head>
 <body data-spy="scroll" data-target=".main-navigation" data-offset="150">
-    <section id="MainContainer">
-        <!-- Header starts here -->
-        <header id="Header">
-            <nav class="main-navigation">
-                <div class="container clearfix">
-                    <div class="site-logo-wrap">
-                        <!-- <a class="logo" href="#"><img src="/static/images/coffee-maker-logo.svg" alt="ASW-Cafeteria"></a> -->
+    <div id="app">
+        <div class="lds-circle" v-if="!dataReady"><div></div></div>
+        <transition name="fade">
+        <div v-if="dataReady">
+            <section id="MainContainer">
+                <!-- Header starts here -->
+                <header id="Header">
+                    <nav class="main-navigation">
+                        <div class="container clearfix">
+                            <div class="site-logo-wrap">
+                                <!-- <a class="logo" href="#"><img src="/static/images/coffee-maker-logo.svg" alt="ASW-Cafeteria"></a> -->
+                            </div>
+                            <a href="javascript:void(0)" class="menu-trigger hidden-lg-up"><span>&nbsp;</span></a>
+                            <div class="main-menu hidden-md-down">
+                                <ul class="menu-list">
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">Services</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mobile-menu hidden-lg-up">
+                            <ul class="mobile-menu-list">
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">Services</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <!-- Header ends here -->
+                <!-- Banner starts here -->
+                <section id="HeroBanner">
+                    <div class="hero-content" v-if="isLoggedIn">
+                        <h1>ASW - Cafeteria</h1>
+                        <p>Lives: {{lives}}</p>
+                        <!-- <p>We are team of talanted designers making websites with Bootstrap</p> -->
+                        <a href="#" class="hero-cta" v-if="lives > 0" v-on:click="startGame">Play</a>
+                        <a href="#redeem" class="hero-cta" v-else>Redeem</a>
                     </div>
-                    <a href="javascript:void(0)" class="menu-trigger hidden-lg-up"><span>&nbsp;</span></a>
-                    <div class="main-menu hidden-md-down">
-                        <ul class="menu-list">
-                            <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
-                            <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">Services</a></li>
-                            <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
-                            <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
-                            <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
-                        </ul>
+                    <div class="hero-content" v-else>
+                            <h1>ASW - Cafeteria</h1>
+                            <!-- <p>We are team of talanted designers making websites with Bootstrap</p> -->
+                            <a href="/login" class="hero-cta">Login to Play</a>
                     </div>
-                </div>
-                <div class="mobile-menu hidden-lg-up">
-                    <ul class="mobile-menu-list">
-                        <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
-                        <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">Services</a></li>
-                        <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
-                        <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
-                        <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
+                </section>
+                <!-- Banner ends here -->
+                <!-- Services section starts here -->
+                <section id="Services">
+                    <div class="container">
+                        <div class="block-heading">
+                            <h2>Services</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                        <div class="services-wrapper">
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-university" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-camera-retro" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                            <div class="each-service">
+                                <div class="service-icon"><i class="fa fa-shopping-bag" aria-hidden="true"></i></div>
+                                <h5 class="service-title">LOREM IPSUM</h5>
+                                <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Services section ends here -->
+                <!-- About Us section starts here -->
+                <section id="About">
+                    <div class="container">
+                        <div class="about-wrapper">
+                            <h2>About Us</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    </div>
+                </section>
+                <!-- About Us section ends here -->
+                <!-- Portfolio section starts here -->
+                <section id="Portfolio">
+                    <div class="container">
+                        <div class="block-heading">
+                            <h2>Portfolio</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                        <div class="portfolio-wrapper clearfix">
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-one.jpg">
+                            <img src="/static/images/p-one.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                    <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-two.jpg">
+                            <img src="/static/images/p-two.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-three.jpg">
+                            <img src="/static/images/p-three.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                            <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-four.jpg">
+                            <img src="/static/images/p-four.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-five.jpg">
+                            <img src="/static/images/p-five.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-six.jpg">
+                            <img src="/static/images/p-six.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-one.jpg">
+                            <img src="/static/images/p-one.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-two.jpg">
+                            <img src="/static/images/p-two.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                <h5 class="p-title">Title</h5>
+                                <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-three.jpg">
+                            <img src="/static/images/p-three.jpg" alt="p-one">
+                            <div class="hover-cont-wrap">
+                                <div class="hover-cont-block">
+                                    <h5 class="p-title">Title</h5>
+                                    <div class="p-desc">
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                        <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                </section>
+                <!-- Portfolio section ends here -->
+                <section id="Testimonial">
+                <div class="testimonial-wrap">
+                <div class="container">
+                    <div class="block-heading">
+                    <h2>What Clients Say About Us</h2>
+                    </div>
+                    <ul class="testimonial-slider">
+                    <li>" I would like to thank Click and the team for the fantastic work<br> on content writing for my site. "</li>
+                    <li>" I'd say that the team is excellent and it is some of the best service<br> I have received both online and offline in a long time. "</li>
+                    <li>" It's been great working with you. The content is also great. I can certainly recommend your<br> services to others as cost effective services. "</li>
                     </ul>
                 </div>
-            </nav>
-        </header>
-        <!-- Header ends here -->
-        <!-- Banner starts here -->
-        <section id="HeroBanner">
-            <div class="hero-content">
-                <h1>ASW - Cafeteria</h1>
-                <!-- <p>We are team of talanted designers making websites with Bootstrap</p> -->
-                <a href="/login" class="hero-cta">Login to Play</a>
-            </div>
-        </section>
-        <!-- Banner ends here -->
-        <!-- Services section starts here -->
-        <section id="Services">
-            <div class="container">
-                <div class="block-heading">
-                    <h2>Services</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                 </div>
-                <div class="services-wrapper">
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-university" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-camera-retro" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                    <div class="each-service">
-                        <div class="service-icon"><i class="fa fa-shopping-bag" aria-hidden="true"></i></div>
-                        <h5 class="service-title">LOREM IPSUM</h5>
-                        <p class="service-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Services section ends here -->
-        <!-- About Us section starts here -->
-        <section id="About">
-            <div class="container">
-                <div class="about-wrapper">
-                    <h2>About Us</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-            </div>
-        </section>
-        <!-- About Us section ends here -->
-        <!-- Portfolio section starts here -->
-        <section id="Portfolio">
-            <div class="container">
-                <div class="block-heading">
-                    <h2>Portfolio</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                </div>
-                <div class="portfolio-wrapper clearfix">
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-one.jpg">
-                    <img src="/static/images/p-one.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                            <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                </section>
+                <!-- Contact us section starts here -->
+                <section id="ContactUs">
+                    <div class="container contact-container">
+                        <h3 class="contact-title">Get In Touch</h3>
+                        <div class="contact-outer-wrapper">
+                            <div class="address-block">
+                                <p class="add-title">Contact Details</p>
+                                <div class="c-detail">
+                                        <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">maicol.forti@studio.unibo.it</span>
+                                </div>
+                                <div class="c-detail">
+                                    <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">christian.serra2@studio.unibo.it</span>
+                                </div>
+                            </div>
+                            <div class="form-wrap">
+                                <p class="add-title">Send Us Message</p>
+                                <form>
+                                    <div class="fname floating-label">
+                                        <input type="text" class="floating-input" name="full name" id="full-name-field" />
+                                        <label for="full-name-field">Full Name</label>
+                                    </div>
+                                    <div class="email floating-label">
+                                        <input type="email" class="floating-input" name="email" id="mail-field" />
+                                        <label for="mail-field">Email</label>
+                                    </div>
+                                    <div class="contact floating-label">
+                                        <input type="tel" class="floating-input" name="contact" id="contact-us-field" />
+                                        <label for="contact-us-field">Contact</label>
+                                    </div>
+                                    <div class="company floating-label">
+                                        <input type="text" class="floating-input" name="company" id="company-field" />
+                                        <label for="company-field">Company</label>
+                                    </div>
+                                    <div class="user-msg floating-label">
+                                        <textarea class="floating-input" name="user message" id="user-msg-field"></textarea>
+                                        <label for="user-msg-field" class="msg-label">Your Message</label>
+                                    </div>
+                                    <div class="submit-btn">
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-two.jpg">
-                    <img src="/static/images/p-two.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
+                </section>
+                <!-- Contact us section ends here -->
+                <!-- Footer section starts here -->
+                <footer id="Footer">
+                    <div class="container">
+                        <div class="social-share">
+                            <ul>
+                                <li><a href="https://www.facebook.com/volumecampus/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                <!-- <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i></a></li> -->
+                                <li><a href="https://www.instagram.com/volume_campus/"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                <li><a href="http://www.aidoru.org/"><i class="fa fa-globe" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-logo-wrap">
+                            By Maicol Forti and Christian Serra, template from Position2.
                         </div>
                     </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-three.jpg">
-                    <img src="/static/images/p-three.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                       <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-four.jpg">
-                    <img src="/static/images/p-four.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-five.jpg">
-                    <img src="/static/images/p-five.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-six.jpg">
-                    <img src="/static/images/p-six.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-one.jpg">
-                    <img src="/static/images/p-one.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-two.jpg">
-                    <img src="/static/images/p-two.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                           <h5 class="p-title">Title</h5>
-                           <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                    <a class="each-portfolio" data-fancybox="gallery" href="/static/images/p-three.jpg">
-                    <img src="/static/images/p-three.jpg" alt="p-one">
-                    <div class="hover-cont-wrap">
-                        <div class="hover-cont-block">
-                            <h5 class="p-title">Title</h5>
-                            <div class="p-desc">
-                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                <div class="icon-div"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                   </a>
-                </div>
-            </div>
-        </section>
-        <!-- Portfolio section ends here -->
-        <section id="Testimonial">
-          <div class="testimonial-wrap">
-          <div class="container">
-            <div class="block-heading">
-              <h2>What Clients Say About Us</h2>
-            </div>
-            <ul class="testimonial-slider">
-              <li>" I would like to thank Click and the team for the fantastic work<br> on content writing for my site. "</li>
-              <li>" I'd say that the team is excellent and it is some of the best service<br> I have received both online and offline in a long time. "</li>
-              <li>" It's been great working with you. The content is also great. I can certainly recommend your<br> services to others as cost effective services. "</li>
-            </ul>
-          </div>
+                </footer>
+                <!-- Footer section ends here -->
+            </section>
         </div>
-        </section>
-        <!-- Contact us section starts here -->
-        <section id="ContactUs">
-            <div class="container contact-container">
-                <h3 class="contact-title">Get In Touch</h3>
-                <div class="contact-outer-wrapper">
-                    <div class="address-block">
-                        <p class="add-title">Contact Details</p>
-                        <div class="c-detail">
-                                <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">maicol.forti@studio.unibo.it</span>
-                        </div>
-                        <div class="c-detail">
-                            <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">christian.serra2@studio.unibo.it</span>
-                        </div>
-                    </div>
-                    <div class="form-wrap">
-                        <p class="add-title">Send Us Message</p>
-                        <form>
-                            <div class="fname floating-label">
-                                <input type="text" class="floating-input" name="full name" id="full-name-field" />
-                                <label for="full-name-field">Full Name</label>
-                            </div>
-                            <div class="email floating-label">
-                                <input type="email" class="floating-input" name="email" id="mail-field" />
-                                <label for="mail-field">Email</label>
-                            </div>
-                            <div class="contact floating-label">
-                                <input type="tel" class="floating-input" name="contact" id="contact-us-field" />
-                                <label for="contact-us-field">Contact</label>
-                            </div>
-                            <div class="company floating-label">
-                                <input type="text" class="floating-input" name="company" id="company-field" />
-                                <label for="company-field">Company</label>
-                            </div>
-                            <div class="user-msg floating-label">
-                                <textarea class="floating-input" name="user message" id="user-msg-field"></textarea>
-                                <label for="user-msg-field" class="msg-label">Your Message</label>
-                            </div>
-                            <div class="submit-btn">
-                                <button type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Contact us section ends here -->
-        <!-- Footer section starts here -->
-        <footer id="Footer">
-            <div class="container">
-                <div class="social-share">
-                    <ul>
-                        <li><a href="https://www.facebook.com/volumecampus/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <!-- <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i></a></li> -->
-                        <li><a href="https://www.instagram.com/volume_campus/"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                        <li><a href="http://www.aidoru.org/"><i class="fa fa-globe" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-                <div class="footer-logo-wrap">
-                    By Maicol Forti and Christian Serra, template from Position2.
-                </div>
-            </div>
-        </footer>
-        <!-- Footer section ends here -->
-    </section>
+        </transition>
+    </div>
 </body>
 
 <script>
-
+var app = new Vue({
+		el:	"#app",
+		data: {
+            hscores: {first: 0, second: 0, third: 0},
+            rankings: {},
+            lives: 0,
+            isLoggedIn: false,
+			dataReady: false,
+		},
+		methods: {
+            startGame: function() {
+                console.log("click on startGame");
+                if(this.lives > 0) {
+                    axios.get("/api/createGameSession")
+                    .then(response => {
+                        window.location.href = response.data 
+                            ? ("/hextris/game/" + response.data)
+                            : "#redeem";
+                    })
+                    .catch(error => {
+                         console.log(error);
+                         if (error == 503) {
+                            window.location.href = "/login";
+                         }
+                    });
+                } else {
+                    window.location.href = "#redeem";
+                }
+            },
+            loadHighscoresAndLives: async function() {
+                try {
+                    const response = await axios.get("/api/playedGames");
+                    console.log(response);
+                    this.lives = response.data[0].lives ? response.data[0].lives : 0;
+                    const scores = response.data[0].games;
+                    this.hscores.first = scores[0] ? scores[0].score : 0;
+                    this.hscores.second = scores[1] ? scores[1].score : 0;
+                    this.hscores.third = scores[2] ? scores[2].score : 0;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            loadData: async function() {
+                try {
+                    const response = await axios.get("/api/homeData");
+                    console.log(response);
+                    this.isLoggedIn = response.data.isLoggedIn;
+                    this.rankings = response.data.rankings;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+		},
+		async mounted(){
+            await this.loadData();
+            if (this.isLoggedIn) {
+                await this.loadHighscoresAndLives();
+            }
+            setTimeout(() => this.dataReady = true, 1500);
+            
+		}
+	});
 </script>
 
 </html>
