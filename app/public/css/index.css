@@ -13715,11 +13715,43 @@ li {
 	position: relative;
 	text-align: center;
 	max-width: calc(33.33% - 30px);
-	border: 1px solid #e6e6e6;
+	/* border: 1px solid #e6e6e6; */
 	background-color: #fff;
-	margin: 0 15px 50px;
+	margin: 0 25px 50px;
 	padding: 55px 20px 25px;
 }
+
+
+#Services .each-service-red {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 red, -20px 0 red, 0 -20px red, 0 20px red, 0 0 0 12px red, 0 8px 0 8px red, 0 -8px 0 8px red, 8px 0 0 8px red, -8px 0 0 8px red;
+	/* margin: 20px auto; */
+}
+  
+#Services .each-service-green {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 green, -20px 0 green, 0 -20px green, 0 20px green, 0 0 0 12px green, 0 8px 0 8px green, 0 -8px 0 8px green, 8px 0 0 8px green, -8px 0 0 8px green;
+	/* margin: 20px auto; */
+}
+  
+#Services .each-service-blue {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 blue, -20px 0 blue, 0 -20px blue, 0 20px blue, 0 0 0 12px blue, 0 8px 0 8px blue, 0 -8px 0 8px blue, 8px 0 0 8px blue, -8px 0 0 8px blue;
+	/* margin: 20px auto; */
+}
+  
+#Services .each-service-orange {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 orange, -20px 0 orange, 0 -20px orange, 0 20px orange, 0 0 0 12px orange, 0 8px 0 8px orange, 0 -8px 0 8px orange, 8px 0 0 8px orange, -8px 0 0 8px orange;
+	/* margin: 20px auto; */
+}
+  
+#Services .each-service-pink {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 pink, -20px 0 pink, 0 -20px pink, 0 20px pink, 0 0 0 12px pink, 0 8px 0 8px pink, 0 -8px 0 8px pink, 8px 0 0 8px pink, -8px 0 0 8px pink;
+	/* margin: 20px auto; */
+}
+  
+#Services .each-service-purple {
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 purple, -20px 0 purple, 0 -20px purple, 0 20px purple, 0 0 0 12px purple, 0 8px 0 8px purple, 0 -8px 0 8px purple, 8px 0 0 8px purple, -8px 0 0 8px purple;
+	/* margin: 20px auto; */
+}
+  
 
 #Services .each-service .service-icon {
 	position: absolute;
@@ -13730,10 +13762,6 @@ li {
 	/* background-color: #0098aa; */
 	border-radius: 50%;
 	transition: all 0.2s ease-in-out;
-}
-
-#Services .each-service .service-red {
-	background-color: red;
 }
 
 #Services .each-service .service-red {
