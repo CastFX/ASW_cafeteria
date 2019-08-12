@@ -13532,7 +13532,7 @@ li {
 #Header .mobile-menu {
 	width: 180px;
 	left: -180px;
-	background-color: rgba(0, 0, 0, 1);
+	background-color: rgba(51, 51, 107, 1);
 	position: absolute;
 	top: 0;
 	z-index: -1;
@@ -13727,9 +13727,37 @@ li {
 	left: 50%;
 	transform: translateX(-50%);
 	padding: 15px;
-	background-color: #0098aa;
+	/* background-color: #0098aa; */
 	border-radius: 50%;
 	transition: all 0.2s ease-in-out;
+}
+
+#Services .each-service .service-red {
+	background-color: red;
+}
+
+#Services .each-service .service-red {
+	background-color: red;
+}
+
+#Services .each-service .service-blue {
+	background-color: blue;
+}
+
+#Services .each-service .service-green {
+	background-color: green;
+}
+
+#Services .each-service .service-orange {
+	background-color: orange;
+}
+
+#Services .each-service .service-pink {
+	background-color: pink;
+}
+
+#Services .each-service .service-purple {
+	background-color: purple;
 }
 
 #Services .each-service .service-icon i {
@@ -13740,12 +13768,12 @@ li {
 
 #Services .each-service:hover .service-icon {
 	background-color: #ffffff;
-	border: 1px solid #0098aa;
+	border: 1px solid #222222;
 	transition: all 0.2s ease-in-out;
 }
 
 #Services .each-service:hover .service-icon i {
-	color: #0098aa;
+	color: #222222;
 	transition: all 0.2s ease-in-out;
 }
 

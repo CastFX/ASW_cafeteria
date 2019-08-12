@@ -8,12 +8,12 @@ var Crypto = require('crypto');
 const passport = require('passport');
 
 
-exports.homepage = (req, res) => {
-	res.sendFile(appRoot + '/www/home.html');
-};
+// exports.homepage = (req, res) => {
+// 	res.sendFile(appRoot + '/www/home.html');
+// };
 
 exports.home = (req, res) => {
-	res.sendFile(appRoot + '/www/index.html')
+	res.sendFile(appRoot + '/www/index.html');
 }
 
 get_rankings = async() => {
