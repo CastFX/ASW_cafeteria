@@ -79,7 +79,7 @@
                 <section id="HeroBanner">
                     <div class="hero-content">
                         <div v-if="isLoggedIn">
-                            <h1>ASW - Cafeteria</h1>
+                            <h1>Welcome, {{username}}.</h1>
                             <p>Lives: {{lives}}</p>
                             <!-- <p>We are team of talanted designers making websites with Bootstrap</p> -->
                             <a href="#" class="hero-cta" v-show="lives > 0" v-on:click="startGame">Play</a>
@@ -327,6 +327,9 @@
                                         <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">maicol.forti@studio.unibo.it</span>
                                 </div>
                                 <div class="c-detail">
+                                        <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">davide.bondi3@studio.unibo.it</span>
+                                </div>
+                                <div class="c-detail">
                                     <span class="c-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="c-info">christian.serra2@studio.unibo.it</span>
                                 </div>
                             </div>
@@ -380,7 +383,7 @@
                             </ul>
                         </div>
                         <div class="footer-logo-wrap">
-                                By Maicol Forti, (Davide Bondi) and Christian Serra, template from <a href="https://www.position2.com/">Position2</a>
+                                By Maicol Forti, Davide Bondi, and Christian Serra, template from <a href="https://www.position2.com/">Position2</a>
                         </div>
                     </div>
                 </footer>
@@ -398,6 +401,7 @@
             rankings: [],
             lives: 0,
             isLoggedIn: false,
+            username: "",
             dataReady: false,
         },
         methods: {
@@ -438,6 +442,7 @@
                     const response = await axios.get("/api/homeData");
                     console.log(response);
                     this.isLoggedIn = response.data.isLoggedIn;
+                    this.username = response.data.username;
                     this.rankings = response.data.rankings;
                     this.rankings.sort((a,b) => b.count - a.count);
                 } catch (error) {

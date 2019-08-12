@@ -88,8 +88,10 @@ exports.get_home_data = async (req, res) => {
 		res.send(rankings.error);
 		return;
 	}
+	const isLoggedIn = req.isAuthenticated();
 	res.json({
-		isLoggedIn: req.isAuthenticated(),
+		isLoggedIn: isLoggedIn,
+		username: isLoggedIn ? req.user._id : "",
 		rankings: rankings.dataset
 	});
 }

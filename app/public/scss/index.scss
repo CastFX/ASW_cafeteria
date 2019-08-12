@@ -12260,6 +12260,28 @@
   
   /* services section style goes here */
   
+  @mixin other( $width, $color, $bgcolor ) {
+    box-shadow:
+      4*$width 0 $bgcolor, 
+      -4*$width 0 $bgcolor, 
+      0 (-4*$width) $bgcolor, 
+      0 4*$width $bgcolor,
+      $width 0 0 2*$width $bgcolor,
+      -$width 0 0 2*$width $bgcolor,
+      0 (-$width) 0 2*$width $bgcolor,
+      0 $width 0 2*$width $bgcolor,
+      5*$width 0 $color, 
+      -5*$width 0 $color,
+      0 (-5*$width) $color, 
+      0 5*$width $color,
+      0 0 0 3*$width $color,
+      0 2*$width 0 2*$width $color,
+      0 (-2*$width) 0 2*$width $color,
+      2*$width 0 0 2*$width $color,
+      (-2*$width) 0 0 2*$width $color;
+    //   margin: 5*$width auto;
+  }
+
   #Services {
     padding: 80px 0 50px;
     background-color: #fafafa;
@@ -12284,10 +12306,42 @@
       position: relative;
       text-align: center;
       max-width: calc(33.33% - 30px);
-      border: 1px solid #e6e6e6;
+      /* border: 1px solid #e6e6e6; */
       background-color: #fff;
-      margin: 0 15px 50px;
+      margin: 0 25px 50px;
       padding: 55px 20px 25px;
+    }
+    .each-service-red {
+        @include other( 4px, red, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 red, -20px 0 red, 0 -20px red, 0 20px red, 0 0 0 12px red, 0 8px 0 8px red, 0 -8px 0 8px red, 8px 0 0 8px red, -8px 0 0 8px red;
+      /* margin: 20px auto; */
+    }
+    .each-service-green {
+        @include other( 4px, green, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 green, -20px 0 green, 0 -20px green, 0 20px green, 0 0 0 12px green, 0 8px 0 8px green, 0 -8px 0 8px green, 8px 0 0 8px green, -8px 0 0 8px green;
+      /* margin: 20px auto; */
+    }
+    .each-service-blue {
+        @include other( 4px, blue, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 blue, -20px 0 blue, 0 -20px blue, 0 20px blue, 0 0 0 12px blue, 0 8px 0 8px blue, 0 -8px 0 8px blue, 8px 0 0 8px blue, -8px 0 0 8px blue;
+      /* margin: 20px auto; */
+    }
+    .each-service-orange {
+        @include other( 4px, orange, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 orange, -20px 0 orange, 0 -20px orange, 0 20px orange, 0 0 0 12px orange, 0 8px 0 8px orange, 0 -8px 0 8px orange, 8px 0 0 8px orange, -8px 0 0 8px orange;
+      /* margin: 20px auto; */
+    }
+    .each-service-pink {
+        @include other( 4px, #ff66dd, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 #ff66dd, -20px 0 #ff66dd, 0 -20px #ff66dd, 0 20px #ff66dd, 0 0 0 12px #ff66dd, 0 8px 0 8px #ff66dd, 0 -8px 0 8px #ff66dd, 8px 0 0 8px #ff66dd, -8px 0 0 8px #ff66dd;
+      /* margin: 20px auto; */
+    }
+    .each-service-purple {
+        @include other( 4px, purple, white );
+    //   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 purple, -20px 0 purple, 0 -20px purple, 0 20px purple, 0 0 0 12px purple, 0 8px 0 8px purple, 0 -8px 0 8px purple, 8px 0 0 8px purple, -8px 0 0 8px purple;
+      /* margin: 20px auto; */
+    }
+    .each-service {
       .service-icon {
         position: absolute;
         top: -30px;
@@ -12300,7 +12354,6 @@
       }
       .service-red {
         background-color: red;
-        background-color: red;
       }
       .service-blue {
         background-color: blue;
@@ -12312,7 +12365,7 @@
         background-color: orange;
       }
       .service-pink {
-        background-color: pink;
+        background-color: #ff66dd;
       }
       .service-purple {
         background-color: purple;
@@ -12425,16 +12478,77 @@
     .about-wrapper {
       width: 50%;
       padding: 80px 50px 80px 10px;
-      p:last-child {
-        margin: 0;
+    }
+    .about-rankings {
+      margin-left: 20px;
+      ol {
+        counter-reset: li;
+        /* Initiate a counter */
+        list-style: none;
+        /* Remove default numbering */
+        *list-style: decimal;
+        /* Keep using default numbering for IE6/7 */
+        font: 15px 'trebuchet MS', 'lucida sans';
+        padding: 0;
+        margin-bottom: 4em;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
       }
+      a {
+        position: relative;
+        display: block;
+        padding: .4em .4em .4em 2em;
+        *padding: .4em;
+        margin: .5em 0;
+        background: #ddd;
+        color: #444;
+        text-decoration: none;
+        border-radius: .3em;
+        transition: all .3s ease-out;
+        &:hover {
+          background: #eee;
+          &:before {
+            transform: rotate(360deg);
+          }
+        }
+        &:before {
+          content: counter(li);
+          counter-increment: li;
+          position: absolute;
+          left: -1.3em;
+          top: 50%;
+          margin-top: -1.3em;
+          background: #87ceeb;
+          height: 2em;
+          width: 2em;
+          line-height: 2em;
+          /* border: .3em solid #fff; */
+          text-align: center;
+          font-weight: bold;
+          border-radius: 2em;
+          transition: all .3s ease-out;
+        }
+      }
+      li {
+        &:nth-of-type(1) a:before {
+          background: gold;
+        }
+        &:nth-of-type(2) a:before {
+          background: silver;
+        }
+        &:nth-of-type(3) a:before {
+          background: #cd7f32;
+        }
+      }
+    }
+    .about-wrapper p:last-child {
+      margin: 0;
     }
     &:after {
       content: '';
       position: absolute;
       top: 0;
       right: 0;
-      background: url("../images/about-us.jpg") no-repeat (center / cover);
+      background: url("../images/about-rankings.png") no-repeat (center / cover);
       width: 50%;
       height: 100%;
     }
@@ -12703,27 +12817,3 @@
   .fade-enter, .fade-leave-active {
     opacity: 0;
   }
-
-  #Services .each-service-red {
-  @include other( 4px, red, white );
-}
-
-#Services .each-service-green {
-  @include other( 4px, green, white );
-}
-
-#Services .each-service-blue {
-  @include other( 4px, blue, white );
-}
-
-#Services .each-service-orange {
-  @include other( 4px, orange, white );
-}
-
-#Services .each-service-pink {
-  @include other( 4px, #ff66dd, white );
-}
-
-#Services .each-service-purple {
-  @include other( 4px, purple, white );
-}
