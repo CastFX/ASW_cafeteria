@@ -19,9 +19,9 @@ exports.home = (req, res) => {
 get_rankings = async() => {
 	try {
 		const utenti = await Utenti.find({});
+		dataset = [];
 		for (i = 0; i < utenti.length; i++) {
 			var score = 0;
-			dataset = [];
 			if (utenti[i]._id != "admin") {
 				for (j = 0; j < utenti[i].games.length; j++) {
 					score += utenti[i].games[j].score;

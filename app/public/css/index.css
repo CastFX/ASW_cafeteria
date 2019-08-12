@@ -13908,6 +13908,73 @@ li {
 	padding: 80px 50px 80px 10px;
 }
 
+#About .about-rankings {
+	margin-left: 20px;
+}
+
+#About .about-rankings ol {
+    counter-reset: li; /* Initiate a counter */
+    list-style: none; /* Remove default numbering */
+    *list-style: decimal; /* Keep using default numbering for IE6/7 */
+    font: 15px 'trebuchet MS', 'lucida sans';
+    padding: 0;
+    margin-bottom: 4em;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+#About .about-rankings a {
+    position: relative;
+    display: block;
+    padding: .4em .4em .4em 2em;
+    *padding: .4em;
+    margin: .5em 0;
+    background: #ddd;
+    color: #444;
+    text-decoration: none;
+    border-radius: .3em;
+    transition: all .3s ease-out;   
+}
+
+#About .about-rankings a:hover {
+    background: #eee;
+}
+
+#About .about-rankings a:hover:before {
+    transform: rotate(360deg);  
+}
+
+#About .about-rankings a:before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute; 
+    left: -1.3em;
+    top: 50%;
+    margin-top: -1.3em;
+    background: #87ceeb;
+    height: 2em;
+    width: 2em;
+    line-height: 2em;
+    /* border: .3em solid #fff; */
+    text-align: center;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: all .3s ease-out;
+}
+
+#About .about-rankings li:nth-of-type(1) a:before {
+	background: gold;
+}
+
+
+#About .about-rankings li:nth-of-type(2) a:before {
+	background: silver;
+}
+
+
+#About .about-rankings li:nth-of-type(3) a:before {
+	background: #cd7f32;
+}
+
 #About .about-wrapper p:last-child {
 	margin: 0;
 }
@@ -13917,7 +13984,7 @@ li {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background: url("../images/about-us.jpg") no-repeat center / cover;
+	background: url("../images/about-rankings.png") no-repeat center / cover;
 	width: 50%;
 	height: 100%;
 }

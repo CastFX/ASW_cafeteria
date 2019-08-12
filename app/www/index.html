@@ -53,7 +53,7 @@
                                 <ul class="menu-list">
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a>                                </li>
-                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                     <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
@@ -65,7 +65,7 @@
                             <ul class="mobile-menu-list">
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#HeroBanner">Home</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a></li>
-                                <li><a class="nav-link" href="javascript:void(0)" data-target="#About">About</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                 <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
@@ -138,16 +138,18 @@
                 <section id="About">
                     <div class="container">
                         <div class="about-wrapper">
-                            <h2>About Us</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut
-                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                in
-                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                                cupidatat
-                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <h2>Current Ranking</h2>
+
+                            <!-- <ul>
+                                <li v-for="(rank, index) in rankings">
+                                    <span class="position">{{index + 1}}.</span> {{rank.label}} with {{rank.count}} pts!
+                                </li>
+                            </ul> -->
+                            <div class="about-rankings">
+                                <ol>
+                                    <li v-for="rank in rankings"><a href="#">{{rank.label}} with {{rank.count}} pts!</a></li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -393,7 +395,7 @@
         el: "#app",
         data: {
             hscores: { first: 0, second: 0, third: 0 },
-            rankings: {},
+            rankings: [],
             lives: 0,
             isLoggedIn: false,
             dataReady: false,
@@ -437,6 +439,7 @@
                     console.log(response);
                     this.isLoggedIn = response.data.isLoggedIn;
                     this.rankings = response.data.rankings;
+                    this.rankings.sort((a,b) => b.count - a.count);
                 } catch (error) {
                     console.log(error);
                 }
