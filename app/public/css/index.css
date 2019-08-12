@@ -13743,7 +13743,7 @@ li {
 }
   
 #Services .each-service-pink {
-	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 pink, -20px 0 pink, 0 -20px pink, 0 20px pink, 0 0 0 12px pink, 0 8px 0 8px pink, 0 -8px 0 8px pink, 8px 0 0 8px pink, -8px 0 0 8px pink;
+	box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 #ff66dd, -20px 0 #ff66dd, 0 -20px #ff66dd, 0 20px #ff66dd, 0 0 0 12px #ff66dd, 0 8px 0 8px #ff66dd, 0 -8px 0 8px #ff66dd, 8px 0 0 8px #ff66dd, -8px 0 0 8px #ff66dd;
 	/* margin: 20px auto; */
 }
   
@@ -13781,7 +13781,7 @@ li {
 }
 
 #Services .each-service .service-pink {
-	background-color: pink;
+	background-color: #ff66dd;
 }
 
 #Services .each-service .service-purple {

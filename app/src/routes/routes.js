@@ -10,6 +10,8 @@ module.exports = function(app) {
 
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
+	app.get("/email/confirm/:hash", controller.confirm_email);
+
 	app.get("/api/homeData", controller.get_home_data);
 	
 	app.route('/api/corsi')
@@ -65,13 +67,36 @@ module.exports = function(app) {
 	app.route('/success').get((req, res) => res.send("Welcome "+req.query.username+"!!"));
 	app.route('/error').get((req, res) => res.send("error logging in"));
 
-	app.post('/login',
-		 passport.authenticate('local', { failureRedirect: '/login' }),
-		 function(req, res) {
-			 if (req.user._id == "admin"){
-				 res.redirect("/admin/userTickets")
-			 } else {res.redirect("/");}
-		 });
+	// app.post('/login',
+	// 	passport.authenticate('local', { failureRedirect: '/login'}),
+	// 	function(req, res) {
+	// 		if (req.user._id == "admin"){
+	// 			res.redirect("/admin/userTickets")
+	// 		} 
+	// 		else {
+	// 			res.redirect("/");
+	// 		}
+	// 	}
+	// );
+
+	app.post('/login', (req, res, next) => {
+		passport.authenticate('local', function(err, user, info) {
+			if (err) { return next(err); }
+			if (!user) {
+				console.log(info);
+				return res.redirect('/login'); 
+			}
+			req.logIn(user, function(err) {
+				if (err) { return next(err); }
+					if (req.user._id == "admin") {
+						return res.redirect("/admin/userTickets");
+					} else {
+						return res.redirect("/");
+					}
+				}
+			);
+		})(req, res, next);
+	});
 
 	app.get('/logout', (request, response) => {
 		  request.logout();

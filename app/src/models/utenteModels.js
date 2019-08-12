@@ -50,6 +50,10 @@ var UtentiSchema = new Schema({
     type: Number,
     default: 5
   },
+  active: {
+    type: Boolean,
+    default: false
+  },
   games: [GameSchema]
 
 }, {collection: 'utenti'});

@@ -3,6 +3,18 @@ var Corsi = mongoose.model('Corsi');
 var Utenti = mongoose.model("Utenti");
 var Tickets = mongoose.model("Tickets");
 var UserTickets = mongoose.model("UserTickets");
+var EmailVerifications = mongoose.model("EmailVerifications");
+var nodemailer = require("nodemailer");
+
+var smtpTransport = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+        user: process.env.GMAIL_HOST,
+		pass: process.env.GMAIL_PSW
+	}
+});
 
 var Crypto = require('crypto');
 const passport = require('passport');
@@ -14,6 +26,36 @@ const passport = require('passport');
 
 exports.home = (req, res) => {
 	res.sendFile(appRoot + '/www/index.html');
+}
+//aswcafeteria@gmail.com
+exports.confirm_email = async (req, res) => {
+	try {
+		const data = await EmailVerifications.findOneAndDelete({hash: req.params.hash});
+		if (!data) {
+			//either already confirmed or not found
+			res.send("Email already verified or invalid link");
+			return;
+		}
+		console.log(data);
+		const user = await Utenti.findOneAndUpdate(
+		{_id: data._id},
+		{
+			"$set" : {
+				"active" : true,
+			}
+		},
+		{
+			useFindAndModify: false,
+		});
+		if (user) {
+			res.redirect("/login");
+		} else {
+			res.send("Invalid link");
+		}
+	} catch (error) {
+		console.log(error);
+		res.send(error);
+	}
 }
 
 get_rankings = async() => {
@@ -141,32 +183,71 @@ exports.list_utenti = function(req, res) {
 
 var length = 32;
 var salt = Crypto.randomBytes(Math.ceil(length/2))
-						.toString('hex') /** convert to hexadecimal format */
-						.slice(0,length);   /** return required number of characters */
+	.toString('hex') /** convert to hexadecimal format */
+	.slice(0,length);   /** return required number of characters */
 
 var sha512 = function(password, salt){
 	var hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
 	hash.update(password);
 	var value = hash.digest('hex');
 	return {
-						salt:salt,
-						passwordHash:value
-				 };
+		salt:salt,
+		passwordHash:value
+	};
 };
 
+var sendVerificationEmail = async(userid, email, host) => {
+	var hash = Crypto.randomBytes(20).toString('hex');
+	try {
+		await EmailVerifications.updateOne(
+			{_id: userid},
+			{_id: userid, hash: hash},
+			{upsert: true}
+		);
+		const confirmationLink = "https://" + host + "/email/confirm/" + hash;
+		const mailOptions = {
+			to: email,
+			subject: "Please confirm your ASW-Cafeteria account",
+			html: 'Hello,<br> Please Click on the following link to verify your email.<br><a href="' + confirmationLink + '">'+confirmationLink+'</a>'
+		}
+		// console.log(mailOptions);
+		smtpTransport.sendMail(mailOptions);
+		// console.log(response);
+		return "ok";
+	} catch (error) {
+		console.log(error);
+		return { isError: true, error: error };
+	}
+}
 
 //Creazione di un nuovo utente
-exports.new_utente = function(req, res) {
+exports.new_utente = async function(req, res) {
 	var hashedPass = sha512(req.body.password,salt);
 	var new_user = req.body;
 	new_user.password = hashedPass.passwordHash;
 	new_user.sale = hashedPass.salt;
-	var new_utente = new Utenti(new_user);
-	new_utente.save(function(err, utente) {
-		if (err)
-			res.send(err);
-		res.status(201).json(utente);
-	});
+	new_user.active = false;
+	try {
+		await new Utenti(new_user).save();
+		const response = await sendVerificationEmail(new_user._id, new_user.email, req.get("host"));
+		if (response.isError) {
+			res.send(response.error);
+		} else {
+			res.status(201).json({
+				message: "Please check your email to verify your new account"
+			});
+		}
+	} catch (error) {
+		res.send("Error " + error);
+	}
+	// var new_utente = new Utenti(new_user);
+	// new_utente.save(function(err, utente) {
+	// 	if (err)
+	// 		res.send(err);
+	// 	//res.send("Confirmation email, check the spam, send again");
+		
+	// 	res.status(201).json(utente);
+	// });
 };
 
 //login
@@ -206,12 +287,18 @@ passport.use(new LocalStrategy(
 			if (err)
 				return done(err);
 			if (!utente)
-				return done(null, false);
+				return done(null, false, {message: "User not found"});
 			var hashedPass = sha512(password, utente.sale);
 			if (hashedPass.passwordHash == utente.password) {
-				return done(null, utente);
+				console.log("login:");
+				console.log(utente);
+				if (utente.active) {
+					return done(null, utente, {message: "Login Verified"});
+				} else {
+					return done(null, false, {message: "Email not verified"});
+				}
 			} else {
-				return done(null, false);
+				return done(null, false, {message: "Password not matching"});
 			}
 		});
   }
