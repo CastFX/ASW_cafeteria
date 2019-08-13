@@ -428,8 +428,8 @@
                 try {
                     const response = await axios.get("/api/playedGames");
                     console.log(response);
-                    this.lives = response.data[0].lives ? response.data[0].lives : 0;
-                    const scores = response.data[0].games;
+                    this.lives = response.data.lives ? response.data.lives : 0;
+                    const scores = response.data.games;
                     this.hscores.first = scores[0] ? scores[0].score : 0;
                     this.hscores.second = scores[1] ? scores[1].score : 0;
                     this.hscores.third = scores[2] ? scores[2].score : 0;

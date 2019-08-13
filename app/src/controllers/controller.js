@@ -6,6 +6,7 @@ var UserTickets = mongoose.model("UserTickets");
 var EmailVerifications = mongoose.model("EmailVerifications");
 var nodemailer = require("nodemailer");
 
+
 var smtpTransport = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
     port: 465,
@@ -224,16 +225,54 @@ var sendVerificationEmail = async(userid, email, host) => {
 
 //Creazione di un nuovo utente
 exports.new_utente = async function(req, res) {
-	var hashedPass = sha512(req.body.password,salt);
-	var new_user = req.body;
-	new_user.password = hashedPass.passwordHash;
-	new_user.sale = hashedPass.salt;
-	new_user.active = false;
+
+	var escapedPass = escape(req.body.password);
+	var hashedPass = sha512(escapedPass,salt);
+	// var new_user = req.body;
+	var new_user = {
+		_id: escape(req.body._id),
+		email: escape(req.body.email),
+		corso: escape(req.body.corso),
+		password: hashedPass.passwordHash,
+		sale: hashedPass.salt,
+		active: false
+	}
+	var errors = [];
+	if (new_user._id.length < 4) 
+	 	errors.push("Username should be at least 4 characters long");
+	if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(new_user.email)))
+		errors.push("Email is not valid");
+	if (new_user.corso == '')
+		errors.push('Degree course is missing');
+	if (escapedPass.length < 8)
+		errors.push("Password should be at least long 8 characters");	
+	if (errors.length > 0) {
+		res.json({
+			errors: errors
+		});
+		return;
+	}
 	try {
+		const takenUsername = await Utenti.findOne({_id: new_user._id});
+		if (takenUsername) {
+			res.json({
+				errors: ["Username not available"]
+			});
+			return;
+		}
+		const presentEmail = await Utenti.findOne({email: new_user.email});
+		if (presentEmail) {
+			res.json({
+				errors: ["Email already present in the database"]
+			});
+			return;
+		}
 		await new Utenti(new_user).save();
 		const response = await sendVerificationEmail(new_user._id, new_user.email, req.get("host"));
 		if (response.isError) {
-			res.send(response.error);
+			res.send({
+				error: response.error
+			});
 		} else {
 			res.status(201).json({
 				message: "Please check your email to verify your new account"
@@ -285,15 +324,16 @@ const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+	  console.log("login attempt by " + username);
 		Utenti.findOne({_id: username}, function(err, utente) {
-			if (err)
+			if (err) {
 				return done(err);
-			if (!utente)
+			}
+			if (!utente) {
 				return done(null, false, {message: "User not found"});
+			}
 			var hashedPass = sha512(password, utente.sale);
 			if (hashedPass.passwordHash == utente.password) {
-				console.log("login:");
-				console.log(utente);
 				if (utente.active) {
 					return done(null, utente, {message: "Login Verified"});
 				} else {
@@ -316,17 +356,28 @@ exports.get_lives = (req, res) => {
 	});
 }
 
-exports.get_played_games = (req, res) => {
-	Utenti.aggregate([
-		{ $match: { _id: req.user._id}}, // query documents (can return more than one element)
-		{ $unwind: '$games'}, //deconstruct the documents
-		{ $sort: { 'games.score': -1}},
-		{ $limit: 3 },
-		{ $group: {_id: req.user._id, lives: { $first: '$life'}, games: { $push: '$games' }}}, //reconstruct the documents
-	]).exec((err, games) => {
-		if (err) { res.send(err); }
-		else { res.json(games); }
-	});
+exports.get_played_games = async(req, res) => {
+	try {
+		const user = await Utenti.findOne({_id: req.user._id});
+		if (user.games.length > 0) {
+			user.games.sort((a,b) => b - a);
+			user.games.slice(0,3);
+		}
+		res.json({
+			lives: user.life,
+			games: user.games
+		});
+		// var data = await Utenti.aggregate([
+		// 	{ $match: { _id: req.user._id}}, // query documents (can return more than one element)
+		// 	{ $unwind: '$games'}, //deconstruct the documents
+		// 	{ $sort: { 'games.score': -1}},
+		// 	{ $limit: 3 },
+		// 	{ $group: {_id: req.user._id, lives: { $first: '$life'}, games: { $push: '$games' }}}, //reconstruct the documents
+		// ]);
+		// res.json(games); 
+	} catch (err) {
+		res.send({error: err});
+	}
 }
 
 
@@ -396,7 +447,6 @@ exports.start_game = (req, res) => {
 }
 
 calculatePercentile = async (score) => {
-
 	return Utenti.aggregate([
 	{$unwind : "$games" },
 	{$project: {
