@@ -17,13 +17,13 @@
 
 <body class="bodyAdmin">
 <div id="app">
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
+  <div class="collapse collapser" id="navbarToggleExternalContent">
+    <div class="p-4">
       <p class="titleCollapseAdmin">Usa le icone sottostanti per navigare i grafici: PieChart</p>
       <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
     </div>
   </div>
-  <nav class="navbar navbar-dark bg-dark">
+  <nav class="navbar">
     <a class="navbar-brand" href="/admin/userTickets">Tickets</a>
     <input class="form-control order-2 inputSearch ml-auto" id="inputTicketID" placeholder="Insert ticket code" v-model="ticketChoice">
     <button class="btn buttonSubmit order-3" id="buttonSubmitID" v-on:click.prevent="submitTicket()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>

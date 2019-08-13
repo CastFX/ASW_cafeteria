@@ -1,0 +1,17 @@
+.navbar{
+	background-color: rgba(0, 7, 70, 0.8);
+	&-brand{
+		color:white;
+		&:hover{
+			color:black;
+		}
+	}
+}
+
+.collapser{
+	background-color: rgba(0, 7, 70, 0.8);
+}
+
+.navbar-toggler{
+	color:white;
+}

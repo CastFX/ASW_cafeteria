@@ -11,6 +11,24 @@
   font-size: 30px;
 }
 
+.navbar {
+  background-color: rgba(0, 7, 70, 0.8);
+}
+.navbar-brand {
+  color: white;
+}
+.navbar-brand:hover {
+  color: black;
+}
+
+.collapser {
+  background-color: rgba(0, 7, 70, 0.8);
+}
+
+.navbar-toggler {
+  color: white;
+}
+
 body {
   font: 10px sans-serif;
 }
