@@ -117,9 +117,9 @@ Inspirations:
 					<transition name="fade"
 						v-on:before-enter="beforeEnterTransition"
 						v-on:after-enter="afterEnterTransition"
-						v-on:after-leave="afterLeaveTransition"
 						v-on:enter="enterTransition"
 						v-on:leave="leaveTransition"
+						v-on:after-leave="afterLeaveTransition"
 						mode="out-in">
 					<form key="1" v-if='isSignIn' ref="formLogin" class="login-form animated" method="post">
 						<div class="sign-in-htm">
@@ -358,11 +358,11 @@ Inspirations:
 					.finally(() => this.dataReady = true)
 			},
 			beforeEnterTransition: function() {
-				document.getElementsByTagName("body")[0].style.overflow = "hidden";
+				document.getElementsByTagName("body")[0].style.overflow = "auto";
 			},
 
 			afterLeaveTransition: function() {
-				document.getElementsByTagName("body")[0].style.overflow = "auto";
+				document.getElementsByTagName("body")[0].style.overflow = "hidden";
 			},
 			afterEnterTransition: function(element) {
 				element.style.height = 'auto';
@@ -404,6 +404,7 @@ Inspirations:
 				setTimeout(() => {
 					element.style.height = 0;
 				});
+				document.getElementsByTagName("body")[0].style.overflow = "hidden";
 			},
 			init: function () {
 				this.listCorsi();
