@@ -144,7 +144,7 @@ Inspirations:
 									placeholder="Password" v-model="loginVar.password" />
 							</div>
 							<div class="call-to-action">
-								<input type="submit" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
+								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
 								<!--*/-->
 							</div>
 						</div>
@@ -213,7 +213,7 @@ Inspirations:
 									placeholder="Password" v-model="signUpVar.password" />
 							</div>
 							<div class="call-to-action">
-								<input v-on:click.prevent="checkSign" value="Sign Up" class="buttonLog" />
+								<input type="submit" v-on:keyup.enter="checkSign" v-on:click.prevent="checkSign" value="Sign Up" class="buttonLog" />
 							</div>
 						</div>
 					</form>
@@ -268,6 +268,7 @@ Inspirations:
 			},
 			checkSign: function () {
 				this.errors = [];
+				this.message = "";
 				if (signUpVar._id.length < 4)
 					this.errors.push("Username should be at least 4 characters long");
 				if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(signUpVar.email)))
@@ -308,10 +309,11 @@ Inspirations:
 				this.loginVar = {
 					_id: "",
 					password: ""
-				}
+				};
 			},
 			checkLogin: function() {
 				this.errors = [];
+				this.message = "";
 				if (this.loginVar._id.length == 0) {
 					this.errors.push("Username is missing");
 				}
