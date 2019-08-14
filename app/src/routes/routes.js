@@ -4,7 +4,7 @@ module.exports = function(app) {
 
 	// app.route('/')
 	// 	.get(isLoggedIn, controller.homepage);
-	
+
 	app.route('/')
 		.get(controller.home);
 
@@ -13,7 +13,7 @@ module.exports = function(app) {
 	app.get("/email/confirm/:hash", controller.confirm_email);
 
 	app.get("/api/homeData", controller.get_home_data);
-	
+
 	app.route('/api/corsi')
 		.get(controller.list_corsi);
 
@@ -41,15 +41,14 @@ module.exports = function(app) {
 
 
 
-  //ROUTE PIE CHART TESTING
+  //ROUTE PIE CHART
 
 	app.get('/admin/pie', isAdminLoggedIn, controller.show_piechart);
 
 	app.route('/bar')
 		.get(controller.show_bar);
 
-	app.route('/pie')
-		.get(controller.show_pie_user);
+	app.get('/pie', isLoggedIn, controller.show_pie_user);
 
   //In teoria route serve solo a fare percorsi concatenati, quindi app.get dovrebbe andare bene
   /*
@@ -72,7 +71,7 @@ module.exports = function(app) {
 	// 	function(req, res) {
 	// 		if (req.user._id == "admin"){
 	// 			res.redirect("/admin/userTickets")
-	// 		} 
+	// 		}
 	// 		else {
 	// 			res.redirect("/");
 	// 		}
@@ -81,8 +80,8 @@ module.exports = function(app) {
 
 	app.post('/login', (req, res, next) => {
 		passport.authenticate('local', function(err, user, info) {
-			if (err) { 
-				return next(err); 
+			if (err) {
+				return next(err);
 			}
 			if (!user) {
 				return res.json({

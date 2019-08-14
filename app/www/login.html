@@ -29,7 +29,7 @@ Inspirations:
 				<div class="login" id="login">
 					<div class="login-icon-field">
 
-			<!-- <svg class="loginLogo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 440 260" width="250" height="200"><defs><path d="M271.57 205.74L229.07 205.74L229.07 152.37" id="c68mxNjnq"></path><path d="M229.07 244.29L229.07 262.08L282.44 262.08L282.44 152.37L229.07 152.37" id="akZrYPVg"></path><path d="M313.08 207.23L313.08 152.37" id="d5ROKbSGs4">
+			<svg class="loginLogo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="155 90 200 270" width="250" height="150"><defs><path d="M271.57 205.74L229.07 205.74L229.07 152.37" id="c68mxNjnq"></path><path d="M229.07 244.29L229.07 262.08L282.44 262.08L282.44 152.37L229.07 152.37" id="akZrYPVg"></path><path d="M313.08 207.23L313.08 152.37" id="d5ROKbSGs4">
 			</path>
 			<path d="M172.73 205.74L208.31 205.74L208.31 152.37L161.86 152.37L161.86 205.74L104.53 205.74L104.53 106.91" id="b7BgNJi8wS"></path>
 			<path d="M391.16 152.37L391.16 207.23L343.72 152.37L343.72 205.74" id="bn8K8KBM3"></path>
@@ -39,7 +39,7 @@ Inspirations:
 			<g><g><use xlink:href="#d5ROKbSGs4" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="1"></use></g></g>
 			<g><g><use xlink:href="#b7BgNJi8wS" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="1"></use></g></g><g><g><use xlink:href="#bn8K8KBM3" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="1">
 			</use></g></g></g></g>
-		</svg> -->
+		</svg>
 						<!-- <svg viewBox="0 0 300 200" width="250" height="150" xmlns="http://www.w3.org/2000/svg"
 				xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 				preserveAspectRatio="xMidYMin slice" class="loginLogo">
@@ -90,7 +90,7 @@ Inspirations:
 			</svg> -->
 					</div>
 					<div class="rad">
-						<div class="tab-1 clickableSpan" v-bind:class="isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignIn"> 
+						<div class="tab-1 clickableSpan" v-bind:class="isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignIn">
 							<span class="clickableSpan">Login</span>
 						</div>
 						<div class="tab-2 clickableSpan" v-bind:class="!isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignUp">
@@ -98,10 +98,10 @@ Inspirations:
 						</div>
 						<!-- <ul class="tabs"></ul>
 							<li class="tab-1 clickableSpan" >
-								
+
 							</li>
 							<li class="tab-2 clickableSpan" v-bind:style="!isSignIn ? 'border-color: white;' : ''">
-								
+
 							</li>
 						</ul> -->
 					</div>
@@ -114,10 +114,10 @@ Inspirations:
 					<div class="messages" v-if="message">
 						<h5>{{message}}</h5>
 					</div>
-					<transition name="fade" 
-						v-on:before-enter="beforeEnterTransition" 
+					<transition name="fade"
+						v-on:before-enter="beforeEnterTransition"
 						v-on:after-enter="afterEnterTransition"
-						v-on:after-leave="afterLeaveTransition" 
+						v-on:after-leave="afterLeaveTransition"
 						v-on:enter="enterTransition"
 						v-on:leave="leaveTransition"
 						mode="out-in">
@@ -335,7 +335,7 @@ Inspirations:
 			submitLog: function(){
 				this.dataReady = false;
 				axios.post("/login", {
-					username: this.loginVar._id, 
+					username: this.loginVar._id,
 					password: this.loginVar.password
 				})
 				.then(response => {
