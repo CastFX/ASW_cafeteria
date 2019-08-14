@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="it">
 <!--
-
-'Golazo' App Login Page Concept utilizing Velocity.js & SVG animation techniques.
-
 Inspirations:
 +Anton Aheichanka - https://dribbble.com/shots/1945593-Login-Home-Screen?list=users&offset=4
 +Nicolay Talanov - https://codepen.io/suez/pen/dPqxoM
-
 -->
 
 <head>
@@ -20,17 +16,16 @@ Inspirations:
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src='https://cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js'></script>
 	<script src='https://cdn.jsdelivr.net/velocity/1.2.2/velocity.ui.min.js'></script>
-	<!-- <script src="/static/js/login.js"></script> -->
 
 </head>
 
 <body>
 	<div id="app">
-		<div class="lds-circle" v-show="!dataReady">
+		<transition name="fadein" mode="out-in">
+		<div key="1" class="lds-circle" v-if="!dataReady">
 			<div></div>
 		</div>
-		<transition name="fade">
-			<div class="container" v-cloak v-show="dataReady">
+			<div key="2" class="container" v-cloak v-if="dataReady">
 				<div class="login" id="login">
 					<div class="login-icon-field">
 
@@ -95,15 +90,20 @@ Inspirations:
 			</svg> -->
 					</div>
 					<div class="rad">
-						<ul class="auth0-lock-tabs">
-								<!-- v-bind:style="isSignIn ? ''border-color: white;' : 'border-color: unset;'" -->
-							<li class="tab-1 clickableSpan" v-bind:style="isSignIn ? 'border-color: white;' : ''">
-								<span class="clickableSpan" v-on:click="selectSignIn">Login</span>
+						<div class="tab-1 clickableSpan" v-bind:class="isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignIn"> 
+							<span class="clickableSpan">Login</span>
+						</div>
+						<div class="tab-2 clickableSpan" v-bind:class="!isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignUp">
+							<span class="clickableSpan">Sign Up</span>
+						</div>
+						<!-- <ul class="tabs"></ul>
+							<li class="tab-1 clickableSpan" >
+								
 							</li>
 							<li class="tab-2 clickableSpan" v-bind:style="!isSignIn ? 'border-color: white;' : ''">
-								<span class="clickableSpan" v-on:click="selectSignUp">Sign Up</span>
+								
 							</li>
-						</ul>
+						</ul> -->
 					</div>
 					<div class="messages" v-if="errors.length > 0">
 						<h5>Please correct the following error{{errors.length > 1 ? "s" : ""}}:</h5>
@@ -114,10 +114,16 @@ Inspirations:
 					<div class="messages" v-if="message">
 						<h5>{{message}}</h5>
 					</div>
-					<transition-group name="fade" mode="out-in">
-					<form key="signin" v-if='isSignIn' ref="formLogin" class="login-form animated" method="post">
+					<transition name="fade" 
+						v-on:before-enter="beforeEnterTransition" 
+						v-on:after-enter="afterEnterTransition"
+						v-on:after-leave="afterLeaveTransition" 
+						v-on:enter="enterTransition"
+						v-on:leave="leaveTransition"
+						mode="out-in">
+					<form key="1" v-if='isSignIn' ref="formLogin" class="login-form animated" method="post">
 						<div class="sign-in-htm">
-							<div class="username-row">
+							<div class="username-row scroll-transition">
 								<label for="username-signin">
 									<svg version="1.1" class="user-icon" x="0px" y="0px" viewBox="-255 347 100 100"
 										xml:space="preserve" height="36px" width="30px">
@@ -131,7 +137,7 @@ Inspirations:
 								<input type="text" name="username" id="username-signin" class="username-input"
 									placeholder="Username" v-model="loginVar._id" />
 							</div>
-							<div class="password-row">
+							<div class="password-row scroll-transition">
 								<label for="password-signin">
 									<svg version="1.1" class="password-icon" x="0px" y="0px" viewBox="-255 347 100 100"
 										height="36px" width="30px">
@@ -143,15 +149,15 @@ Inspirations:
 								<input type="password" name="password" class="password-input" id="password-signin"
 									placeholder="Password" v-model="loginVar.password" />
 							</div>
-							<div class="call-to-action">
+							<div class="call-to-action scroll-transition">
 								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
 								<!--*/-->
 							</div>
 						</div>
 					</form>
-					<form key="signup" v-if="!isSignIn" ref="formSign animated" class="login-form">
+					<form key="2" v-if="!isSignIn" ref="formSign animated" class="login-form">
 						<div class="sign-up-htm">
-							<div class="username-row">
+							<div class="username-row scroll-transition">
 								<label for="username-signup">
 									<svg version="1.1" class="user-icon" x="0px" y="0px" viewBox="-255 347 100 100"
 										xml:space="preserve" height="36px" width="30px">
@@ -165,7 +171,7 @@ Inspirations:
 								<input type="text" name="username-sign" class="username-input" id="username-signup"
 									placeholder="Username" v-model="signUpVar._id" />
 							</div>
-							<div class="email-row">
+							<div class="email-row scroll-transition">
 								<label for="email-signup">
 									<svg class="mail-icon" version="1.1" xmlns="http://www.w3.org/2000/svg"
 										xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px"
@@ -181,7 +187,7 @@ Inspirations:
 								<input type="email" name="email" class="email-input" id="email-signup"
 									placeholder="Email" v-model="signUpVar.email" />
 							</div>
-							<div class="corsi-row">
+							<div class="corsi-row scroll-transition">
 								<label for="corsi-signup">
 									<svg class="corsi-icon" version="1.1" xmlns="http://www.w3.org/2000/svg"
 										xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
@@ -200,7 +206,7 @@ Inspirations:
 									</option>
 								</select>
 							</div>
-							<div class="password-row">
+							<div class="password-row scroll-transition">
 								<label for="password-signup">
 									<svg version="1.1" class="password-icon" x="0px" y="0px" viewBox="-255 347 100 100"
 										height="36px" width="30px">
@@ -212,12 +218,12 @@ Inspirations:
 								<input type="password" name="password-sign" class="password-input" id="password-signup"
 									placeholder="Password" v-model="signUpVar.password" />
 							</div>
-							<div class="call-to-action">
+							<div class="call-to-action scroll-transition">
 								<input type="submit" v-on:keyup.enter="checkSign" v-on:click.prevent="checkSign" value="Sign Up" class="buttonLog" />
 							</div>
 						</div>
 					</form>
-					</transition-group>
+					</transition>
 				</div>
 			</div>
 		</transition>
@@ -350,6 +356,54 @@ Inspirations:
 					})
 					.catch(error => (console.log(error)))
 					.finally(() => this.dataReady = true)
+			},
+			beforeEnterTransition: function() {
+				document.getElementsByTagName("body")[0].style.overflow = "hidden";
+			},
+
+			afterLeaveTransition: function() {
+				document.getElementsByTagName("body")[0].style.overflow = "auto";
+			},
+			afterEnterTransition: function(element) {
+				element.style.height = 'auto';
+			},
+			enterTransition: function(element) {
+				const width = getComputedStyle(element).width;
+				element.style.width = width;
+				element.style.position = 'absolute';
+				element.style.visibility = 'hidden';
+				element.style.height = 'auto';
+
+				const height = getComputedStyle(element).height;
+
+				element.style.width = null;
+				element.style.position = null;
+				element.style.visibility = null;
+				element.style.height = 0;
+
+				// Force repaint to make sure the
+				// animation is triggered correctly.
+				getComputedStyle(element).height;
+
+				// Trigger the animation.
+				// We use `setTimeout` because we need
+				// to make sure the browser has finished
+				// painting after setting the `height`
+				// to `0` in the line above.
+				setTimeout(() => {
+				element.style.height = height;
+				});
+			},
+			leaveTransition: function(element) {
+				const height = getComputedStyle(element).height;
+				element.style.height = height;
+				// Force repaint to make sure the
+				// animation is triggered correctly.
+				getComputedStyle(element).height;
+
+				setTimeout(() => {
+					element.style.height = 0;
+				});
 			},
 			init: function () {
 				this.listCorsi();

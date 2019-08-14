@@ -30,6 +30,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-top: 30px;
+  border-radius: 5px;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   background-color: rgba(3, 42, 106, 0.5);
 }
@@ -129,9 +130,10 @@ input::-moz-placeholder {
   padding: 0;
   font-weight: 700;
   color: #fff;
-  background-color: #FF6C00;
+  background-color: #1b98e0;
   border: none;
-  border-radius: 20px;
+  border-radius: 5px;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   transition: background-color 0.1s ease-in-out;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -157,12 +159,38 @@ input::-moz-placeholder {
   }
 }
 /*CHOICE LOG IN OR SIGN UP*/
-li {
+.rad {
   font-size: 20px;
   padding-bottom: 5px;
-  margin: 0 20px 20px 27px;
+  margin: auto;
   display: inline-block;
+  text-align: center;
   border-bottom: 2px solid transparent;
+}
+
+.tab-1, .tab-2 {
+  padding: 5px;
+  border-radius: 3px;
+  margin: 0px 15px 0px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tab-1:hover, .tab-2:hover {
+  transition: 0.5s ease-in-out;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  background-color: #1b98e0;
+}
+
+.active-tab {
+  transition: background-color 0.25s ease-in-out;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  background-color: #1b98e0;
+}
+
+.non-active-tab {
+  transition: background-color 0.25s ease-in-out;
 }
 
 path {
@@ -224,18 +252,34 @@ path {
     transform: rotateY(3600deg);
   }
 }
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-  transform: translateY(-10px);
+.fadein-enter-active, .fadein-leave-active {
+  transition: opacity 0.5s;
 }
 
-.fade-leave-active {
-  position: absolute;
+.fadein-enter, .fadein-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity, height;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.fade-enter, .fade-leave-to {
+  height: 0;
+  opacity: 0;
+}
+
+*:not(.lds-circle, .lds-circle div) {
+  will-change: height;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .animated {
-  transition: all 0.5s;
+  transition: all 0.75s ease;
   display: flex;
   width: 100%;
 }
