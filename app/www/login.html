@@ -93,10 +93,12 @@ Inspirations:
 								<input type="password" name="password" class="password-input" id="password-signin"
 									placeholder="Password" v-model="loginVar.password" />
 							</div>
+							<div class="spacing">
+							</div>
+							<a href="#" class="forgotPass" v-on:click.prevent="forgotPassword">Forgot your password?</a>
 							<div class="call-to-action scroll-transition">
 								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
 							</div>
-							<a href="#" v-on:click.prevent="forgotPassword">Forgot your password?</a>
 						</div>
 					</form>
 					<form key="2" v-if="!isSignIn" ref="formSign animated" class="login-form">

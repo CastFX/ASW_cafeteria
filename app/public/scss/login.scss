@@ -335,3 +335,16 @@ path{
     font-size: small;
   }
 }
+
+.forgotPass{
+  color: white;
+  font-size: small;
+  margin-left: 55px;
+  &:hover{
+    color:blue;
+  }
+}
+
+.spacing{
+  height: 15px;
+}
