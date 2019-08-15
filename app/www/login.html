@@ -40,54 +40,6 @@ Inspirations:
 			<g><g><use xlink:href="#b7BgNJi8wS" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="1"></use></g></g><g><g><use xlink:href="#bn8K8KBM3" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="1">
 			</use></g></g></g></g>
 		</svg>
-						<!-- <svg viewBox="0 0 300 200" width="250" height="150" xmlns="http://www.w3.org/2000/svg"
-				xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-				preserveAspectRatio="xMidYMin slice" class="loginLogo">
-				<defs>
-					<path id="c68mxNjnq" d="m271.57,205.74l-42.5,0l0,-53.37"></path>
-					<path id="akZrYPVg" d="m229.07,244.29l0,17.79l53.37,0l0,-109.71l-53.37,0"></path>
-					<path id="d5ROKbSGs4" d="m313.08,207.23l0,-54.86"></path>
-					<path id="b7BgNJi8wS" d="m172.73,205.74l35.58,0l0,-53.37l-46.45,0l0,53.37l-57.33,0l0,-98.83"></path>
-					<path id="bn8K8KBM3" d="m391.16,152.37l0,54.86l-47.44,-54.86l0,53.37"></path>
-				</defs>
-				<g>
-					<title>Layer 1</title>
-					<g id="svg_1">
-						<g id="svg_2">
-							<g id="svg_3">
-								<g id="svg_4">
-									<use x="-98.66667" y="-100" id="svg_5" stroke="#000000" fill-opacity="0"
-										xlink:href="#c68mxNjnq"></use>
-								</g>
-							</g>
-							<g id="svg_6">
-								<g id="svg_7">
-									<use x="-98.66667" y="-100" id="svg_8" stroke="#000000" fill-opacity="0"
-										xlink:href="#akZrYPVg"></use>
-								</g>
-							</g>
-							<g id="svg_9">
-								<g id="svg_10">
-									<use x="-98.66667" y="-100" id="svg_11" stroke="#000000" fill-opacity="0"
-										xlink:href="#d5ROKbSGs4"></use>
-								</g>
-							</g>
-							<g id="svg_12">
-								<g id="svg_13">
-									<use x="-98.66667" y="-100" id="svg_14" stroke="#000000" fill-opacity="0"
-										xlink:href="#b7BgNJi8wS"></use>
-								</g>
-							</g>
-							<g id="svg_15">
-								<g id="svg_16">
-									<use x="-98.66667" y="-100" id="svg_17" stroke="#000000" fill-opacity="0"
-										xlink:href="#bn8K8KBM3"></use>
-								</g>
-							</g>
-						</g>
-					</g>
-				</g>
-			</svg> -->
 					</div>
 					<div class="rad">
 						<div class="tab-1 clickableSpan" v-bind:class="isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignIn">
@@ -96,14 +48,6 @@ Inspirations:
 						<div class="tab-2 clickableSpan" v-bind:class="!isSignIn ? 'active-tab' : 'non-active-tab'" v-on:click="selectSignUp">
 							<span class="clickableSpan">Sign Up</span>
 						</div>
-						<!-- <ul class="tabs"></ul>
-							<li class="tab-1 clickableSpan" >
-
-							</li>
-							<li class="tab-2 clickableSpan" v-bind:style="!isSignIn ? 'border-color: white;' : ''">
-
-							</li>
-						</ul> -->
 					</div>
 					<div class="messages" v-if="errors.length > 0">
 						<h5>Please correct the following error{{errors.length > 1 ? "s" : ""}}:</h5>
@@ -151,7 +95,6 @@ Inspirations:
 							</div>
 							<div class="call-to-action scroll-transition">
 								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
-								<!--*/-->
 							</div>
 							<a href="#" v-on:click.prevent="forgotPassword">Forgot your password?</a>
 						</div>
@@ -275,7 +218,7 @@ Inspirations:
 								this.message = "";
 							} else {
 								this.errors = [];
-								this.message = "Check your email to reset your password";
+								this.message = response.message;
 							}
 						})
 						.catch(err => this.errors = [err])

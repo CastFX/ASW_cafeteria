@@ -63,7 +63,7 @@ exports.send_forgot_email = async(req, res) => {
 	try {
 		const user = await Utenti.findOne({_id: req.body._id});
 		if (!user) {
-			res.send({error: "User not found"});
+			res.json({error: "User not found"});
 		} else {
 			var token = Crypto.randomBytes(20).toString('hex');
 			user.resetPasswordToken = token;

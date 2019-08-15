@@ -92,13 +92,12 @@ module.exports = function(app) {
 			}
 			req.logIn(user, function(err) {
 				if (err) { return next(err); }
-					if (req.user._id == "admin") {
-						return res.redirect("/admin/userTickets");
-					} else {
-						return res.redirect("/");
-					}
+				if (user._id == "admin") {
+					return res.redirect("/admin/userTickets");
+				} else {
+					return res.redirect("/");
 				}
-			);
+			});
 		})(req, res, next);
 	});
 
