@@ -13,7 +13,7 @@ html {
 
 body {
   display: flex;
-  background-image: linear-gradient(to top, #E8F1F2 0%, #1B98E0 100%);
+  background-color: #1B98E0;
 }
 
 .container {
@@ -32,7 +32,7 @@ body {
   margin-top: 30px;
   border-radius: 5px;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-  background-color: rgba(3, 42, 106, 0.5);
+  background: linear-gradient(180deg, #005abe 0%, #1496f2 100%);
 }
 .login-icon-field {
   height: auto;
@@ -130,7 +130,7 @@ input::-moz-placeholder {
   padding: 0;
   font-weight: 700;
   color: #fff;
-  background-color: #1b98e0;
+  background-color: #FF8E00;
   border: none;
   border-radius: 5px;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
@@ -142,10 +142,10 @@ input::-moz-placeholder {
   /*Con SCSS puoi usare &hover ecc.*/
 }
 .buttonLog:hover {
-  background-color: #FF8E00;
+  background-color: #fca73d;
 }
 .buttonLog:active {
-  background-color: #A65C00;
+  background-color: #d17400;
 }
 
 @-webkit-keyframes dash {
@@ -171,11 +171,10 @@ input::-moz-placeholder {
 .tab-1, .tab-2 {
   padding: 5px;
   border-radius: 3px;
-  margin: 0px 15px 0px;
+  margin: 0px 5px 0px;
   display: inline-block;
   text-align: center;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .tab-1:hover, .tab-2:hover {
   transition: 0.5s ease-in-out;
@@ -201,6 +200,7 @@ path {
 .clickableSpan {
   -webkit-cursor: pointer;
   cursor: pointer;
+  width: 90px;
 }
 
 .loginLogo {
