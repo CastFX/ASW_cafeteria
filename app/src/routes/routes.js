@@ -11,14 +11,16 @@ module.exports = function(app) {
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
 	app.get("/email/confirm/:hash", controller.confirm_email);
-
+	app.get("/reset/:token", controller.send_reset_password);
+	app.post("/reset/:token", controller.reset_password);
+	app.post("/api/sendForgotEmail", isNotLoggedIn, controller.send_forgot_email);
 	app.get("/api/homeData", controller.get_home_data);
 	
 	app.route('/api/corsi')
 		.get(controller.list_corsi);
 
 	app.route('/api/utenti')
-		.get(controller.list_utenti)
+		.get(isAdminLoggedIn, controller.list_utenti)
 		.post(controller.new_utente);
 
 	app.route('/api/tickets')

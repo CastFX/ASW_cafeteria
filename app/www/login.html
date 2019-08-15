@@ -153,6 +153,7 @@ Inspirations:
 								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
 								<!--*/-->
 							</div>
+							<a href="#" v-on:click.prevent="forgotPassword">Forgot your password?</a>
 						</div>
 					</form>
 					<form key="2" v-if="!isSignIn" ref="formSign animated" class="login-form">
@@ -262,12 +263,33 @@ Inspirations:
 			isSignIn: true,
 		},
 		methods: {
-			selectSignUp() {
+			forgotPassword: function() {
+				errors = [];
+				if (this.loginVar._id) {
+					console.log("forgot password");
+					this.dataReady = false;
+					axios.post("/api/sendForgotEmail", {_id: this.loginVar._id})
+						.then(response => {
+							if (response.error) {
+								this.errors = [response.error];
+								this.message = "";
+							} else {
+								this.errors = [];
+								this.message = "Check your email to reset your password";
+							}
+						})
+						.catch(err => this.errors = [err])
+						.finally(() => this.dataReady = true);
+				} else {
+					this.errors = ["Missing username"];
+				}
+			},
+			selectSignUp: function() {
 				this.errors = [];
 				this.message = "";
 				this.isSignIn = false;
 			},
-			selectSignIn() {
+			selectSignIn: function() {
 				this.errors = [];
 				this.message = "";
 				this.isSignIn = true;
@@ -296,10 +318,11 @@ Inspirations:
 						if (response.data.errors && response.data.errors.length > 0) {
 							this.errors = response.data.errors;
 						} else {
+							this.loginVar._id = this.signUpVar._id;
 							this.selectSignIn();
 							this.message = "Now you need to validate your email address and you're set!"
 						}
-						this.resetSubmission();
+						this.signUpVar.password = "";
 					})
 					.catch(err => this.errors.push(err))
 					.finally(() => this.dataReady = true)
@@ -329,7 +352,7 @@ Inspirations:
 				if (this.errors.length == 0) {
 					this.submitLog();
 				} else {
-					this.resetSubmission();
+					this.loginVar.password = "";
 				}
 			},
 			submitLog: function(){
@@ -341,6 +364,7 @@ Inspirations:
 				.then(response => {
 					if (response.data.error) {
 						this.errors = [response.data.error];
+						this.loginVar.password = "";
 					} else {
 						window.location.href = "/";
 					}

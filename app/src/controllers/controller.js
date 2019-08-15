@@ -59,6 +59,70 @@ exports.confirm_email = async (req, res) => {
 	}
 }
 
+exports.send_forgot_email = async(req, res) => {
+	try {
+		const user = await Utenti.findOne({_id: req.body._id});
+		if (!user) {
+			res.send({error: "User not found"});
+		} else {
+			var token = Crypto.randomBytes(20).toString('hex');
+			user.resetPasswordToken = token;
+			user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+			await user.save();
+			mailOptions = {
+				to: user.email,
+				subject: 'ASW-Cafeteria Password Reset',
+				text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+				  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+				  'http' + (req.headers.host != "localhost" ? 's' : '') + '://' + req.headers.host + '/reset/' + token + '\n\n' +
+				  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+			};
+			smtpTransport.sendMail(mailOptions);
+			res.json({message: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
+		}
+
+	} catch(error) {
+		console.log(error);
+		res.json({error: error});
+	}
+};
+
+exports.send_reset_password = (req, res) => {
+	res.sendFile(appRoot + "/www/passwordReset.html");
+};
+
+exports.reset_password = async(req, res) => {
+	try {
+		const user = await Utenti.findOne({
+			resetPasswordToken: req.params.token, 
+			resetPasswordExpires: { $gt: Date.now() }
+		});
+		if (!user) {
+			// res.json({error: "Password reset token is invalid or has expired"});
+			req.flash('error', 'Password reset token is invalid or has expired.');
+			// res.redirect("back");
+			return;
+		}
+		const hashedPass = sha512(escape(req.body.password), salt);
+		user.password = hashedPass.passwordHash;
+		user.sale = hashedPass.salt;
+		user.resetPasswordToken = undefined;
+		user.resetPasswordExpires = undefined;
+		await user.save();
+		const mailOptions = {
+			to: user.email,
+			subject: 'Your password has been changed',
+			text: 'Hello,\n\n' + 'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+		}
+		smtpTransport.sendMail(mailOptions);
+		res.redirect("/login");
+		req.flash("success", 'Success! Your password has been changed.');
+	} catch (error) {
+		console.log(error);
+		res.json({error: error});
+	}
+};
+
 get_rankings = async() => {
 	try {
 		const utenti = await Utenti.find({});
@@ -340,7 +404,7 @@ passport.use(new LocalStrategy(
 					return done(null, false, {message: "Email not verified"});
 				}
 			} else {
-				return done(null, false, {message: "Password not matching"});
+				return done(null, false, {message: "Invalid credential"});
 			}
 		});
   }

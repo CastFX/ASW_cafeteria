@@ -54,6 +54,14 @@ var UtentiSchema = new Schema({
     type: Boolean,
     default: false
   },
+  resetPasswordExpires: {
+    type: Date,
+    default: undefined
+  },
+  resetPasswordToken: {
+    type: String,
+    default: undefined
+  },
   games: [GameSchema]
 
 }, {collection: 'utenti'});
