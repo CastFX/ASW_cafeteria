@@ -241,13 +241,13 @@ exports.show_bar = (req, res) => {
 };
 
 exports.bar_data = async (req, res) => {
-	const rankings = await get_rankings();
-	if (rankings.error) {
-		console.log(rankings.error);
-		res.json(rankings.error);
+	const data = await get_rankings();
+	if (data.error) {
+		console.log(data.error);
+		res.json(data.error);
 		return;
 	}
-	res.json(rankings);
+	res.json(data.rankings);
 };
 
 //Login route
