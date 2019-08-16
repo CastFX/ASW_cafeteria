@@ -6,6 +6,7 @@ var Utenti = require('./src/models/utenteModels');
 var Tickets = require('./src/models/ticketModels');
 var UserTickets = require('./src/models/userTicketModels');
 var EmailVerifications = require('./src/models/emailVerificationModels');
+var Qr = require('./src/models/qrModels');
 //Creo istanza di express (web server)
 var app = express();
 

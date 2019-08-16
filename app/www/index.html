@@ -52,6 +52,7 @@
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a>                                </li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
+                                    <li><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                     <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
                                     <li v-else><a class="nav-link" href="/login" >Login</a></li>
@@ -64,6 +65,7 @@
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
+                                <li><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                 <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
                                 <li v-else><a class="nav-link" href="/login" >Login</a></li>
@@ -280,26 +282,14 @@
                     </div>
                 </section>
                 <!-- Portfolio section ends here -->
-                <section id="Testimonial">
-                    <div class="testimonial-wrap">
-                        <div class="container">
-                            <div class="block-heading">
-                                <h2>What Clients Say About Us</h2>
-                            </div>
-                            <ul class="testimonial-slider">
-                                <li>" I would like to thank Click and the team for the fantastic work<br> on content
-                                    writing
-                                    for
-                                    my site. "</li>
-                                <li>" I'd say that the team is excellent and it is some of the best service<br> I have
-                                    received
-                                    both online and offline in a long time. "</li>
-                                <li>" It's been great working with you. The content is also great. I can certainly
-                                    recommend
-                                    your<br> services to others as cost effective services. "</li>
-                            </ul>
-                        </div>
-                    </div>
+                <section id="Redeem">
+                  <div class="block-heading">
+                      <h2>Redeem</h2>
+                  </div>
+                  <div class="redeemForm">
+                    <input class="form-control inputRedeem" placeholder="Redeem code">
+                    <button class="buttonRedeem"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+                  </div>
                 </section>
                 <!-- Contact us section starts here -->
                 <section id="ContactUs">

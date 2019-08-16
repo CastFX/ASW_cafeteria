@@ -6,6 +6,11 @@ var Utenti = mongoose.model("Utenti");
 const passwordMinLength = 8;
 const usernameMinLength = 4;
 
+exports.new_qr_check = [
+  body("life")
+    .isInt({min:1, max:5}).withMessage("Must be a number between 1-5")
+];
+
 exports.new_user = [
     body("_id")
 		.trim()
@@ -16,7 +21,7 @@ exports.new_user = [
 				return Promise.reject();
 			}
         }).withMessage("Username already in use"),
-        
+
 	body("email")
 		.normalizeEmail()
 		.isEmail().withMessage("Invalid email")
@@ -25,10 +30,10 @@ exports.new_user = [
 				return Promise.reject();
 			}
         }).withMessage("Email already in use"),
-        
+
 	body("password")
         .isLength({min: passwordMinLength}).withMessage("Password must be at least " + passwordMinLength + " characters long"),
-        
+
 	body("corso")
 		.trim()
 		.custom(async value => {
@@ -68,7 +73,7 @@ exports.reset_password = [
 		.exists().withMessage("Reset token is missing")
 		.custom(async value => {
 			if (! await Utenti.findOne({
-				resetPasswordToken: value, 
+				resetPasswordToken: value,
 				resetPasswordExpires: { $gt: Date.now() }
 			})) {
 				return Promise.reject();

@@ -4,6 +4,7 @@ var Utenti = mongoose.model("Utenti");
 var Tickets = mongoose.model("Tickets");
 var UserTickets = mongoose.model("UserTickets");
 var EmailVerifications = mongoose.model("EmailVerifications");
+var Qr = mongoose.model("Qr");
 var nodemailer = require("nodemailer");
 const { body, check, validationResult } = require('express-validator');
 
@@ -219,6 +220,38 @@ exports.delete_ticket = function(req, res) {
 			res.json(result);
 		}
   });
+};
+
+exports.show_admin_qr = (req, res) => {
+	res.sendFile(appRoot + '/www/qrAdmin.html');
+};
+
+exports.list_qr = function(req, res) {
+	Qr.find({}, function(err, qr) {
+		if (err)
+			res.send(err);
+		res.json(qr);
+	});
+};
+
+//Creazione di un nuovo utente
+exports.new_qr = async function(req, res) {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
+	try {
+		var hashedQR = sha512(req.body.life, salt);
+		var new_qr = {
+			_id: hashedQR.passwordHash,
+			life: req.body.life
+		};
+		await new Qr(new_qr).save();
+		res.status(201).json({msg: "QR creato"});
+	} catch (error) {
+		console.log(error);
+		res.status(501).json({errors: [error]});
+	}
 };
 
 exports.show_piechart = (req, res) => {

@@ -12584,7 +12584,8 @@ ul, li {
 #Services .block-heading p:last-of-type {
   margin: 0;
 }
-#Services .services-wrapper {
+
+.services-wrapper {
   display: -webkit-flex;
   display: flex;
   -webkit-justify-content: center;
@@ -12595,7 +12596,8 @@ ul, li {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-#Services .each-service {
+
+.each-service {
   position: relative;
   text-align: center;
   max-width: calc(33.33% - 30px);
@@ -12604,31 +12606,43 @@ ul, li {
   margin: 0 25px 50px;
   padding: 55px 20px 25px;
 }
-#Services .each-service-red {
+
+.each-service-red {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 red, -20px 0 red, 0 -20px red, 0 20px red, 0 0 0 12px red, 0 8px 0 8px red, 0 -8px 0 8px red, 8px 0 0 8px red, -8px 0 0 8px red;
   /* margin: 20px auto; */
 }
-#Services .each-service-green {
+
+.each-service-green {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 green, -20px 0 green, 0 -20px green, 0 20px green, 0 0 0 12px green, 0 8px 0 8px green, 0 -8px 0 8px green, 8px 0 0 8px green, -8px 0 0 8px green;
   /* margin: 20px auto; */
 }
-#Services .each-service-blue {
+
+.each-service-blue {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 blue, -20px 0 blue, 0 -20px blue, 0 20px blue, 0 0 0 12px blue, 0 8px 0 8px blue, 0 -8px 0 8px blue, 8px 0 0 8px blue, -8px 0 0 8px blue;
   /* margin: 20px auto; */
 }
-#Services .each-service-orange {
+
+.each-service-orange {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 orange, -20px 0 orange, 0 -20px orange, 0 20px orange, 0 0 0 12px orange, 0 8px 0 8px orange, 0 -8px 0 8px orange, 8px 0 0 8px orange, -8px 0 0 8px orange;
   /* margin: 20px auto; */
 }
-#Services .each-service-pink {
+
+.each-service-pink {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 #ff66dd, -20px 0 #ff66dd, 0 -20px #ff66dd, 0 20px #ff66dd, 0 0 0 12px #ff66dd, 0 8px 0 8px #ff66dd, 0 -8px 0 8px #ff66dd, 8px 0 0 8px #ff66dd, -8px 0 0 8px #ff66dd;
   /* margin: 20px auto; */
 }
-#Services .each-service-purple {
+
+.each-service-purple {
   box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 purple, -20px 0 purple, 0 -20px purple, 0 20px purple, 0 0 0 12px purple, 0 8px 0 8px purple, 0 -8px 0 8px purple, 8px 0 0 8px purple, -8px 0 0 8px purple;
   /* margin: 20px auto; */
 }
-#Services .each-service .service-icon {
+
+.each-service-redeem {
+  box-shadow: 16px 0 white, -16px 0 white, 0 -16px white, 0 16px white, 4px 0 0 8px white, -4px 0 0 8px white, 0 -4px 0 8px white, 0 4px 0 8px white, 20px 0 #9495eb, -20px 0 #9495eb, 0 -20px #9495eb, 0 20px #9495eb, 0 0 0 12px #9495eb, 0 8px 0 8px #9495eb, 0 -8px 0 8px #9495eb, 8px 0 0 8px #9495eb, -8px 0 0 8px #9495eb;
+  /* margin: 20px auto; */
+}
+
+.each-service .service-icon {
   position: absolute;
   top: -30px;
   left: 50%;
@@ -12638,42 +12652,45 @@ ul, li {
   border-radius: 50%;
   transition: all 0.2s ease-in-out;
 }
-#Services .each-service .service-red {
+.each-service .service-red {
   background-color: red;
 }
-#Services .each-service .service-blue {
+.each-service .service-blue {
   background-color: blue;
 }
-#Services .each-service .service-green {
+.each-service .service-green {
   background-color: green;
 }
-#Services .each-service .service-orange {
+.each-service .service-orange {
   background-color: orange;
 }
-#Services .each-service .service-pink {
+.each-service .service-pink {
   background-color: #ff66dd;
 }
-#Services .each-service .service-purple {
+.each-service .service-purple {
   background-color: purple;
 }
-#Services .each-service .service-icon i {
+.each-service .service-redeem {
+  background-color: #9495eb;
+}
+.each-service .service-icon i {
   font-size: 24px;
   color: #fff;
   transition: all 0.2s ease-in-out;
 }
-#Services .each-service:hover .service-icon {
+.each-service:hover .service-icon {
   background-color: #ffffff;
   border: 1px solid #222222;
   transition: all 0.2s ease-in-out;
 }
-#Services .each-service:hover .service-icon i {
+.each-service:hover .service-icon i {
   color: #222222;
   transition: all 0.2s ease-in-out;
 }
-#Services .each-service h5 {
+.each-service h5 {
   margin: 0 0 10px;
 }
-#Services .each-service p:last-child {
+.each-service p:last-child {
   margin: 0;
 }
 
@@ -13080,6 +13097,18 @@ ul, li {
 
 .fade-enter, .fade-leave-active {
   opacity: 0;
+}
+
+#Redeem {
+  height: 300px;
+  background: url(../images/banner.jpg) no-repeat 0 0/cover;
+}
+#Redeem .block-heading h2 {
+  color: white;
+}
+#Redeem .inputRedeem, #Redeem .buttonRedeem {
+  width: 20%;
+  min-width: 300px;
 }
 
 /*# sourceMappingURL=index.css.map */
