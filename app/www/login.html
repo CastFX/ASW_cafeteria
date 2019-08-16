@@ -97,7 +97,7 @@ Inspirations:
 							</div>
 							<a href="#" class="forgotPass" v-on:click.prevent="forgotPassword">Forgot your password?</a>
 							<div class="call-to-action scroll-transition">
-								<input type="submit" v-on:keyup.enter="checkLogin" v-on:click.prevent="checkLogin" value="Login" class="buttonLog" />
+								<input type="submit" v-on:keyup.enter="submitLogin" v-on:click.prevent="submitLogin" value="Login" class="buttonLog" />
 							</div>
 						</div>
 					</form>
@@ -165,7 +165,7 @@ Inspirations:
 									placeholder="Password" v-model="signUpVar.password" />
 							</div>
 							<div class="call-to-action scroll-transition">
-								<input type="submit" v-on:keyup.enter="checkSign" v-on:click.prevent="checkSign" value="Sign Up" class="buttonLog" />
+								<input type="submit" v-on:keyup.enter="submitSignup" v-on:click.prevent="submitSignup" value="Sign Up" class="buttonLog" />
 							</div>
 						</div>
 					</form>
@@ -209,18 +209,17 @@ Inspirations:
 		},
 		methods: {
 			forgotPassword: function() {
-				errors = [];
+				this.errors = [];
 				if (this.loginVar._id) {
-					console.log("forgot password");
 					this.dataReady = false;
-					axios.post("/api/sendForgotEmail", {_id: this.loginVar._id})
+					axios.post("/api/sendForgotEmail", {username: this.loginVar._id})
 						.then(response => {
-							if (response.error) {
-								this.errors = [response.error];
+							console.log(response.data);
+							if (response.data.errors && response.data.errors.length > 0) {
+								this.errors = response.data.errors.map(({msg}) => msg);
 								this.message = "";
 							} else {
-								this.errors = [];
-								this.message = response.message;
+								this.message = response.data.message;
 							}
 						})
 						.catch(err => this.errors = [err])
@@ -239,37 +238,20 @@ Inspirations:
 				this.message = "";
 				this.isSignIn = true;
 			},
-			checkSign: function () {
-				this.errors = [];
-				this.message = "";
-				if (signUpVar._id.length < 4)
-					this.errors.push("Username should be at least 4 characters long");
-				if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(signUpVar.email)))
-					this.errors.push("Email is not valid");
-				if (signUpVar.corso == '')
-					this.errors.push('Degree course is missing');
-				if (signUpVar.password < 8)
-					this.errors.push('Password should be at least long 8 characters');
-				if (this.errors.length == 0)
-					this.submitSign();
-				// else {
-				// 	alert('' + this.errors);
-				// }
-			},
-			submitSign: function () {
+			submitSignup: function () {
 				this.dataReady = false;
 				axios.post("/api/utenti", this.signUpVar)
 					.then(response => {
 						if (response.data.errors && response.data.errors.length > 0) {
-							this.errors = response.data.errors;
+							this.errors = response.data.errors.map(({msg}) => msg);
 						} else {
 							this.loginVar._id = this.signUpVar._id;
 							this.selectSignIn();
-							this.message = "Now you need to validate your email address and you're set!"
+							this.message = response.data.msg;
 						}
 						this.signUpVar.password = "";
 					})
-					.catch(err => this.errors.push(err))
+					.catch(err => this.errors = [err])
 					.finally(() => this.dataReady = true)
 			},
 			resetSubmission: function () {
@@ -285,33 +267,18 @@ Inspirations:
 					password: ""
 				};
 			},
-			checkLogin: function() {
-				this.errors = [];
-				this.message = "";
-				if (this.loginVar._id.length == 0) {
-					this.errors.push("Username is missing");
-				}
-				if (this.loginVar.password.length == 0) {
-					this.errors.push("Password is missing");
-				}
-				if (this.errors.length == 0) {
-					this.submitLog();
-				} else {
-					this.loginVar.password = "";
-				}
-			},
-			submitLog: function(){
+			submitLogin: function() {
 				this.dataReady = false;
 				axios.post("/login", {
 					username: this.loginVar._id,
 					password: this.loginVar.password
 				})
 				.then(response => {
-					if (response.data.error) {
-						this.errors = [response.data.error];
+					if (response.data.errors && response.data.errors.length > 0) {
+						this.errors = response.data.errors.map(({msg}) => msg);
 						this.loginVar.password = "";
 					} else {
-						window.location.href = "/";
+						window.location.href = response.data.path;
 					}
 				})
 				.catch(err => this.errors = [err])

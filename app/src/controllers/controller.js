@@ -5,6 +5,7 @@ var Tickets = mongoose.model("Tickets");
 var UserTickets = mongoose.model("UserTickets");
 var EmailVerifications = mongoose.model("EmailVerifications");
 var nodemailer = require("nodemailer");
+const { body, check, validationResult } = require('express-validator');
 
 
 var smtpTransport = nodemailer.createTransport({
@@ -37,7 +38,6 @@ exports.confirm_email = async (req, res) => {
 			res.send("Email already verified or invalid link");
 			return;
 		}
-		console.log(data);
 		const user = await Utenti.findOneAndUpdate(
 		{_id: data._id},
 		{
@@ -60,27 +60,26 @@ exports.confirm_email = async (req, res) => {
 }
 
 exports.send_forgot_email = async(req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
 	try {
-		const user = await Utenti.findOne({_id: req.body._id});
-		if (!user) {
-			res.json({error: "User not found"});
-		} else {
-			var token = Crypto.randomBytes(20).toString('hex');
-			user.resetPasswordToken = token;
-			user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-			await user.save();
-			mailOptions = {
-				to: user.email,
-				subject: 'ASW-Cafeteria Password Reset',
-				text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-				  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-				  'http' + (req.headers.host != "localhost" ? 's' : '') + '://' + req.headers.host + '/reset/' + token + '\n\n' +
-				  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-			};
-			smtpTransport.sendMail(mailOptions);
-			res.json({message: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
-		}
-
+		const user = await Utenti.findOne({_id: req.body.username});
+		var token = Crypto.randomBytes(20).toString('hex');
+		user.resetPasswordToken = token;
+		user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+		await user.save();
+		mailOptions = {
+			to: user.email,
+			subject: 'ASW-Cafeteria Password Reset',
+			text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+				'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+				'http' + (req.headers.host != "localhost" ? 's' : '') + '://' + req.headers.host + '/reset/' + token + '\n\n' +
+				'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+		};
+		smtpTransport.sendMail(mailOptions);
+		res.json({message: 'An e-mail has been sent with further instructions.'});
 	} catch(error) {
 		console.log(error);
 		res.json({error: error});
@@ -92,18 +91,16 @@ exports.send_reset_password = (req, res) => {
 };
 
 exports.reset_password = async(req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
 	try {
 		const user = await Utenti.findOne({
 			resetPasswordToken: req.params.token, 
 			resetPasswordExpires: { $gt: Date.now() }
 		});
-		if (!user) {
-			// res.json({error: "Password reset token is invalid or has expired"});
-			req.flash('error', 'Password reset token is invalid or has expired.');
-			// res.redirect("back");
-			return;
-		}
-		const hashedPass = sha512(escape(req.body.password), salt);
+		const hashedPass = sha512(req.body.password, salt);
 		user.password = hashedPass.passwordHash;
 		user.sale = hashedPass.salt;
 		user.resetPasswordToken = undefined;
@@ -115,8 +112,11 @@ exports.reset_password = async(req, res) => {
 			text: 'Hello,\n\n' + 'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
 		}
 		smtpTransport.sendMail(mailOptions);
-		res.redirect("/login");
-		req.flash("success", 'Success! Your password has been changed.');
+		res.json({
+			username: user._id,
+			message: "Password successfully updated"
+		});
+		// res.redirect("/login");
 	} catch (error) {
 		console.log(error);
 		res.json({error: error});
@@ -140,17 +140,17 @@ get_rankings = async() => {
 				}
 			}
 		}
-		return {isError: false, dataset: dataset};
+		return dataset;
 	} catch (error) {
-		return {isError: true, error: error};
+		return error;
 	}
 }
 
 exports.get_home_data = async (req, res) => {
 	const rankings = await get_rankings();
-	if (rankings.isError) {
+	if (rankings.error) {
 		console.log(rankings.error);
-		res.send(rankings.error);
+		res.json(rankings.error);
 		return;
 	}
 	const isLoggedIn = req.isAuthenticated();
@@ -277,9 +277,7 @@ var sendVerificationEmail = async(userid, email, host) => {
 			subject: "Please confirm your ASW-Cafeteria account",
 			html: 'Hello,<br> Please Click on the following link to verify your email.<br><a href="' + confirmationLink + '">'+confirmationLink+'</a>'
 		}
-		// console.log(mailOptions);
 		smtpTransport.sendMail(mailOptions);
-		// console.log(response);
 		return "ok";
 	} catch (error) {
 		console.log(error);
@@ -289,99 +287,38 @@ var sendVerificationEmail = async(userid, email, host) => {
 
 //Creazione di un nuovo utente
 exports.new_utente = async function(req, res) {
-
-	var escapedPass = escape(req.body.password);
-	var hashedPass = sha512(escapedPass,salt);
-	// var new_user = req.body;
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
+	var hashedPass = sha512(req.body.password, salt);
 	var new_user = {
-		_id: escape(req.body._id),
-		email: escape(req.body.email),
-		corso: escape(req.body.corso),
+		_id: req.body._id,
+		email: req.body.email,
+		corso: req.body.corso,
 		password: hashedPass.passwordHash,
 		sale: hashedPass.salt,
 		active: false
 	}
-	var errors = [];
-	if (new_user._id.length < 4) 
-	 	errors.push("Username should be at least 4 characters long");
-	if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(new_user.email)))
-		errors.push("Email is not valid");
-	if (new_user.corso == '')
-		errors.push('Degree course is missing');
-	if (escapedPass.length < 8)
-		errors.push("Password should be at least long 8 characters");	
-	if (errors.length > 0) {
-		res.json({
-			errors: errors
-		});
-		return;
-	}
 	try {
-		const takenUsername = await Utenti.findOne({_id: new_user._id});
-		if (takenUsername) {
-			res.json({
-				errors: ["Username not available"]
-			});
-			return;
-		}
-		const presentEmail = await Utenti.findOne({email: new_user.email});
-		if (presentEmail) {
-			res.json({
-				errors: ["Email already present in the database"]
-			});
-			return;
-		}
 		await new Utenti(new_user).save();
-		const response = await sendVerificationEmail(new_user._id, new_user.email, req.get("host"));
-		if (response.isError) {
-			res.send({
-				error: response.error
-			});
-		} else {
-			res.status(201).json({
-				message: "Please check your email to verify your new account"
-			});
-		}
+		sendVerificationEmail(new_user._id, new_user.email, req.get("host"));
+		res.status(201).json({msg: "Please check your email to verify your new account"});
 	} catch (error) {
-		res.send("Error " + error);
+		console.log(error);
+		res.status(501).json({errors: [error]});
 	}
-	// var new_utente = new Utenti(new_user);
-	// new_utente.save(function(err, utente) {
-	// 	if (err)
-	// 		res.send(err);
-	// 	//res.send("Confirmation email, check the spam, send again");
-		
-	// 	res.status(201).json(utente);
-	// });
 };
-
-//login
-/*
-exports.login = function(req, res) {
-	Utenti.findOne({_id: req.body._id}, function(err, utente) {
-		if (err || utente == null) {
-			res.status(404).send({ error: 'Wrong Username!' });
-		} else {
-			var hashedPass = sha512(req.body.password, utente.sale);
-			if (hashedPass.passwordHash == utente.password) {
-				res.status(201).json(utente);
-			} else {
-				res.status(404).send({ error: 'Wrong Password!' });
-			}
-		}
-	});
-}
-*/
 
 //sessione
 passport.serializeUser(function(user, cb) {
-  cb(null, user.id);
+  	cb(null, user.id);
 });
 
 passport.deserializeUser(function(id, cb) {
-  Utenti.findById(id, function(err, user) {
-    cb(err, user);
-  });
+	Utenti.findById(id, function(err, user) {
+		cb(err, user);
+	});
 });
 
 const LocalStrategy = require('passport-local').Strategy;
@@ -409,6 +346,31 @@ passport.use(new LocalStrategy(
 		});
   }
 ));
+
+exports.check_login = (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
+	passport.authenticate('local', function(err, user, info) {
+		if (err) {
+			return next(err);
+		}
+		if (!user) {
+			return res.json({
+				errors: [{msg: info.message}]
+			});
+		}
+		req.logIn(user, function(err) {
+			if (err) { return next(err); }
+			if (user._id == "admin") {
+				return res.json({path: "/admin/userTickets"});
+			} else {
+				return res.json({path: "/"});
+			}
+		});
+	})(req, res, next);
+}
 
 exports.get_lives = (req, res) => {
 	Utenti.findOne({_id: req.user._id}, function(err, utente) {
@@ -445,32 +407,24 @@ exports.get_played_games = async(req, res) => {
 }
 
 
-exports.prepare_game = (req, res) => {
-	Utenti.findOne({_id: req.user._id}, function(err, utente) {
-		if (err) {
-			res.send(err);
-			return;
+exports.prepare_game = async (req, res) => {
+	try {
+		const user = await Utenti.findOne({_id: req.user._id}); 
+		if (user.life == 0) {
+			return res.json({errors: [{msg: "Zero lives left"}]});
+		} 
+		const game = {
+			_id: mongoose.Types.ObjectId(),
+			score: 0.0,
+			started: false,
+			date: Date()
 		}
-		if (utente.life == 0) {
-			res.json("zero lives left");
-			// res.sendFile(appRoot + '/www/ZeroLives.html');
-		} else {
-			var game = {
-				_id: mongoose.Types.ObjectId(),
-				score: 0.0,
-				started: false,
-				date: Date()
-			}
-			utente.games.addToSet(game);
-			utente.save(error => {
-				if (error) {
-					console.log(error);
-				} else {
-					res.json(game._id);
-				}
-			});
-		}
-	});
+		user.games.addToSet(game);
+		await user.save();
+		res.json(game._id);
+	} catch (error) {
+		res.json({errors: [error]});
+	}
 }
 
 
