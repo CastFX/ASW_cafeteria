@@ -157,7 +157,7 @@ exports.get_home_data = async (req, res) => {
 	res.json({
 		isLoggedIn: isLoggedIn,
 		username: isLoggedIn ? req.user._id : "",
-		rankings: rankings.dataset
+		rankings: rankings,
 	});
 }
 
