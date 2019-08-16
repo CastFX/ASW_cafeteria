@@ -75,24 +75,10 @@ var app = new Vue({
         this.setDataset();
 		},
     setDataset: function(){
-      axios.get("/api/utenti")
+      axios.get("/api/bar")
 				.then(response => {
-          this.utenti = response.data
-          for (i = 0; i<this.utenti.length; i++){
-            var score = 0;
-            if (this.utenti[i]._id != "admin"){
-              for (j = 0; j<this.utenti[i].games.length; j++){
-                score += this.utenti[i].games[j].score;
-              }
-              if (this.dataset.findIndex(item => item.label == this.utenti[i].corso) != -1){
-                this.dataset[this.dataset.findIndex(item => item.label == this.utenti[i].corso)].count += score;
-              } else {
-                this.dataset.push({label:this.utenti[i].corso, count: score});
-              }
-            }
-          }
+          this.dataset = response.data;
           this.loading = false;
-
           this.makeBarChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },

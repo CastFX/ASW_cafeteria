@@ -97,7 +97,7 @@ exports.reset_password = async(req, res) => {
 	}
 	try {
 		const user = await Utenti.findOne({
-			resetPasswordToken: req.params.token, 
+			resetPasswordToken: req.params.token,
 			resetPasswordExpires: { $gt: Date.now() }
 		});
 		const hashedPass = sha512(req.body.password, salt);
@@ -231,6 +231,16 @@ exports.show_pie_user = (req, res) => {
 
 exports.show_bar = (req, res) => {
 	res.sendFile(appRoot + '/www/barChart.html');
+};
+
+exports.bar_data = async (req, res) => {
+	const rankings = await get_rankings();
+	if (rankings.error) {
+		console.log(rankings.error);
+		res.json(rankings.error);
+		return;
+	}
+	res.json(rankings);
 };
 
 //Login route
@@ -400,7 +410,7 @@ exports.get_played_games = async(req, res) => {
 		// 	{ $limit: 3 },
 		// 	{ $group: {_id: req.user._id, lives: { $first: '$life'}, games: { $push: '$games' }}}, //reconstruct the documents
 		// ]);
-		// res.json(games); 
+		// res.json(games);
 	} catch (err) {
 		res.send({error: err});
 	}
@@ -409,10 +419,10 @@ exports.get_played_games = async(req, res) => {
 
 exports.prepare_game = async (req, res) => {
 	try {
-		const user = await Utenti.findOne({_id: req.user._id}); 
+		const user = await Utenti.findOne({_id: req.user._id});
 		if (user.life == 0) {
 			return res.json({errors: [{msg: "Zero lives left"}]});
-		} 
+		}
 		const game = {
 			_id: mongoose.Types.ObjectId(),
 			score: 0.0,
