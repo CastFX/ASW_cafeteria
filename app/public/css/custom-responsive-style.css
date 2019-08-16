@@ -3,7 +3,7 @@
   /* header style */
   #Header .mobile-menu ul li {
     list-style: none;
-    padding: 0 0 20px 20px; 
+    padding: 0 0 20px 20px;
   }
   /* Hero banner style */
   #HeroBanner .hero-content h1 {
@@ -31,13 +31,9 @@
   }
   #Services .each-service {
     max-width: 100%;
-    margin: 0 0 50px;
   }
   #Services {
     padding: 50px 0;
-  }
-  #Services .each-service:last-child {
-    margin: 0;
   }
   /* porfolio style */
   #Portfolio {
@@ -63,7 +59,7 @@
   }
   #Portfolio .each-portfolio .hover-cont-wrap .hover-cont-block {
     top: 0;
-    transform: translateY(0%); 
+    transform: translateY(0%);
   }
   /* about us style */
   #About .about-wrapper {

@@ -37,8 +37,8 @@ module.exports = function(app) {
 
 	app.get('/admin/pie', isAdminLoggedIn, controller.show_piechart);
 	app.get('/pie', isLoggedIn, controller.show_pie_user);
-	app.route('/bar')
-		.get(controller.show_bar);
+	app.get('/bar', isLoggedIn, controller.show_bar);
+	app.route('/api/bar').get(controller.bar_data);
 
 
 	//Hextris
