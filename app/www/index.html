@@ -138,17 +138,21 @@
                 <section id="About">
                     <div class="container">
                         <div class="about-wrapper">
-                            <h2>Current Ranking</h2>
-
-                            <!-- <ul>
-                                <li v-for="(rank, index) in rankings">
-                                    <span class="position">{{index + 1}}.</span> {{rank.label}} with {{rank.count}} pts!
-                                </li>
-                            </ul> -->
-                            <div class="about-rankings">
-                                <ol>
-                                    <li v-for="rank in rankings"><a>{{rank.label}} with {{rank.count}} pts!</a></li>
-                                </ol>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col about-rankings">
+                                        <h2>Current Ranking</h2>
+                                        <ol>
+                                            <li v-for="rank in rankings"><a>{{rank.label}} with {{rank.count}} pts!</a></li>
+                                        </ol>
+                                    </div>
+                                    <div class="col about-rankings">
+                                        <h2>Top User Scores</h2>
+                                        <ol>
+                                            <li v-for="rank2 in userRankings"><a>{{rank2.username}} with {{rank2.points}} pts!</a></li>
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -396,6 +400,7 @@
         data: {
             hscores: { first: 0, second: 0, third: 0 },
             rankings: [],
+            userRankings: [],
             lives: 0,
             isLoggedIn: false,
             username: "",
@@ -442,6 +447,9 @@
                     this.username = response.data.username;
                     this.rankings = response.data.rankings;
                     this.rankings.sort((a,b) => b.count - a.count);
+                    this.userRankings = response.data.userRankings;
+                    this.userRankings.sort((a,b) => b.points - a.points);
+                    this.userRankings.length = 5;
                 } catch (error) {
                     console.log(error);
                 }

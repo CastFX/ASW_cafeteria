@@ -126,38 +126,45 @@ exports.reset_password = async(req, res) => {
 get_rankings = async() => {
 	try {
 		const utenti = await Utenti.find({});
-		dataset = [];
+		data = { 
+			rankings: [],
+			userRankings: []
+		}
 		for (i = 0; i < utenti.length; i++) {
 			var score = 0;
+			var maxScore = 0;
 			if (utenti[i]._id != "admin") {
 				for (j = 0; j < utenti[i].games.length; j++) {
 					score += utenti[i].games[j].score;
+					maxScore = Math.max(utenti[i].games[j].score, maxScore);
 				}
-				if (dataset.findIndex(item => item.label == utenti[i].corso) != -1) {
-					dataset[dataset.findIndex(item => item.label == utenti[i].corso)].count += score;
+				data.userRankings.push({username: utenti[i]._id, points: maxScore});
+				if (data.rankings.findIndex(item => item.label == utenti[i].corso) != -1) {
+					data.rankings[data.rankings.findIndex(item => item.label == utenti[i].corso)].count += score;
 				} else {
-					dataset.push({label:utenti[i].corso, count: score});
+					data.rankings.push({label:utenti[i].corso, count: score});
 				}
 			}
 		}
-		return dataset;
+		return data;
 	} catch (error) {
-		return error;
+		return {error: error};
 	}
 }
 
 exports.get_home_data = async (req, res) => {
-	const rankings = await get_rankings();
-	if (rankings.error) {
-		console.log(rankings.error);
-		res.json(rankings.error);
+	const data = await get_rankings();
+	if (data.error) {
+		console.log(data.error);
+		res.json(data.error);
 		return;
 	}
 	const isLoggedIn = req.isAuthenticated();
 	res.json({
 		isLoggedIn: isLoggedIn,
 		username: isLoggedIn ? req.user._id : "",
-		rankings: rankings,
+		rankings: data.rankings,
+		userRankings: data.userRankings
 	});
 }
 
