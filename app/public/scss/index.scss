@@ -12484,8 +12484,8 @@
   #About {
     position: relative;
     .about-wrapper {
-      width: 50%;
-      padding: 80px 50px 80px 10px;
+      width: 100%;
+      padding: 80px 10px 80px;
     }
     .about-rankings {
       margin-left: 20px;
@@ -12550,15 +12550,6 @@
     }
     .about-wrapper p:last-child {
       margin: 0;
-    }
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: url("../images/about-rankings.png") no-repeat (center / cover);
-      width: 50%;
-      height: 100%;
     }
   }
 
