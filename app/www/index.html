@@ -52,7 +52,7 @@
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a>                                </li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
-                                    <li v-if="isLoggedIn"><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
+                                    <li v-show="isLoggedIn"><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
                                     <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                     <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
                                     <li v-else><a class="nav-link" href="/login" >Login</a></li>
@@ -65,7 +65,7 @@
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Services">How It Works</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#About">Ranking</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#Portfolio">Portfolio</a></li>
-                                <li v-if="isLoggedIn"><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
+                                <li v-show="isLoggedIn"><a class="nav-link" href="javascript:void(0)" data-target="#Redeem">Redeem</a></li>
                                 <li><a class="nav-link" href="javascript:void(0)" data-target="#ContactUs">Contact</a></li>
                                 <li v-if="isLoggedIn"><a class="nav-link" href="/logout" >Logout</a></li>
                                 <li v-else><a class="nav-link" href="/login" >Login</a></li>
