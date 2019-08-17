@@ -220,8 +220,8 @@ exports.list_adminUserTicketsTotal = function(req, res) {
 //ELIMINAZIONE DI UN TICKET UTILIZZATO DA UN UTENTE DA PARTE DELL'ADMIN
 exports.delete_ticket = function(req, res) {
 	UserTickets.findOneAndDelete({_id: req.params.id}, function(error, result) {
-		if (error) {
-			res.send(error);
+		if (error || result == null) {
+			res.status(404).send(error);
 		}
 		else {
 			res.json(result);
@@ -239,6 +239,24 @@ exports.list_qr = function(req, res) {
 			res.send(err);
 		res.json(qr);
 	});
+};
+
+exports.delete_qr_add_life = function(req, res) {
+	Qr.findOneAndDelete({_id: req.params.id}, function(error, result) {
+		if (error || result == null) {
+			res.status(404).send(error);
+		}	else {
+			Utenti.findOne({"_id": req.user._id}, function(err, utente) {
+				if (err) {
+					res.send(err);
+				}
+				utente.life = utente.life + result.life;
+				utente.save((err, utente) => {
+					res.json(result);
+				});
+			});
+		}
+  });
 };
 
 //Creazione di un nuovo utente

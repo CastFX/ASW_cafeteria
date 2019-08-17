@@ -218,7 +218,6 @@ var app = new Vue({
     deleteTicket: function(){
 			axios.delete("/api/userTickets/"+this.ticketChoice)
 				.then(response => {
-          if (response.data != null && response.data._id != null){
             console.log(response.data);
             axios.get("/api/tickets")
               .then(responseTicket => {
@@ -236,12 +235,9 @@ var app = new Vue({
                 this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
                 this.ticketChoice = '';
               })
-              .catch(error => console.log(error));
-          } else {
-            alert("Codice errato");
-          }
+              .catch(error => alert(error));
 				})
-        .catch(error => console.log(error));
+        .catch(error => alert(error));
 		},
 		listTicket: function(){
 			axios.get("/api/admin/userTickets")

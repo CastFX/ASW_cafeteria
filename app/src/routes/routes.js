@@ -37,7 +37,9 @@ module.exports = function(app) {
 	app.get('/admin/qr', isAdminLoggedIn, controller.show_admin_qr);
 
 	app.get('/api/admin/qr', isAdminLoggedIn, controller.list_qr);
-	app.post('/api/admin/qr', validator.new_qr_check, controller.new_qr);
+	app.post('/api/admin/qr', isAdminLoggedIn, validator.new_qr_check, controller.new_qr);
+	app.delete('/api/admin/qr/:id', controller.delete_qr_add_life);
+
 
 	app.get('/admin/pie', isAdminLoggedIn, controller.show_piechart);
 	app.get('/pie', isLoggedIn, controller.show_pie_user);
