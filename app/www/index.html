@@ -286,13 +286,15 @@
                     </div>
                 </section>
                 <!-- Portfolio section ends here -->
-                <section v-if="isLoggedIn" id="Redeem">
+                <section v-show="isLoggedIn" id="Redeem">
                   <div class="block-heading">
                       <h2>Redeem</h2>
                   </div>
-                  <div class="redeemForm">
-                    <input class="form-control inputRedeem" placeholder="Redeem code" v-model="result">
+                  <div class="redeemForm text-center">
+                    <input class="inputRedeem" placeholder="Redeem code" v-model="result">
                     <button class="buttonRedeem" @click="redeemLife()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+                  </div>
+                  <div class="text-center">
                     <button class="buttonQRModal" @click="showQRModal()" data-toggle="modal" data-target=".bd-qr-modal-sm">Scan QR</button>
                   </div>
                   <div id="myModal" v-if="modalQRVisible" class="modal fade bd-qr-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -495,7 +497,8 @@ Vue.use(VueQrcodeReader)
             redeemLife: function() {
               axios.delete("/api/admin/qr/"+this.result)
                 .then(response => {
-                    console.log("eliminato: "+response.data._id+" life: "+response.data.life);
+                    alert("Congratulation, you gained "+response.data.life+" life");
+                    this.lives = this.lives + response.data.life;
                 }).catch(error => alert(error));
             },
             loadData: async function () {

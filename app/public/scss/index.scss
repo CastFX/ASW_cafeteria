@@ -12817,17 +12817,27 @@
     opacity: 0;
   }
 
+  @media (max-width: 575px) {
+    #Redeem {
+        padding: 50px 0;
+    }
+  }
+
 
   #Redeem{
     height: 300px;
+    padding: 80px 0px;
     .block-heading{
       h2  {
         color:white;
       }
     }
     background: url(../images/banner.jpg) no-repeat 0 (0 / cover);
-    .inputRedeem, .buttonRedeem{
-      width: 20%;
-      min-width: 300px;
+    .inputRedeem, .buttonQRModal{
+      min-width: 200px;
+      margin: 5px;
+    }
+    .buttonRedeem {
+       width: 50px;
     }
   }
