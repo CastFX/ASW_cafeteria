@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="it">
+<meta charset="utf-8">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/barChart.css">
+    <link rel="stylesheet" href="/static/css/cal-heatmap.css">
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="/static/js/cal-heatmap.min.js"></script>
+
+</head>
+<title>Most active days - Heatmap</title>
+
+<body>
+    <div id="app">
+        <div class="pos-f-t">
+            <div class="collapse collapser" id="navbarToggleExternalContent">
+                <div class="p-4">
+                    <p class="subtitleCorsi">This graph highlights the most active days in the app.</p>
+                    <p class="subsubtitleCorsi">Use the icons below to navigate between graphs: Heatmap</p>
+                    <a href="/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+                    <a href="/bar" class="btn btn-default barButton"><i class="fa fa-bar-chart barIcon"></i></a>
+                    <a href="/heatmap" class="btn btn-default barButton"><i class="fa calendar-alt heatmapIcon"></i></a>
+                </div>
+            </div>
+            <nav class="navbar">
+                <a class="navbar-brand" href="/heatmap">Ranking Corsi</a>
+                <a href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
+                <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse"
+                    data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-reorder"></i>
+                </button>
+            </nav>
+        </div>
+        <div class="text-center" v-if="loading">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading data...</span>
+            </div>
+        </div>
+        <div class="calendar" style="margin:0 auto;">
+            <div id="cal-heatmap"></div>
+            <div style="padding-top: 10px;">
+                <a href="#" style="margin-right:10px;" id="cal-heatmap-PreviousDomain-selector"><i
+                        class="fa fa-chevron-left"></i></a>
+                <a href="#" style="float:right;" id="cal-heatmap-NextDomain-selector"><i
+                        class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+
+    var responsiveCal = function (options) {
+
+
+        if (typeof cal === "object") {
+            $('#cal-heatmap').html('');
+            cal = cal.destroy();
+        }
+        cal = new CalHeatMap();
+        cal.init(options);
+
+    }
+
+
+    // run first time, put in load if your scripts are in footer
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+
+<script>
+    let caloptions = {
+        itemSelector: "#cal-heatmap",
+        domain: "month",
+        subDomain: "x_day",
+        data: null,
+        dataType: "json",
+        cellPadding: 5,
+        domainGutter: 20,
+        displayLegend: false,
+        range: 4,
+        considerMissingDataAsZero: false,
+        domainDynamicDimension: true,
+        previousSelector: "#cal-heatmap-PreviousDomain-selector",
+        nextSelector: "#cal-heatmap-NextDomain-selector",
+        domainLabelFormat: function (date) {
+            moment.locale("en");
+            return moment(date).format("MMMM").toUpperCase();
+        },
+        subDomainTextFormat: "%d",
+        legend: [0, 1, 2, 3],
+        label: {
+            position: "top"
+        }
+    };
+
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            dataset: [],
+            utenti: [],
+            loading: false
+
+        },
+        methods: {
+            init: function () {
+                this.loading = true;
+                this.setDataset();
+            },
+            setDataset: function () {
+                axios.get("/api/heatmap")
+                    .then(response => {
+                        this.dataset = response.data;
+                        this.loading = false;
+                        this.responsiveHeatmap();
+                    }).catch(error => (console.log(error))) //Gestione errori approssimativa
+            },
+            responsiveHeatmap: function () {
+                options = caloptions;
+                options.data = this.dataset;
+                var now = new Date();
+                if ($(window).width() < 420) {
+                    options.start = now.setMonth(now.getMonth());
+                    options.range = 1;
+                    options.cellSize = 25;
+                } else if ($(window).width() < 730) {
+                    options.start = now.setMonth(now.getMonth() - 1);
+                    options.range = 2;
+                    options.cellSize = 20;
+                } else if ($(window).width() < 1400) {
+                    options.start = now.setMonth(now.getMonth() - 2);
+                    options.range = 3;
+                    options.cellSize = 23;
+                } else {
+                    options.start = now.setMonth(now.getMonth() - 3);
+                    options.range = 4;
+                    options.cellSize = 23;
+                }
+
+                if (typeof cal === "object") {
+                    $('#cal-heatmap').html('');
+                    cal = cal.destroy();
+                }
+                cal = new CalHeatMap();
+                cal.init(options);
+                $(window).resize(function () {
+                    if (this.resizeTO) clearTimeout(this.resizeTO);
+                    this.resizeTO = setTimeout(function () {
+                        $(this).trigger('resizeEnd');
+                    }, 500);
+                });
+                //resize on resizeEnd function
+                $(window).bind('resizeEnd', function () {
+                    responsiveCal(cal.options);
+                });
+
+            },
+            makeHeatmap: function () {
+
+                let calendar = new CalHeatMap();
+                let weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                calendar.init({
+                    data: this.dataset,
+                    start: weekAgo,
+                    id: "#heatmap",
+                    domain: "day",
+                    subdomain: "hour",
+                    range: 10,
+                    browsing: true,
+                });
+            },
+            makeBarChart: function () {
+                if (screen.width < 768) {
+                    var margin = { top: 100, right: 20, bottom: 30, left: 80 };
+                    width = 800 - margin.left - margin.right;
+                    height = 1000 - margin.top - margin.bottom;
+                    fontSizeX = "220%";
+                    fontSizeY = "220%";
+                    score = "0.50em";
+                } else {
+                    var margin = { top: 30, right: 20, bottom: 30, left: 80 };
+                    width = 800 - margin.left - margin.right;
+                    height = 300 - margin.top - margin.bottom;
+                    fontSizeX = "100%";
+                    fontSizeY = "100%";
+                    score = "0.40em";
+                }
+
+                var isf = "Ing. S. Info.";
+                var dataset = this.dataset;
+
+                //  var formatPercent = d3.format(".0%");
+
+                var x = d3.scale.ordinal()
+                    .rangeRoundBands([0, width], .1);
+
+                var y = d3.scale.linear()
+                    .range([height, 0]);
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left")
+                //.tickFormat(formatPercent);
+
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function (d) {
+                        return "<strong>Score:</strong> <span style='color:red'>" + d.count + "</span>";
+                    })
+
+                var svg = d3.select("body").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .call(responsivefy)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                svg.call(tip);
+
+
+                function drawBar(data) {
+                    x.domain(data.map(function (d) {
+                        if (d.label == "Ingegneria e Scienze Informatiche") {
+                            return isf;
+                        } else {
+                            return d.label;
+                        }
+                    }));
+                    y.domain([0, d3.max(data, function (d) { return d.count; })]);
+
+                    svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .style("font-size", fontSizeX)
+                        .call(xAxis);
+
+                    svg.append("g")
+                        .attr("class", "y axis")
+                        .style("font-size", fontSizeY)
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", score)
+                        .style("text-anchor", "end")
+                        .text("Score");
+
+                    svg.selectAll(".bar")
+                        .data(data)
+                        .enter().append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function (d) {
+                            if (d.label == "Ingegneria e Scienze Informatiche") {
+                                return x(isf);
+                            } else {
+                                return x(d.label);
+                            }
+                        })
+                        .attr("width", x.rangeBand())
+                        .attr("y", function (d) { return y(d.count); })
+                        .attr("height", function (d) { return height - y(d.count); })
+                        .on('mouseover', tip.show)
+                        .on('mouseout', tip.hide)
+
+                }
+
+                function type(d) {
+                    d.count = +d.count;
+                    return d;
+                }
+
+
+                dataset.sort(function (a, b) {
+                    return d3.descending(a.count, b.count)
+                })
+
+                x.domain(dataset.map(function (d) {
+                    if (d.label == "Ingegneria e Scienze Informatiche") {
+                        return isf;
+                    } else {
+                        return d.label;
+                    }
+                }));
+
+                drawBar(this.dataset);
+
+
+
+                function responsivefy(svg) {
+                    // get container + svg aspect ratio
+                    var container = d3.select(svg.node().parentNode),
+                        width = parseInt(svg.style("width")),
+                        height = parseInt(svg.style("height")),
+                        aspect = width / height;
+
+                    // add viewBox and preserveAspectRatio properties,
+                    // and call resize so that svg resizes on inital page load
+                    svg.attr("viewBox", "0 0 " + width + " " + height)
+                        .attr("perserveAspectRatio", "xMinYMid")
+                        .call(resize);
+
+                    // to register multiple listeners for same event type,
+                    // you need to add namespace, i.e., 'click.foo'
+                    // necessary if you call invoke this function for multiple svgs
+                    // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+                    d3.select(window).on("resize." + container.attr("id"), resize);
+
+                    // get width of container and resize svg to fit it
+                    function resize() {
+                        var targetWidth = parseInt(container.style("width"));
+                        svg.attr("width", targetWidth);
+                        svg.attr("height", Math.round(targetWidth / aspect));
+                    }
+                }
+            }
+        },
+        mounted() {
+            this.init();
+        }
+    });
+
+</script>
+
+</html>

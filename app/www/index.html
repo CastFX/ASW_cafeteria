@@ -436,7 +436,7 @@
                     this.rankings.sort((a,b) => b.count - a.count);
                     this.userRankings = response.data.userRankings;
                     this.userRankings.sort((a,b) => b.points - a.points);
-                    this.userRankings.length = 5;
+                    this.userRankings.length = 3;
                 } catch (error) {
                     console.log(error);
                 }

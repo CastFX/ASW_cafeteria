@@ -6,7 +6,7 @@ var UserTickets = mongoose.model("UserTickets");
 var EmailVerifications = mongoose.model("EmailVerifications");
 var Qr = mongoose.model("Qr");
 var nodemailer = require("nodemailer");
-const { body, check, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 
 
 var smtpTransport = nodemailer.createTransport({
@@ -281,7 +281,59 @@ exports.bar_data = async (req, res) => {
 		return;
 	}
 	res.json(data.rankings);
-};
+}
+exports.show_heatmap = (req, res) => {
+	res.sendFile(appRoot + '/www/heatmap.html');
+}
+
+fakeData = () => {
+	const res = {};
+	for (let i = -8; i < 4; i++) {
+		for (let j = 0; j < 24; j++) {
+			let date = new Date();
+			date.setDate(date.getDate() + i);
+			date.setHours(date.getHours() + j);
+			res[Math.floor(date.getTime() / 1000)] = Math.floor(Math.random() * 100) + 1;
+		}
+	}
+	return res;
+}
+
+exports.heatmap_data = async (req, res) => {
+	try {
+		const data = await Utenti.aggregate([
+			{"$unwind":"$games"},
+			{"$group": {
+				"_id": {
+				"$subtract": [
+					{ "$subtract": [ "$games.date", new Date("1970-01-01") ] },
+					{ "$mod": [
+					{ "$subtract": [ "$games.date", new Date("1970-01-01") ] },
+					1000 * 60 * 60 * 24
+					]}
+				]
+				},
+				"count": {"$sum": 1}
+			}
+		}]);
+		// const fitData = data.map(item => {
+		// 	const container = {};
+		// 	container[item._id] = item.count;
+		// 	return container;
+		// });
+		const fitData = data.reduce((result, item) => {
+			result[item._id / 1000] = item.count;
+			return result;
+		}, {});
+		// res.json(fitData);
+		const fakeData2 = fakeData();
+		res.json(fakeData2);	
+	} catch (error) {
+		console.log(error);
+		res.json({error: error});
+	}
+
+}
 
 //Login route
 exports.show_login = function(req, res) {

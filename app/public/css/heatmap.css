@@ -1,0 +1,33 @@
+.content {
+  min-width: 400px;
+}
+
+#cal-heatmap {
+  width: 839px;
+}
+
+.subdomain-text {
+  fill: #fff;
+}
+
+#cal-heatmap a {
+  color: #999;
+}
+
+@media all and (max-width: 1400px) {
+  #cal-heatmap {
+    width: 626px;
+  }
+}
+@media all and (max-width: 730px) {
+  #cal-heatmap {
+    width: 365px;
+  }
+}
+@media all and (max-width: 420px) {
+  #cal-heatmap {
+    width: 191px;
+  }
+}
+
+/*# sourceMappingURL=heatmap.css.map */
