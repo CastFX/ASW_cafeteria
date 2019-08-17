@@ -127,7 +127,7 @@ exports.reset_password = async(req, res) => {
 get_rankings = async() => {
 	try {
 		const utenti = await Utenti.find({});
-		data = { 
+		data = {
 			rankings: [],
 			userRankings: []
 		}
@@ -254,7 +254,7 @@ exports.new_qr = async function(req, res) {
 			life: req.body.life
 		};
 		await new Qr(new_qr).save();
-		res.status(201).json({msg: "QR creato"});
+		res.status(201).json({msg: "QR creato", qr: new_qr});
 	} catch (error) {
 		console.log(error);
 		res.status(501).json({errors: [error]});
@@ -327,7 +327,7 @@ exports.heatmap_data = async (req, res) => {
 		}, {});
 		// res.json(fitData);
 		const fakeData2 = fakeData();
-		res.json(fakeData2);	
+		res.json(fakeData2);
 	} catch (error) {
 		console.log(error);
 		res.json({error: error});

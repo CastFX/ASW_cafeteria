@@ -20,8 +20,9 @@
 <div id="app">
   <div class="collapse collapser" id="navbarToggleExternalContent">
     <div class="p-4">
-      <p class="titleCollapseAdmin">Usa le icone sottostanti per navigare i grafici: PieChart</p>
+      <p class="titleCollapseAdmin">Use these icons to navigate the site: </p>
       <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+      <a href="/admin/userTickets" class="btn btn-default ticketButton"><i class="fa fa-th-list ticketIcon"></i></a>
     </div>
   </div>
   <nav class="navbar">
@@ -89,10 +90,10 @@
         <div class="modal-body">
           <p v-cloak> {{errors}} </p>
           <p v-cloak> {{message}} </p>
-          <span> Scegli il numero di vite: </span>
+          <span> Number of lives </span>
           <input type="number" name="quantity" min="1" max="5" v-model="lifeNumber">
           <button type="button" @click="createQR()">
-            Go
+            <i class="fa fa-qrcode"></i>
           </button>
         </div>
       </div>
@@ -188,6 +189,7 @@ var app = new Vue({
             this.errors = response.data.errors.map(({msg}) => msg);
           } else {
             this.message = response.data.msg;
+            this.qrList.push(response.data.qr);
           }
         })
         .catch(err => this.errors = [err])

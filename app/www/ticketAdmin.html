@@ -19,8 +19,10 @@
 <div id="app">
   <div class="collapse collapser" id="navbarToggleExternalContent">
     <div class="p-4">
-      <p class="titleCollapseAdmin">Usa le icone sottostanti per navigare i grafici: PieChart</p>
+      <p class="titleCollapseAdmin">Use these icons to navigate the site: </p>
       <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+      <a href="/admin/qr" class="btn btn-default qrButton"><i class="fa fa-qrcode qrIcon"></i></a>
+      <a href="/logout" class="btn btn-default logoutButton pull-right"><i class="fa fa-sign-out logoutIcon"></i></a>
     </div>
   </div>
   <nav class="navbar">
@@ -39,10 +41,10 @@
     					  <img class='align-self-center mr-3 imageClass' v-bind:src=item.idTipoTicket.image v-bind:alt=item.idTipoTicket.type @click=showAlert(item)>
               <div class='media-body'>
     					       <h5 class='mt-0'>
-    						             {{item.idTipoTicket.type}} del {{item.idTipoTicket.discount}}% per l'utente: <b>{{item.idUtente}}</b>
+    						             Discount {{item.idTipoTicket.type}} of {{item.idTipoTicket.discount}}%
     						     </h5>
     					       <p class="mb-0">
-                       {{item.idTipoTicket.description}} </br>
+                       User: <b>{{item.idUtente}}</b>
                      </p>
                      <div class ='media-bottom mt-2 mb-2'>
                         <button type="button" class="btn btn-outline-primary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="showAlert(item)">Get Code</button>

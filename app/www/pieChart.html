@@ -21,9 +21,9 @@
   <div id="app">
     <div class="collapse collapser" id="navbarToggleExternalContent">
       <div class="p-4">
-        <p class="titleCollapsePie">Usa le icone sottostanti per navigare: PieChart, Tickets.</p>
-        <a href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+        <p class="titleCollapsePie">Use these icons to navigate the site: </p>
         <a href="/admin/userTickets" class="btn btn-default ticketButton"><i class="fa fa-th-list ticketIcon"></i></a>
+        <a href="/admin/qr" class="btn btn-default qrButton"><i class="fa fa-qrcode qrIcon"></i></a>
       </div>
     </div>
     <nav class="navbar">
@@ -73,7 +73,7 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets Posseduti Dagli Utenti',
+    title: 'Tickets owned by users',
     utentiSelect: [],
     utenteChoice: '',
     actual: true
@@ -92,7 +92,7 @@ var app = new Vue({
           this.setSingleUserTicketsTotal();
         }
       } else {
-        alert("Seleziona un utente");
+        alert("Select an user");
       }
     },
     setUserFinder: function(){
@@ -102,13 +102,13 @@ var app = new Vue({
     },
     setSingleUserTickets: function() {
       document.getElementById('chart').innerHTML = "";
-      this.title = "Tickets Posseduti Dall' Utente "+this.utenteChoice;
+      this.title = "Tickets owned by the user "+this.utenteChoice;
       this.loading = true;
       this.setSingleUserDataset();
     },
     setSingleUserTicketsTotal: function() {
       document.getElementById('chart').innerHTML = "";
-      this.title = "Tickets Totali Dell' Utente "+this.utenteChoice;
+      this.title = "Total tickets of the user "+this.utenteChoice;
       this.loading = true;
       this.setSingleUserTotalDataset();
     },
@@ -116,7 +116,7 @@ var app = new Vue({
       this.actual = false;
       //Crea il pie chart dei ticket complessivi
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Totali Degli Utenti';
+      this.title = 'Total tickets of all users';
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
@@ -139,7 +139,7 @@ var app = new Vue({
       this.actual = true;
       //Crea il pie chart dei ticket attualmente in possesso agli utenti
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Posseduti Dagli Utenti';
+      this.title = 'Tickets owned by users';
       this.loading = true;
       axios.get("/api/admin/userTickets")
       	.then(response => {
