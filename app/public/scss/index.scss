@@ -12240,21 +12240,22 @@
         color: #fff;
         margin: 0 0 30px;
       }
-      .hero-cta {
-        font-size: 22px;
-        color: #fff;
-        text-decoration: none;
-        border: 2px solid #fff;
-        border-radius: 0;
-        display: inline-block;
-        padding: 10px 20px;
-        transition: all 0.3s ease-in-out;
-        &:hover {
-          background-color: #0098aa;
-          border: 2px solid #0098aa;
-          transition: all 0.3s ease-in-out;
-        }
-      }
+    }
+  }
+
+  .hero-cta {
+    font-size: 22px;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #fff;
+    border-radius: 0;
+    display: inline-block;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background-color: #0098aa;
+      border: 2px solid #0098aa;
+      transition: all 0.3s ease-in-out;
     }
   }
 
@@ -12829,14 +12830,19 @@
     .block-heading{
       h2  {
         color:white;
+        text-shadow: 2px 2px 4px #000000;
       }
     }
-    background: url(../images/banner.jpg) no-repeat 0 (0 / cover);
+    background: url(../images/redeemImg.jpg) no-repeat 0 (0 / cover);
     .inputRedeem, .buttonQRModal{
-      min-width: 200px;
+      //min-width: 200px;
       margin: 5px;
     }
-    .buttonRedeem {
-       width: 50px;
+    .buttonRedeem, .buttonQRModal{
+      font-size: 16px;
+      background-color: rgba(10, 40, 60, 0.7);
+      &:hover{
+        color:white;
+      }
     }
   }

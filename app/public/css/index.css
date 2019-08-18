@@ -12557,7 +12557,8 @@ ul, li {
   color: #fff;
   margin: 0 0 30px;
 }
-#HeroBanner .hero-content .hero-cta {
+
+.hero-cta {
   font-size: 22px;
   color: #fff;
   text-decoration: none;
@@ -12567,7 +12568,7 @@ ul, li {
   padding: 10px 20px;
   transition: all 0.3s ease-in-out;
 }
-#HeroBanner .hero-content .hero-cta:hover {
+.hero-cta:hover {
   background-color: #0098aa;
   border: 2px solid #0098aa;
   transition: all 0.3s ease-in-out;
@@ -13098,17 +13099,21 @@ ul, li {
 #Redeem {
   height: 300px;
   padding: 80px 0px;
-  background: url(../images/banner.jpg) no-repeat 0 0/cover;
+  background: url(../images/redeemImg.jpg) no-repeat 0 0/cover;
 }
 #Redeem .block-heading h2 {
   color: white;
+  text-shadow: 2px 2px 4px #000000;
 }
 #Redeem .inputRedeem, #Redeem .buttonQRModal {
-  min-width: 200px;
   margin: 5px;
 }
-#Redeem .buttonRedeem {
-  width: 50px;
+#Redeem .buttonRedeem, #Redeem .buttonQRModal {
+  font-size: 16px;
+  background-color: rgba(10, 40, 60, 0.7);
+}
+#Redeem .buttonRedeem:hover, #Redeem .buttonQRModal:hover {
+  color: white;
 }
 
 /*# sourceMappingURL=index.css.map */

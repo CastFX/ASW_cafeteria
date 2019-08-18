@@ -292,10 +292,11 @@
                   </div>
                   <div class="redeemForm text-center">
                     <input class="inputRedeem" placeholder="Redeem code" v-model="result">
-                    <button class="buttonRedeem" @click="redeemLife()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
+                  <!--  <button class="buttonRedeem" @click="redeemLife()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>-->
                   </div>
                   <div class="text-center">
-                    <button class="buttonQRModal" @click="showQRModal()" data-toggle="modal" data-target=".bd-qr-modal-sm">Scan QR</button>
+                    <a href="javascript:void(0)" class="hero-cta buttonQRModal" @click="showQRModal()" data-toggle="modal" data-target=".bd-qr-modal-sm">Scan QR</a>
+                    <a href="javascript:void(0)" class="hero-cta buttonRedeem" @click="redeemLife()">Redeem</a>
                   </div>
                   <div id="myModal" v-if="modalQRVisible" class="modal fade bd-qr-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">
