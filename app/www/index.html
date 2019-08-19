@@ -291,7 +291,7 @@
                       <h2>Redeem</h2>
                   </div>
                   <div class="redeemForm text-center">
-                    <input class="inputRedeem" placeholder="Redeem code" v-model="result">
+                    <input @keyup.enter="redeemLife()" class="inputRedeem" placeholder="Redeem code" v-model="result">
                   <!--  <button class="buttonRedeem" @click="redeemLife()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>-->
                   </div>
                   <div class="text-center">
@@ -308,7 +308,7 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                          <p class="error">{{ error }}</p>
+                          <p class="error">{{ errorCamera }}</p>
                           <p class="decode-result">Last result: <b>{{ result }}</b></p>
                           <div class="text-center" v-if="loading">
                             <div class="spinner-border" role="status">
@@ -320,6 +320,11 @@
                       </div>
                     </div>
                   </div>
+                  <modal v-cloak v-if="errorModal" @close="errorModal = false">
+                    <img slot="image" v-show="false">
+                    <h3 slot="header"><span class="congratz">Attention!</span></h3>
+                    <h5 v-cloak slot="body">{{error}}</h5>
+                  </modal>
                 </section>
                 <!-- Contact us section starts here -->
                 <section id="ContactUs">
@@ -412,6 +417,45 @@
 <link rel="stylesheet" href="https://unpkg.com/vue-qrcode-reader@1.3.1/dist/vue-qrcode-reader.css">
 <script>
 
+Vue.component('modal', {
+    template: `
+    <transition name="modal">
+    <div class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container">
+
+      <div class="modal-header">
+        <slot name="header">
+        default header
+        </slot>
+      </div>
+
+      <div class="modal-body">
+        <slot name="image">
+          default image
+        </slot>
+        <slot name="body">
+        default body
+        </slot>
+      </div>
+      <div class="modal-footer">
+        <slot name="footer">
+        <div class="modal-default-links">
+          <button class="btnModalDelete" @click="$emit('close')">
+          OK
+          </button>
+        </div>
+        </slot>
+      </div>
+      </div>
+    </div>
+    </div>
+  </transition>
+`,
+});
+
+
+
 Vue.use(VueQrcodeReader)
 
     var app = new Vue({
@@ -427,7 +471,9 @@ Vue.use(VueQrcodeReader)
             modalQRVisible: false,
             error: '',
             result: '',
-            loading: false
+            loading: false,
+            errorModal: false,
+            errorCamera: ''
         },
         methods: {
             startGame: function () {
@@ -468,22 +514,21 @@ Vue.use(VueQrcodeReader)
             },
             async onInit (promise) {
               try {
-                console.log("INIT");
                 this.loading = true;
                 await promise
               } catch (error) {
                 if (error.name === 'NotAllowedError') {
-                  this.error = "ERROR: you need to grant camera access permisson"
+                  this.errorCamera = "ERROR: you need to grant camera access permisson"
                 } else if (error.name === 'NotFoundError') {
-                  this.error = "ERROR: no camera on this device"
+                  this.errorCamera = "ERROR: no camera on this device"
                 } else if (error.name === 'NotSupportedError') {
-                  this.error = "ERROR: secure context required (HTTPS, localhost)"
+                  this.errorCamera = "ERROR: secure context required (HTTPS, localhost)"
                 } else if (error.name === 'NotReadableError') {
-                  this.error = "ERROR: is the camera already in use?"
+                  this.errorCamera = "ERROR: is the camera already in use?"
                 } else if (error.name === 'OverconstrainedError') {
-                  this.error = "ERROR: installed cameras are not suitable"
+                  this.errorCamera = "ERROR: installed cameras are not suitable"
                 } else if (error.name === 'StreamApiNotSupportedError') {
-                  this.error = "ERROR: Stream API is not supported in this browser or SSL error"
+                  this.errorCamera = "ERROR: Stream API is not supported in this browser or SSL error"
                 }
               } finally {
                 this.loading = false;
@@ -500,7 +545,13 @@ Vue.use(VueQrcodeReader)
                 .then(response => {
                     alert("Congratulation, you gained "+response.data.life+" life");
                     this.lives = this.lives + response.data.life;
-                }).catch(error => alert(error));
+                }).catch(error => {
+                  this.error = error;
+                  if (this.error == "Error: Request failed with status code 404") {
+                    this.error = "Error: this code was not found!"
+                  }
+                  this.errorModal = true
+                });
             },
             loadData: async function () {
                 try {

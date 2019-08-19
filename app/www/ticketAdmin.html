@@ -68,6 +68,12 @@
     <h5 v-cloak slot="body">{{deleteString}}</h5>
   </modal>
 
+  <modal v-cloak v-if="errorModal" @close="errorModal = false">
+    <img slot="image" v-show="false">
+    <h3 slot="header"><span class="congratz">Attention!</span></h3>
+    <h5 v-cloak slot="body">{{error}}</h5>
+  </modal>
+
   <div id="myModal" v-if="modalVisible" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -173,7 +179,8 @@ var app = new Vue({
     loading: false,
     ticketDeleted: false,
     deleteString: '',
-    deleteImage: ''
+    deleteImage: '',
+    errorModal: false
 	},
 	methods: {
     onDecode (result) {
@@ -235,20 +242,36 @@ var app = new Vue({
                 this.tickets.splice(this.tickets.findIndex(item => item._id == this.ticketChoice), 1); //Quale tipo di elemento con find, quanti tipi
                 this.ticketChoice = '';
               })
-              .catch(error => alert(error));
+              .catch(error => {
+                this.error = error;
+                if (this.error == "Error: Request failed with status code 404") {
+                  this.error = "Error: this code was not found!"
+                }
+                this.errorModal = true
+              });
 				})
-        .catch(error => alert(error));
+        .catch(error => {
+          this.error = error;
+          if (this.error == "Error: Request failed with status code 404") {
+            this.error = "Error: this code was not found!"
+          }
+          this.errorModal = true
+        });
 		},
 		listTicket: function(){
 			axios.get("/api/admin/userTickets")
 				.then(response => {this.tickets = response.data; this.dataReady = true}) //Promise
-				.catch(error => (console.log(error))) //Gestione errori approssimativa
+				.catch(error => {
+          this.error = error;
+          this.errorModal = true
+        }) //Gestione errori approssimativa
 		},
     submitTicket: function() {
       if (this.ticketChoice != '') {
           this.deleteTicket();
       } else {
-        alert("Please enter a code!");
+        this.error = "Please enter a code!";
+        this.errorModal = true;
       }
     },
     setEnterKey: function() {
