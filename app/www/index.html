@@ -77,12 +77,12 @@
                 <!-- Banner starts here -->
                 <section id="HeroBanner">
                     <div class="hero-content">
-                        <div v-if="isLoggedIn">
+                        <div v-show="isLoggedIn">
                             <h1>Welcome, {{username}}.</h1>
                             <p>Lives: {{lives}}</p>
                             <!-- <p>We are team of talanted designers making websites with Bootstrap</p> -->
                             <a href="#" class="hero-cta" v-show="lives > 0" v-on:click="startGame">Play</a>
-                            <a href="#redeem" class="hero-cta" v-else>Redeem</a>
+                            <a class="nav-link hero-cta" href="javascript:void(0)" v-show="lives == 0" data-target="#Redeem">Redeem</a>
                         </div>
                         <div v-if="!isLoggedIn">
                             <h1>ASW - Cafeteria</h1>

@@ -39,8 +39,8 @@
       </div>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
-      <button @click="setUserTickets()"> User Tickets </button>
-      <button @click="setUserTicketsTotal()"> Total Tickets </button>
+      <button class="btn btn-outline-primary btn-sm align-self-center" @click="setUserTickets()"> User Tickets </button>
+      <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setUserTicketsTotal()"> Total Tickets </button>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
       <select v-cloak name="utentiSelect" class="utenti" id="utenti-find" v-model="utenteChoice">
@@ -120,9 +120,7 @@ var app = new Vue({
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
             if (this.dataset.findIndex(item => item.label == tickets[i].type+" "+tickets[i].discount+"%")!=-1) {
@@ -143,9 +141,7 @@ var app = new Vue({
       this.loading = true;
       axios.get("/api/admin/userTickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           for (i = 0; i<tickets.length; i++){
             if (this.dataset.findIndex(item => item.label == tickets[i].idTipoTicket.type+" "+tickets[i].idTipoTicket.discount+"%")!=-1) {
@@ -161,9 +157,7 @@ var app = new Vue({
     setSingleUserTotalDataset: function() {
       axios.get("/api/tickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           tickets = tickets.filter(this.filterByUserTotal);
           for (i = 0; i<tickets.length; i++){
@@ -180,9 +174,7 @@ var app = new Vue({
     setSingleUserDataset: function() {
       axios.get("/api/admin/userTickets")
       	.then(response => {
-          for (i = 0; i<this.dataset.length; i++){
-            this.dataset[i].count = 0;
-          }
+          this.dataset = [];
           var tickets = response.data;
           tickets = tickets.filter(this.filterByUser);
           for (i = 0; i<tickets.length; i++){
