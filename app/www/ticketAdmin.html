@@ -218,9 +218,9 @@ var app = new Vue({
       this.modalVisible = false;
     },
     showAlert: function(item){
-      if(confirm("Do you want to fill the input with the code of the user "+item.idUtente+" for the item "+item.idTipoTicket.type+" with discount "+item.idTipoTicket.discount+"% ?")) {
-        this.ticketChoice = item._id;
-      }
+      //if(confirm("Do you want to fill the input with the code of the user "+item.idUtente+" for the item "+item.idTipoTicket.type+" with discount "+item.idTipoTicket.discount+"% ?")) {
+      this.ticketChoice = item._id;
+      //}
     },
     deleteTicket: function(){
 			axios.delete("/api/userTickets/"+this.ticketChoice)
