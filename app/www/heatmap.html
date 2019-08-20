@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/barChart.css">
-    <!-- <link rel="stylesheet" href="/static/css/cal-heatmap.css"> -->
     <link rel="stylesheet" href="/static/css/heatmap.css">
     <script src="https://d3js.org/d3.v3.js"></script>
     <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
@@ -24,7 +23,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="/static/js/cal-heatmap.min.js"></script>
+    <script src="/static/js/cal-heatmap.js"></script>
 
 </head>
 <title>Most active days - Heatmap</title>
@@ -81,7 +80,7 @@
         itemSelector: "#cal-heatmap",
         domain: "day",
         subDomain: "hour",
-        itemName: ["games", "games"],
+        itemName: ["game", "games"],
         data: null,
         dataType: "json",
         cellSize: 20,
@@ -93,6 +92,10 @@
         domainDynamicDimension: true,
         previousSelector: "#cal-heatmap-PreviousDomain-selector",
         nextSelector: "#cal-heatmap-NextDomain-selector",
+        cellLabel: {
+            empty: "No games played on {date}",
+            filled: "{count} {name} played on {date}"
+        },
         domainLabelFormat: function (date) {
             moment.locale("en");
             return moment(date).format("D MMMM").toUpperCase();
@@ -158,7 +161,7 @@
                                 : (width < 1400) ? 35
                                 : 35;
                 let tileNumber = Math.floor((width + options.domainGutter) / (4*options.cellSize + 3*options.cellPadding + options.domainGutter));
-                tileNumber = Math.min(tileNumber, 7);
+                tileNumber = Math.min(Math.max(tileNumber, 1), 7);
                 console.log("width:" + width + ", n:" + tileNumber);
                 
                 let now = new Date();
