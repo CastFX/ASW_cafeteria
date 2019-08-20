@@ -89,9 +89,13 @@ h1 {
   display: none;
 }
 
+.p-4 {
+  font: 10px sans-serif;
+}
+
 .titleCollapsePie {
   color: white;
-  font-size: 130%;
+  font-size: 150%;
 }
 
 .utenti {
@@ -102,6 +106,11 @@ h1 {
   margin-left: 2px;
   min-width: 50px;
   padding-top: 1px;
+}
+
+.subtitlePie {
+  color: white;
+  font-size: 180%;
 }
 
 /*# sourceMappingURL=pieChart.css.map */

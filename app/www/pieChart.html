@@ -21,18 +21,18 @@
   <div id="app">
     <div class="collapse collapser" id="navbarToggleExternalContent">
       <div class="p-4">
+        <p class="subtitlePie">In this page are represented the tickets of all the users</p>
         <p class="titleCollapsePie">Use these icons to navigate the site: </p>
         <a href="/admin/userTickets" class="btn btn-default ticketButton"><i class="fa fa-th-list ticketIcon"></i></a>
         <a href="/admin/qr" class="btn btn-default qrButton"><i class="fa fa-qrcode qrIcon"></i></a>
       </div>
     </div>
     <nav class="navbar">
-      <a class="navbar-brand" href="/admin/userTickets">Pie Tickets</a>
+      <a v-cloak class="navbar-brand" href="/admin/pie">{{title}}</a>
       <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-reorder"></i>
       </button>
     </nav>
-    <h1 v-cloak>{{title}}</h1>
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
@@ -73,7 +73,7 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets owned by users',
+    title: 'Tickets owned',
     utentiSelect: [],
     utenteChoice: '',
     actual: true
@@ -91,8 +91,6 @@ var app = new Vue({
         } else {
           this.setSingleUserTicketsTotal();
         }
-      } else {
-        alert("Select an user");
       }
     },
     setUserFinder: function(){
@@ -102,21 +100,22 @@ var app = new Vue({
     },
     setSingleUserTickets: function() {
       document.getElementById('chart').innerHTML = "";
-      this.title = "Tickets owned by the user "+this.utenteChoice;
+      this.title = "Tickets owned: "+this.utenteChoice;
       this.loading = true;
       this.setSingleUserDataset();
     },
     setSingleUserTicketsTotal: function() {
       document.getElementById('chart').innerHTML = "";
-      this.title = "Total tickets of the user "+this.utenteChoice;
+      this.title = "Total tickets: "+this.utenteChoice;
       this.loading = true;
       this.setSingleUserTotalDataset();
     },
     setUserTicketsTotal: function(){
+      this.utenteChoice = '';
       this.actual = false;
       //Crea il pie chart dei ticket complessivi
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Total tickets of all users';
+      this.title = 'Total tickets';
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
@@ -134,10 +133,11 @@ var app = new Vue({
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     setUserTickets: function(){
+      this.utenteChoice = '';
       this.actual = true;
       //Crea il pie chart dei ticket attualmente in possesso agli utenti
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets owned by users';
+      this.title = 'Tickets owned';
       this.loading = true;
       axios.get("/api/admin/userTickets")
       	.then(response => {

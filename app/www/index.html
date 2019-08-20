@@ -120,12 +120,12 @@
                                 <p class="service-description">... If you score a lot points. It also helps being lucky <i class="fa fa-gift" aria-hidden="true"></i>.</p>
                             </div>
                             <div class="each-service each-service-pink">
-                                <div class="service-icon service-pink"><i class="fa fa-signal" aria-hidden="true"></i></div>
+                                <a href="/bar"><div class="service-icon service-pink"><i class="fa fa-signal" aria-hidden="true"></i></div></a>
                                 <h5 class="service-title">Rankings</h5>
                                 <p class="service-description">Score as many point as possibile to help your team in <a href="/bar">these meaningless rankings </a><i class="fa fa-bar-chart" aria-hidden="true"></i>.</p>
                             </div>
                             <div class="each-service each-service-purple">
-                                <div class="service-icon service-purple"><i class="fa fa-ticket" aria-hidden="true"></i></div>
+                                <a href="/tickets"><div class="service-icon service-purple"><i class="fa fa-ticket" aria-hidden="true"></i></div></a>
                                 <h5 class="service-title">Tickets</h5>
                                 <p class="service-description">Don't forget the discount tickets <a href="/tickets">on your personal page</a><i class="fa fa-ticket" aria-hidden="true"></i>.</p>
                             </div>
@@ -325,6 +325,11 @@
                     <h3 slot="header"><span class="congratz">Attention!</span></h3>
                     <h5 v-cloak slot="body">{{error}}</h5>
                   </modal>
+                  <modal v-cloak v-if="successModal" @close="closeModalSuccess()">
+                    <img slot="image" v-show="false">
+                    <h3 slot="header"><span class="congratz">Congrats!</span></h3>
+                    <h5 v-cloak slot="body">You earned {{successLife}} life!</h5>
+                  </modal>
                 </section>
                 <!-- Contact us section starts here -->
                 <section id="ContactUs">
@@ -473,7 +478,9 @@ Vue.use(VueQrcodeReader)
             result: '',
             loading: false,
             errorModal: false,
-            errorCamera: ''
+            errorCamera: '',
+            successModal: false,
+            successLife: 0
         },
         methods: {
             startGame: function () {
@@ -540,10 +547,16 @@ Vue.use(VueQrcodeReader)
             hideQRModal: function() {
               this.modalQRVisible = false;
             },
+            closeModalSuccess: function() {
+              this.successModal = false;
+              this.successLife = 0;
+              this.result = '';
+            },
             redeemLife: function() {
               axios.delete("/api/admin/qr/"+this.result)
                 .then(response => {
-                    alert("Congratulation, you gained "+response.data.life+" life");
+                    this.successLife = response.data.life;
+                    this.successModal = true;
                     this.lives = this.lives + response.data.life;
                 }).catch(error => {
                   this.error = error;

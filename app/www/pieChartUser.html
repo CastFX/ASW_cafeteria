@@ -22,20 +22,20 @@
     <div class="pos-f-t">
     <div class="collapse collapser" id="navbarToggleExternalContent">
       <div class="p-4">
-        <p class="titleCollapsePie">Usa le icone sottostanti per navigare: PieChart, BarChart</p>
-        <a href="/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+        <p class="subtitlePie">In this page are represented the tickets you earned</p>
+        <p class="titleCollapsePie">Use these icons to navigate other charts: BarChart</p>
         <a href="/bar" class="btn btn-default barButton"><i class="fa fa-bar-chart barIcon"></i></a>
       </div>
     </div>
     <nav class="navbar">
-      <a class="navbar-brand" href="/pie">Pie Tickets</a>
+      <a v-cloak class="navbar-brand" href="/pie">{{title}}</a>
       <a href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
       <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-reorder"></i>
       </button>
     </nav>
     </div>
-    <h1 v-cloak>{{title}}</h1>
+
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
@@ -77,7 +77,7 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    title: 'Tickets Posseduti Dagli Utenti',
+    title: 'User Tickets',
     risparmio: 0,
     risparmioUsed: 0
 	},
@@ -123,7 +123,7 @@ var app = new Vue({
       this.actual = false;
       //Crea il pie chart dei ticket complessivi
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets Totali';
+      this.title = 'Total Tickets';
       this.loading = true;
       axios.get("/api/tickets")
       	.then(response => {
@@ -143,7 +143,7 @@ var app = new Vue({
     setUserTickets: function(){
       //Crea il pie chart dei ticket attualmente in possesso agli utenti
       document.getElementById('chart').innerHTML = "";
-      this.title = 'Tickets In Possesso';
+      this.title = 'Tickets you possess';
       this.loading = true;
       axios.get("/api/userTickets")
       	.then(response => {

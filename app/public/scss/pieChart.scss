@@ -59,9 +59,13 @@
 
 [v-cloak] { display: none; }
 
+.p-4{
+  font: 10px sans-serif;
+}
+
 .titleCollapsePie{
   color: white;
-  font-size: 130%;
+  font-size: 150%;
 }
 
 .utenti{
@@ -72,4 +76,9 @@
   margin-left:2px;
   min-width: 50px;
   padding-top: 1px;
+}
+
+.subtitlePie{
+  color: white;
+  font-size: 180%;
 }
