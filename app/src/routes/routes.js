@@ -44,7 +44,7 @@ module.exports = function(app) {
 	app.get('/admin/pie', isAdminLoggedIn, controller.show_piechart);
 	app.get('/pie', isLoggedIn, controller.show_pie_user);
 	app.get('/bar', isLoggedIn, controller.show_bar);
-	app.get('/heatmap', isLoggedIn, controller.show_heatmap);
+	app.get('/heatmap', controller.show_heatmap);
 	app.route('/api/bar').get(controller.bar_data);
 	app.route('/api/heatmap').get(controller.heatmap_data);
 

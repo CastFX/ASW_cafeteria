@@ -124,20 +124,27 @@ exports.reset_password = async(req, res) => {
 	}
 };
 
-get_rankings = async() => {
+get_rankings = async(year, month, day) => {
 	try {
 		const utenti = await Utenti.find({});
-		data = {
+		let data = {
 			rankings: [],
 			userRankings: []
 		}
+		const now = new Date();
 		for (i = 0; i < utenti.length; i++) {
 			var score = 0;
 			var maxScore = 0;
 			if (utenti[i]._id != "admin") {
 				for (j = 0; j < utenti[i].games.length; j++) {
-					score += utenti[i].games[j].score;
-					maxScore = Math.max(utenti[i].games[j].score, maxScore);
+					const game = utenti[i].games[j];
+					const checkYear = !year || (game.date.getFullYear() == now.getFullYear());
+					const checkMonth = !month || (game.date.getMonth() == now.getMonth());
+					const checkDay = !day || (game.date.getDate() == now.getDate());
+					if (checkYear && checkMonth && checkDay) {
+						score += game.score;
+						maxScore = Math.max(game.score, maxScore);
+					}
 				}
 				data.userRankings.push({username: utenti[i]._id, points: maxScore});
 				if (data.rankings.findIndex(item => item.label == utenti[i].corso) != -1) {
@@ -154,7 +161,8 @@ get_rankings = async() => {
 }
 
 exports.get_home_data = async (req, res) => {
-	const data = await get_rankings();
+	const now = new Date();
+	const data = await get_rankings(now.getFullYear(), now.getMonth());
 	if (data.error) {
 		console.log(data.error);
 		res.json(data.error);
@@ -311,7 +319,7 @@ fakeData = () => {
 			let date = new Date();
 			date.setDate(date.getDate() + i);
 			date.setHours(date.getHours() + j);
-			res[Math.floor(date.getTime() / 1000)] = Math.floor(Math.random() * 100) + 1;
+			res[Math.floor(date.getTime() / 1000)] = Math.floor(Math.random() * 20) + 1;
 		}
 	}
 	return res;
