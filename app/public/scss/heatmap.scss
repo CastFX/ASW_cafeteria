@@ -1,12 +1,16 @@
 /* Cal-HeatMap CSS */
 
 .cal-heatmap-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
     .graph {
       font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
     }
     .graph-label {
       fill: #999;
-      font-size: 10px;
+      font-size: 15px;
     }
     .graph, .graph-legend rect {
       shape-rendering: crispedges;
@@ -19,8 +23,8 @@
       stroke-width: 1px;
     }
     .subdomain-text {
-      font-size: 8px;
-      fill: #999;
+      font-size: 10px;
+      fill: #fff;
       pointer-events: none;
     }
     .hover_cursor:hover {
@@ -117,10 +121,10 @@
 
 #cal-heatmap {
     text-align: center;
-}
 
-.subdomain-text {
-    fill: #fff;
+    graph-label {
+        font-size: medium;
+    }
 }
 
 #cal-heatmap a {
