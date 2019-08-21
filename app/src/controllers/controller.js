@@ -535,7 +535,7 @@ exports.get_played_games = async(req, res) => {
 	try {
 		const user = await Utenti.findOne({_id: req.user._id});
 		if (user.games.length > 0) {
-			user.games.sort((a,b) => b - a);
+			user.games.sort((a,b) => b.score - a.score);
 			user.games.slice(0,3);
 		}
 		res.json({
