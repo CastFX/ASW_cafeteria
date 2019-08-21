@@ -138,9 +138,9 @@ get_rankings = async(year, month, day) => {
 			if (utenti[i]._id != "admin") {
 				for (j = 0; j < utenti[i].games.length; j++) {
 					const game = utenti[i].games[j];
-					const checkYear = !year || (game.date.getFullYear() == now.getFullYear());
-					const checkMonth = !month || (game.date.getMonth() == now.getMonth());
-					const checkDay = !day || (game.date.getDate() == now.getDate());
+					const checkYear = !year || (game.date.getFullYear() == year);
+					const checkMonth = !month || ((game.date.getMonth()+1) == month);
+					const checkDay = !day || (game.date.getDate() == day);
 					if (checkYear && checkMonth && checkDay) {
 						score += game.score;
 						maxScore = Math.max(game.score, maxScore);
@@ -312,6 +312,22 @@ exports.show_heatmap = (req, res) => {
 	res.sendFile(appRoot + '/www/heatmap.html');
 }
 
+exports.get_bar_month = async (req, res) => {
+	const data = await get_rankings(req.body.year, req.body.month);
+	if (data.error) {
+		console.log(data.error);
+		res.json(data.error);
+		return;
+	}
+	const isLoggedIn = req.isAuthenticated();
+	res.json({
+		isLoggedIn: isLoggedIn,
+		username: isLoggedIn ? req.user._id : "",
+		rankings: data.rankings,
+		userRankings: data.userRankings
+	});
+}
+
 fakeData = () => {
 	const res = {dataset: {}, max: 0};
 	const courses = ["Ingegneria e Scienze Informatiche", "Architettura", "Ingegneria Biomedica", "Ingegneria Elettronica"];
@@ -344,19 +360,19 @@ exports.heatmap_data = async (req, res) => {
 			{"$group": {
 				"_id": {
 					"day": { "$dayOfMonth": "$games.date" },
-					"month": { "$month": "$games.date" }, 
+					"month": { "$month": "$games.date" },
 					"year": { "$year": "$games.date" },
 					"hour": { "$hour": "$games.date"}
 				},
-				"count": {"$sum": 
-					{'$cond': [ { '$gt': ['$games.score', minScore]}, 
+				"count": {"$sum":
+					{'$cond': [ { '$gt': ['$games.score', minScore]},
 						{"$cond": [ { '$lt': ['$games.score', maxScore]},
 							{"$cond": [ { '$eq': ['$corso', course]},
 								1,
 								0
 							]},
 							0
-						]}, 
+						]},
 						0
 					]}},
 			}
@@ -664,7 +680,7 @@ getRandomizedDiscount = (discount_odds) => {
 }
 
 generateWinTicket = (score, percentile, gameid, userid) => {
-	if (userid == "admin") {
+	if (userid == "ginopino") {
 		return {
 			type : "coffee",
 			discount: 50,
