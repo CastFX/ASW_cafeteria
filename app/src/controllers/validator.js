@@ -115,6 +115,14 @@ exports.api_heatmap = [
 		}).withMessage("Invalid course")
 ];
 
+exports.api_bar_month = [
+	body("year")
+		.isInt().withMessage("Must be a number"),
+	body("month")
+		.isInt({min:1, max:12}).withMessage("Must be a month between 1-12")
+];
+
+
 exports.scoreSubmit = [
 
 ];

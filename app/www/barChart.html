@@ -43,6 +43,13 @@
       <input type="month" name="monthPicker" v-model="date">
       <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setDatasetMonth()"> Month Ranking </button>
     </div>
+
+    <modal v-cloak v-if="error!=''" @close="error = ''">
+      <h3 slot="header"><span class="congratz">Attention!</span></h3>
+      <img slot="image" v-show="false">
+      <h5 v-cloak slot="body">{{error}}</h5>
+    </modal>
+
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
@@ -57,6 +64,44 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
 <script>
+
+Vue.component('modal', {
+    template: `
+    <transition name="modal">
+    <div class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container">
+
+      <div class="modal-header">
+        <slot name="header">
+        default header
+        </slot>
+      </div>
+
+      <div class="modal-body">
+        <slot name="image">
+          default image
+        </slot>
+        <slot name="body">
+        default body
+        </slot>
+      </div>
+      <div class="modal-footer">
+        <slot name="footer">
+        <div class="modal-default-links">
+          <button class="btnModalDelete" @click="$emit('close')">
+          OK
+          </button>
+        </div>
+        </slot>
+      </div>
+      </div>
+    </div>
+    </div>
+  </transition>
+`,
+});
+
 
 var app = new Vue({
 	el:	"#app",
@@ -73,7 +118,8 @@ var app = new Vue({
     dataset: [],
     utenti: [],
     loading: false,
-    date: ''
+    date: '',
+    error: ''
 	},
 	methods: {
 		init: function(){
@@ -81,15 +127,17 @@ var app = new Vue({
         this.setDataset();
 		},
     setDataset: function(){
+      this.error = '';
       document.getElementById('chart').innerHTML = "";
       axios.get("/api/bar")
 				.then(response => {
           this.dataset = response.data;
           this.loading = false;
           this.makeBarChart();
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+        }).catch(error => this.error = error) //Gestione errori approssimativa
     },
     setDatasetMonth: function(){
+      this.error = '';
       if (this.date != '') {
         document.getElementById('chart').innerHTML = "";
         let postData = {
@@ -102,7 +150,9 @@ var app = new Vue({
             this.dataset = response.data.rankings;
             this.loading = false;
             this.makeBarChart();
-          }).catch(error => (console.log(error))) //Gestione errori approssimativa
+          }).catch(error => this.error = error) //Gestione errori approssimativa
+      } else {
+        this.setDataset();
       }
     },
     makeBarChart: function(){
@@ -114,9 +164,9 @@ var app = new Vue({
       fontSizeY = "220%";
       score = "0.50em";
     } else {
-      var margin = {top: 30, right: 20, bottom: 30, left: 80};
+      var margin = {top: 10, right: 20, bottom: 30, left: 80};
       width = 800 - margin.left - margin.right;
-      height = 300 - margin.top - margin.bottom;
+      height = 250 - margin.top - margin.bottom;
       fontSizeX = "100%";
       fontSizeY = "100%";
       score = "0.40em";
