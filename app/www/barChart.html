@@ -36,6 +36,10 @@
       </button>
     </nav>
     </div>
+    <div class="container d-flex justify-content-center buttonContainer">
+      <button class="btn btn-outline-primary btn-sm align-self-center" @click="setDataset()"> Total Ranking </button>
+      <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setDatasetMonth()"> Month Ranking </button>
+    </div>
     <div class="text-center" v-if="loading">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading data...</span>
@@ -74,9 +78,19 @@ var app = new Vue({
         this.setDataset();
 		},
     setDataset: function(){
+      document.getElementById('chart').innerHTML = "";
       axios.get("/api/bar")
 				.then(response => {
           this.dataset = response.data;
+          this.loading = false;
+          this.makeBarChart();
+        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
+    setDatasetMonth: function(){
+      document.getElementById('chart').innerHTML = "";
+      axios.get("/api/homeData")
+				.then(response => {
+          this.dataset = response.data.rankings;
           this.loading = false;
           this.makeBarChart();
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
@@ -125,7 +139,7 @@ var app = new Vue({
         return "<strong>Score:</strong> <span style='color:red'>" + d.count + "</span>";
       })
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#chart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .call(responsivefy)

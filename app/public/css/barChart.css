@@ -105,4 +105,12 @@ h1 {
   font-size: 150%;
 }
 
+.buttonContainer {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.buttonContainer .btn {
+  min-width: 130px;
+}
+
 /*# sourceMappingURL=barChart.css.map */

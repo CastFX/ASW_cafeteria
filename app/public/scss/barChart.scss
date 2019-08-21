@@ -78,3 +78,11 @@ body {
   color: white;
   font-size: 150%;
 }
+
+.buttonContainer{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  .btn{
+    min-width: 130px;
+  }
+}

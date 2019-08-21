@@ -210,7 +210,7 @@ var app = new Vue({
               var svg = d3.select('#chart')
                   .append('svg')
                   .attr('width', width)
-                  .attr('height', height*2)
+                  .attr('height', height*3)
                   .call(responsivefy)
                   .append('g')
                   .attr('transform', 'translate(' + (width / 2) +
@@ -286,8 +286,8 @@ var app = new Vue({
                       var height = legendRectSize + legendSpacing;
                       var offset = height * color.domain().length / 2;
                       var horz = -2 * legendRectSize;
-                      var vert = i * height - offset;
-                      return 'translate(' + (horz-20) + ',' + (vert+330) + ')';
+                      var vert = i * height +200;
+                      return 'translate(' + (horz) + ',' + (vert) + ')';
                   });
 
                   legend.append('rect')
