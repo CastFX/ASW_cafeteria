@@ -35,6 +35,13 @@
     </button>
   </nav>
   <div v-cloak v-if="dataReady">
+    <div class="container d-flex justify-content-center buttonContainer">
+      <select v-cloak name="utentiSelect" class="utentiTicketSelect" id="utenti-find" v-model="utenteChoice">
+        <option v-for="utente in utentiSelect" v-bind:value="utente._id" :key="utente._id">{{ utente._id }}</option>
+      </select>
+      <button @click="listTicket()"> <i class="fa fa-search"></i> </button>
+      <button @click="resetUser()"> <i class="fa fa-close"></i> </button>
+    </div>
     <div class='container' id ='ticketList'>
       <div class='row'>
     	   <div class='col-md-6' v-for="item in tickets">
@@ -181,7 +188,9 @@ var app = new Vue({
     ticketDeleted: false,
     deleteString: '',
     deleteImage: '',
-    errorModal: false
+    errorModal: false,
+    utenteChoice: '',
+    utentiSelect: []
 	},
 	methods: {
     onDecode (result) {
@@ -223,6 +232,15 @@ var app = new Vue({
       this.ticketChoice = item._id;
       //}
     },
+    resetUser: function(){
+      this.utenteChoice = '';
+      this.listTicket();
+    },
+    setUserFinder: function(){
+      axios.get("/api/utenti")
+				.then(response => (this.utentiSelect = response.data)) //Promise
+				.catch(error => (console.log(error))) //Gestione errori approssimativa
+    },
     deleteTicket: function(){
 			axios.delete("/api/userTickets/"+this.ticketChoice)
 				.then(response => {
@@ -261,7 +279,13 @@ var app = new Vue({
 		},
 		listTicket: function(){
 			axios.get("/api/admin/userTickets")
-				.then(response => {this.tickets = response.data; this.dataReady = true}) //Promise
+				.then(response => {
+          this.tickets = response.data;
+          if (this.utenteChoice != '') {
+            this.tickets = this.tickets.filter(this.filterByUser);
+          }
+          this.dataReady = true
+        }) //Promise
 				.catch(error => {
           this.error = error;
           this.errorModal = true
@@ -275,6 +299,9 @@ var app = new Vue({
         this.errorModal = true;
       }
     },
+    filterByUser: function(value){
+      return value.idUtente == this.utenteChoice;
+    },
     setEnterKey: function() {
       document.getElementById("inputTicketID").addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
@@ -286,6 +313,7 @@ var app = new Vue({
       });
     },
 		init: function(){
+      this.setUserFinder();
 			this.listTicket();
       this.setEnterKey();
 		}
