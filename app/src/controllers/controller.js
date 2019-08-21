@@ -313,13 +313,18 @@ exports.show_heatmap = (req, res) => {
 }
 
 fakeData = () => {
-	const res = {};
+	const res = {dataset: {}, max: 0};
+	const courses = ["Ingegneria e Scienze Informatiche", "Architettura", "Ingegneria Biomedica", "Ingegneria Elettronica"];
 	for (let i = -8; i < 4; i++) {
 		for (let j = 0; j < 24; j++) {
 			let date = new Date();
 			date.setDate(date.getDate() + i);
 			date.setHours(date.getHours() + j);
-			res[Math.floor(date.getTime() / 1000)] = Math.floor(Math.random() * 20) + 1;
+			const count = Math.floor(Math.random() * 100) + 1;
+			const score = Math.floor(Math.random() * 100000);
+			const course = courses[Math.floor(Math.random()*courses.length)];
+			res.max = Math.max(res.max, count);
+			res.dataset[Math.floor(date.getTime() / 1000)] = count;
 		}
 	}
 	return res;
@@ -327,33 +332,49 @@ fakeData = () => {
 
 exports.heatmap_data = async (req, res) => {
 	try {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.json({errors: errors.array()});
+		}
+		const maxScore = parseInt(req.body.maxScore);
+		const minScore = parseInt(req.body.minScore);
+		const course = req.body.course === "All" ? "$corso" : req.body.course;
 		const data = await Utenti.aggregate([
 			{"$unwind":"$games"},
 			{"$group": {
 				"_id": {
-				"$subtract": [
-					{ "$subtract": [ "$games.date", new Date("1970-01-01") ] },
-					{ "$mod": [
-					{ "$subtract": [ "$games.date", new Date("1970-01-01") ] },
-					1000 * 60 * 60 * 24
-					]}
-				]
+					"day": { "$dayOfMonth": "$games.date" },
+					"month": { "$month": "$games.date" }, 
+					"year": { "$year": "$games.date" },
+					"hour": { "$hour": "$games.date"}
 				},
-				"count": {"$sum": 1}
+				"count": {"$sum": 
+					{'$cond': [ { '$gt': ['$games.score', minScore]}, 
+						{"$cond": [ { '$lt': ['$games.score', maxScore]},
+							{"$cond": [ { '$eq': ['$corso', course]},
+								1,
+								0
+							]},
+							0
+						]}, 
+						0
+					]}},
 			}
 		}]);
-		// const fitData = data.map(item => {
-		// 	const container = {};
-		// 	container[item._id] = item.count;
-		// 	return container;
-		// });
+		var max = 0;
 		const fitData = data.reduce((result, item) => {
-			result[item._id / 1000] = item.count;
+			let date = new Date(item._id.year, item._id.month - 1, item._id.day, item._id.hour, 0, 0, 0);
+			if (item.count > 0) {
+				result[Math.floor(date.getTime() / 1000)] = item.count;
+			}
+			max = Math.max(max, item.count);
 			return result;
 		}, {});
-		// res.json(fitData);
-		const fakeData2 = fakeData();
-		res.json(fakeData2);
+		const courses = await Corsi.find({});
+		res.json({dataset: fitData, max: max, courses: courses});
+		// const fake = fakeData();
+		// fake.courses = courses;
+		// res.json(fake);
 	} catch (error) {
 		console.log(error);
 		res.json({error: error});

@@ -64,6 +64,15 @@
                         class="fa fa-chevron-right"></i></a>
             </div>
         </div>
+        <div class="filters">
+                <input class="nice-textbox" type="text" placeholder="Min Score" v-model="filter.min" @change="setDataset"/>
+                <input class="nice-textbox" type="text" placeholder="Max Score" v-model="filter.max" @change="setDataset"/>								
+                <select name="courses" class="courses" v-model="filter.course" @change="setDataset">
+                    <option v-for="course in courses" :key="courses._id">
+                        {{ course._id }}
+                    </option>
+                </select>
+        </div>
     </div>
 </body>
 
@@ -107,7 +116,6 @@
             return new Date(date).getHours() + ":00";
         },
         tooltip: true,
-        legend: [0, 5, 10, 15, 20],
         label: {
             position: "top"
         }
@@ -117,8 +125,13 @@
         el: "#app",
         data: {
             dataset: [],
-            utenti: [],
-            cal: null,
+            courses: [],
+            filter: {
+                course: "All",
+                min: undefined,
+                max: undefined,
+            },
+            max: 0,
             resizeTO: {},
             loading: false
         },
@@ -142,9 +155,21 @@
                 // });
             },
             setDataset: function () {
-                axios.get("/api/heatmap")
+                let postData = {
+                    minScore: this.filter.min ? this.filter.min : 0,
+                    maxScore: this.filter.max ? this.filter.max : 9999999,
+                    course: this.filter.course ? this.filter.course : "All"
+                };
+                axios.post("/api/heatmap", postData)
                     .then(response => {
-                        this.dataset = response.data;
+                        console.log(response.data);
+                        if (response.data.errors) {
+                            console.log(response.data.errors);
+                            return;
+                        }
+                        this.dataset = response.data.dataset;
+                        this.max = response.data.max;
+                        this.courses = [{_id: "All"}].concat(response.data.courses);
                         this.loading = false;
                         this.makeHeatmap();
                     }).catch(error => (console.log(error))) //Gestione errori approssimativa
@@ -166,10 +191,28 @@
                 
                 let now = new Date();
                 options.data = this.dataset;
+                options.legend = this.getLegend();
                 options.start = now.setDate(now.getDate() - tileNumber + 1);
                 options.range = tileNumber;
                 calendar.init(options);
             },
+            getLegend: function() {
+                if (this.max < 15) {
+                    return [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+                }
+                let legend = [];
+                let n = Math.floor(this.max / 14);
+                for (let i = n; i < this.max; i += n) {
+                    legend.push(i);
+                }
+                return legend;
+            },
+            parser: function(data) {
+                var actualData = {};
+                
+                return actualData;
+
+            }
         },
         mounted() {
             this.init();

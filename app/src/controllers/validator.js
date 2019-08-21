@@ -90,7 +90,30 @@ exports.request_reset_email = [
 				return Promise.reject();
 			}
 		}).withMessage("User not found")
-]
+];
+
+exports.api_heatmap = [
+	body("minScore")
+		.isInt({min:0}).withMessage("Must be a number >= 0"),
+	body("maxScore")
+		.isInt({min:0}).withMessage("Must be a number >= 0")
+		.custom((value, {req}) => {
+			if (req.body.minScore && value < req.body.minScore) {
+				throw new Error();
+			}
+			return true;
+		}).withMessage("maxScore cannot be lower than minScore"),
+	body("course")
+		.custom(async value => {
+			if (value === "All") {
+				return Promise.resolve();
+			}
+			const course = await Corsi.findOne({_id: value});
+			if (!course) {
+				return Promise.reject();
+			}
+		}).withMessage("Invalid course")
+];
 
 exports.scoreSubmit = [
 

@@ -46,7 +46,7 @@ module.exports = function(app) {
 	app.get('/bar', isLoggedIn, controller.show_bar);
 	app.get('/heatmap', controller.show_heatmap);
 	app.route('/api/bar').get(controller.bar_data);
-	app.route('/api/heatmap').get(controller.heatmap_data);
+	app.route('/api/heatmap').post(validator.api_heatmap, controller.heatmap_data);
 
 
 	//Hextris

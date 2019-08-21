@@ -895,9 +895,7 @@ var CalHeatMap = function() {
 						// Offset by the inside domain position (when label is left/top)
 						tooltipPositionX += parseInt(domainNode.parentNode.getAttribute("x"), 10);
 						tooltipPositionY += parseInt(domainNode.parentNode.getAttribute("y"), 10);
-						
-						console.log(self.root.node());
-						console.log(window.getComputedStyle(self.root.node()).getPropertyValue("margin-left"));
+
 						tooltipPositionX += parseInt(window.getComputedStyle(self.root.node()).getPropertyValue("margin-left"), 10);
 
 						self.tooltip.attr("style",
