@@ -32,7 +32,7 @@
 		<meta property="twitter:app:url:ipad" content="itunes.apple.com/us/app/id903769553?mt=8">
 		<meta property="twitter:app:url:googleplay" content="https://play.google.com/store/apps/details?id=com.hextris.hextris">
 		<!-- <link rel="icon" type="image/png" href="favicon.ico"> -->
-		<link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+	  <link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="/static/css/hextris/fa/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/hextris/style.css">
 		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -80,6 +80,7 @@
 			</div>
 			<modal v-if="ticket" @close="ticket = false">
 				<h3 slot="header"><span class="congratz">Congratz!</span></h3>
+				<img slot="image" v-bind:src=ticket.image v-bind:alt=ticket.type>
 				<h5 slot="body">You won a {{ticket.discount}}% off on your next {{ticket.type}} purchase.</h5>
 			</modal>
 			<div id="gameoverscreen">
@@ -90,7 +91,7 @@
 					<div class='score'><span class='scoreNum'>1.</span> <div id="1place" style="display:inline;">{{ hscores.first }}</div></div>
 					<div class='score'><span class='scoreNum'>2.</span> <div id="2place" style="display:inline;">{{ hscores.second }}</div></div>
 					<div class='score'><span class='scoreNum'>3.</span> <div id="3place" style="display:inline;">{{ hscores.third }}</div></div>
-					
+
 					<!-- <div class='Media Media--center' v-if="ticket" style="border: 6px double rgba(20,66,164,0.55);">
 						<img class='Media-figure' v-bind:src=ticket.image width="75" height="75" v-bind:alt=ticket.type>
 						<div class='Media-body'>
@@ -130,12 +131,12 @@
 						</svg>
 					</div> -->
 					<div id='buttonCont'></div>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</body>
 <script type="text/x-template" id="modal-template">
-	
+
 </script>
 <script>
 	Vue.component('modal', {
@@ -144,25 +145,28 @@
 			<div class="modal-mask">
 			<div class="modal-wrapper">
 				<div class="modal-container">
-		
+
 				<div class="modal-header">
 					<slot name="header">
 					default header
 					</slot>
 				</div>
-		
+
 				<div class="modal-body">
+					<slot name="image">
+						default image
+					</slot>
 					<slot name="body">
-					default body
+						default body
 					</slot>
 				</div>
 				<div class="modal-footer">
 					<slot name="footer">
 					<div class="modal-default-links">
-						<a href="#" class="btn" @click="$emit('close')">
+						<a href="#" class="btnClose" @click="$emit('close')">
 						OK
 						</a>
-						<a href="/tickets" class="btn" @click="$emit('close')">
+						<a href="/tickets" class="btnClose" @click="$emit('close')">
 						My Tickets
 						</a>
 					</div>
@@ -174,6 +178,7 @@
 		</transition>
 	`,
 	});
+
 	var app = new Vue({
 		el:	"#app",
 		data: {
@@ -193,7 +198,7 @@
 			setLives: function() {
 				axios.get("/api/lives")
 					.then(response => {
-						this.lives = response.data; 
+						this.lives = response.data;
 						this.dataReady = true;
 					})
 					.catch(error => (console.log(error)))

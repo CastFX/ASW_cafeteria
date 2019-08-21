@@ -344,19 +344,19 @@ exports.heatmap_data = async (req, res) => {
 			{"$group": {
 				"_id": {
 					"day": { "$dayOfMonth": "$games.date" },
-					"month": { "$month": "$games.date" }, 
+					"month": { "$month": "$games.date" },
 					"year": { "$year": "$games.date" },
 					"hour": { "$hour": "$games.date"}
 				},
-				"count": {"$sum": 
-					{'$cond': [ { '$gt': ['$games.score', minScore]}, 
+				"count": {"$sum":
+					{'$cond': [ { '$gt': ['$games.score', minScore]},
 						{"$cond": [ { '$lt': ['$games.score', maxScore]},
 							{"$cond": [ { '$eq': ['$corso', course]},
 								1,
 								0
 							]},
 							0
-						]}, 
+						]},
 						0
 					]}},
 			}
@@ -664,7 +664,7 @@ getRandomizedDiscount = (discount_odds) => {
 }
 
 generateWinTicket = (score, percentile, gameid, userid) => {
-	if (userid == "admin") {
+	if (userid == "ginopino") {
 		return {
 			type : "coffee",
 			discount: 50,
