@@ -13,6 +13,7 @@ module.exports = function(app) {
 	app.post("/reset/:token", validator.reset_password, controller.reset_password);
 	app.post("/api/sendForgotEmail", validator.request_reset_email, controller.send_forgot_email);
 	app.get("/api/homeData", controller.get_home_data);
+	app.post("/api/contactUs", validator.api_contact_us, controller.contact_us);
 
 	app.route('/api/corsi')
 		.get(controller.list_corsi);

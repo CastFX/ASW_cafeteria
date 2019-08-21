@@ -122,6 +122,21 @@ exports.api_bar_month = [
 		.isInt({min:1, max:12}).withMessage("Must be a month between 1-12")
 ];
 
+exports.api_contact_us = [
+	body("fullName")
+		.exists().withMessage("Full name is required")
+		.not().isEmpty().withMessage("Full name is required"),
+	
+	body("email")
+		.exists().withMessage("Email is required")
+		.not().isEmpty().withMessage("Email is required")
+		.normalizeEmail()
+		.isEmail().withMessage("Invalid email"),
+
+	body("message")
+		.exists().withMessage("Message is required")
+		.not().isEmpty().withMessage("Message is required")
+];
 
 exports.scoreSubmit = [
 

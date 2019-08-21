@@ -3,6 +3,7 @@ var Corsi = mongoose.model('Corsi');
 var Utenti = mongoose.model("Utenti");
 var Tickets = mongoose.model("Tickets");
 var UserTickets = mongoose.model("UserTickets");
+var UserMessages = mongoose.model("UserMessages");
 var EmailVerifications = mongoose.model("EmailVerifications");
 var Qr = mongoose.model("Qr");
 var nodemailer = require("nodemailer");
@@ -177,6 +178,32 @@ exports.get_home_data = async (req, res) => {
 	});
 }
 
+exports.contact_us = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.json({errors: errors.array()});
+	}
+	const data = {
+		fullName: req.body.fullName,
+		email: req.body.email,
+		contact: req.body.contact,
+		company: req.body.company,
+		message: req.body.message,
+	}
+	console.log(data);
+	const newMessage = new UserMessages(data);
+	await newMessage.save();
+	mailOptions = {
+		to: process.env.GMAIL_HOST,
+		subject: 'ASW-Cafeteria - Contacted by ' + data.fullName,
+		text: 'From: ' + data.email + '\n'
+			+ 'Company: ' + data.company + '\n'
+			+ 'Contact: ' + data.contact + '\n\n'
+			+ 'Message:\n' + data.message
+	};
+	smtpTransport.sendMail(mailOptions);
+	res.json(data);
+};
 
 //Login lista di corsi per signup
 exports.list_corsi = function(req, res) {

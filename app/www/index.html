@@ -361,29 +361,27 @@
                                 <p class="add-title">Send Us Message</p>
                                 <form>
                                     <div class="fname floating-label">
-                                        <input type="text" class="floating-input" name="full name"
-                                            id="full-name-field" />
+                                        <input type="text" class="floating-input" name="full name" id="full-name-field" v-model="contactUsData.fullName"/>
                                         <label for="full-name-field">Full Name</label>
                                     </div>
                                     <div class="email floating-label">
-                                        <input type="email" class="floating-input" name="email" id="mail-field" />
+                                        <input type="email" class="floating-input" name="email" id="mail-field" v-model="contactUsData.email"/>
                                         <label for="mail-field">Email</label>
                                     </div>
                                     <div class="contact floating-label">
-                                        <input type="tel" class="floating-input" name="contact" id="contact-us-field" />
+                                        <input type="tel" class="floating-input" name="contact" id="contact-us-field" v-model="contactUsData.contact"/>
                                         <label for="contact-us-field">Contact</label>
                                     </div>
                                     <div class="company floating-label">
-                                        <input type="text" class="floating-input" name="company" id="company-field" />
+                                        <input type="text" class="floating-input" name="company" id="company-field" v-model="contactUsData.company"/>
                                         <label for="company-field">Company</label>
                                     </div>
                                     <div class="user-msg floating-label">
-                                        <textarea class="floating-input" name="user message"
-                                            id="user-msg-field"></textarea>
+                                        <textarea class="floating-input" name="user message" id="user-msg-field" v-model="contactUsData.message"></textarea>
                                         <label for="user-msg-field" class="msg-label">Your Message</label>
                                     </div>
                                     <div class="submit-btn">
-                                        <button type="submit">Submit</button>
+                                        <button type="submit" v-on:keyup.enter="contactUs" v-on:click.prevent="contactUs">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -467,6 +465,13 @@ Vue.use(VueQrcodeReader)
         el: "#app",
         data: {
             hscores: { first: 0, second: 0, third: 0 },
+            contactUsData: {
+                fullName: "",
+                email: "",
+                contact: "",
+                company: "",
+                message: ""
+            },
             rankings: [],
             userRankings: [],
             lives: 0,
@@ -565,6 +570,26 @@ Vue.use(VueQrcodeReader)
                   }
                   this.errorModal = true
                 });
+            },
+            contactUs: async function () {
+                axios.post("/api/contactUs", this.contactUsData)
+                    .then(response => {
+                        console.log(response);
+                        if (response.data.errors && response.data.errors.length > 0) {
+                            //todo error modal
+                        } else {
+                            //todo success modal
+                            this.contactUsData = {
+                                fullName: "",
+                                email: "",
+                                contact: "",
+                                company: "",
+                                message: ""
+                            };
+                        }
+                    }).catch(error => {
+                        //todo error modal
+                    });
             },
             loadData: async function () {
                 try {
