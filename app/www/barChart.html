@@ -38,6 +38,9 @@
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
       <button class="btn btn-outline-primary btn-sm align-self-center" @click="setDataset()"> Total Ranking </button>
+    </div>
+    <div class="container d-flex justify-content-center buttonContainer">
+      <input type="month" name="monthPicker" v-model="date">
       <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setDatasetMonth()"> Month Ranking </button>
     </div>
     <div class="text-center" v-if="loading">
@@ -69,8 +72,8 @@ var app = new Vue({
       ],
     dataset: [],
     utenti: [],
-    loading: false
-
+    loading: false,
+    date: ''
 	},
 	methods: {
 		init: function(){
@@ -87,13 +90,20 @@ var app = new Vue({
         }).catch(error => (console.log(error))) //Gestione errori approssimativa
     },
     setDatasetMonth: function(){
-      document.getElementById('chart').innerHTML = "";
-      axios.get("/api/homeData")
-				.then(response => {
-          this.dataset = response.data.rankings;
-          this.loading = false;
-          this.makeBarChart();
-        }).catch(error => (console.log(error))) //Gestione errori approssimativa
+      if (this.date != '') {
+        document.getElementById('chart').innerHTML = "";
+        let postData = {
+            year: this.date.split("-")[0],
+            month: this.date.split("-")[1]
+        };
+        this.date = '';
+        axios.post("/api/barMonth", postData)
+  				.then(response => {
+            this.dataset = response.data.rankings;
+            this.loading = false;
+            this.makeBarChart();
+          }).catch(error => (console.log(error))) //Gestione errori approssimativa
+      }
     },
     makeBarChart: function(){
     if (screen.width < 768) {

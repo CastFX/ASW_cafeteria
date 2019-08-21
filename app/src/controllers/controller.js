@@ -138,9 +138,9 @@ get_rankings = async(year, month, day) => {
 			if (utenti[i]._id != "admin") {
 				for (j = 0; j < utenti[i].games.length; j++) {
 					const game = utenti[i].games[j];
-					const checkYear = !year || (game.date.getFullYear() == now.getFullYear());
-					const checkMonth = !month || (game.date.getMonth() == now.getMonth());
-					const checkDay = !day || (game.date.getDate() == now.getDate());
+					const checkYear = !year || (game.date.getFullYear() == year);
+					const checkMonth = !month || ((game.date.getMonth()+1) == month);
+					const checkDay = !day || (game.date.getDate() == day);
 					if (checkYear && checkMonth && checkDay) {
 						score += game.score;
 						maxScore = Math.max(game.score, maxScore);
@@ -310,6 +310,22 @@ exports.bar_data = async (req, res) => {
 }
 exports.show_heatmap = (req, res) => {
 	res.sendFile(appRoot + '/www/heatmap.html');
+}
+
+exports.get_bar_month = async (req, res) => {
+	const data = await get_rankings(req.body.year, req.body.month);
+	if (data.error) {
+		console.log(data.error);
+		res.json(data.error);
+		return;
+	}
+	const isLoggedIn = req.isAuthenticated();
+	res.json({
+		isLoggedIn: isLoggedIn,
+		username: isLoggedIn ? req.user._id : "",
+		rankings: data.rankings,
+		userRankings: data.userRankings
+	});
 }
 
 fakeData = () => {
