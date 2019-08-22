@@ -5,6 +5,7 @@ var Corsi = require('./src/models/corsiModels');
 var Utenti = require('./src/models/utenteModels');
 var Tickets = require('./src/models/ticketModels');
 var UserTickets = require('./src/models/userTicketModels');
+var UserMessages = require('./src/models/userMessageModels');
 var EmailVerifications = require('./src/models/emailVerificationModels');
 var Qr = require('./src/models/qrModels');
 //Creo istanza di express (web server)
@@ -40,7 +41,7 @@ pausecomp(5000);
 console.log('Ten seconds later, ...'); //connessione al db mongoose.set('useFindAndModify', false);
 mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 	'mongodb://mongodb:27017/dbcoffee',
-  //'mongodb://localhost:27017/dbcoffee',
+//   'mongodb://localhost:27017/dbcoffee',
 	//'mongodb://localhost/dbcoffee',
 	// 'mongodb://asw_mongodb_1.asw_interna:27017/dbsa', ANDAVA BENE
 	{ useNewUrlParser: true }) .then(() => console.log('MongoDB Connected')) .catch((err) => console.log(err));
