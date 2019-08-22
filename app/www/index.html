@@ -586,6 +586,7 @@ Vue.use(VueQrcodeReader)
             contactUs: async function () {
                 axios.post("/api/contactUs", this.contactUsData)
                     .then(response => {
+						this.error = '';
                         if (response.data.errors && response.data.errors.length > 0) {
                             for (i = 0; i<response.data.errors.length; i++){
                               this.error += "["+response.data.errors[i].msg+"]";
