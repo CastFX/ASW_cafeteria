@@ -34,14 +34,18 @@
             <div class="collapse collapser" id="navbarToggleExternalContent">
                 <div class="p-4">
                     <p class="subtitleCorsi">This graph highlights the most active days in the app.</p>
-                    <p class="subsubtitleCorsi">Use the icons below to navigate between graphs: Heatmap</p>
-                    <a href="/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
-                    <a href="/bar" class="btn btn-default barButton"><i class="fa fa-bar-chart barIcon"></i></a>
-                    <a href="/heatmap" class="btn btn-default barButton"><i class="fa calendar-alt heatmapIcon"></i></a>
+                    <p class="subsubtitleCorsi">Use the icons below to navigate between graphs: </p>
+                    <a v-if="log!='admin'" href="/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+                    <a v-if="log!='admin'" href="/bar" class="btn btn-default barButton"><i class="fa fa-bar-chart barIcon"></i></a>
+                    <a v-if="log=='admin'" href="/admin/contactUs" class="btn btn-default contactButton"><i class="fa fa-envelope contactIcon"></i></a>
+                    <a v-if="log=='admin'" href="/admin/pie" class="btn btn-default pieButton"><i class="fa fa-pie-chart pieIcon"></i></a>
+                    <a v-if="log=='admin'" href="/heatmap" class="btn btn-default barButton"><i class="fa fa-calendar heatmapIcon"></i></a>
+                    <a v-if="log=='admin'" href="/admin/qr" class="btn btn-default qrButton"><i class="fa fa-qrcode qrIcon"></i></a>
+                    <a v-if="log=='admin'" href="/admin/userTickets" class="btn btn-default ticketButton"><i class="fa fa-th-list ticketIcon"></i></a>
                 </div>
             </div>
             <nav class="navbar">
-                <a class="navbar-brand" href="/heatmap">Ranking Corsi</a>
+                <a class="navbar-brand" href="/heatmap">Heatmap</a>
                 <a href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
                 <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse"
                     data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
@@ -66,7 +70,7 @@
         </div>
         <div class="filters">
                 <input class="nice-textbox" type="text" placeholder="Min Score" v-model="filter.min" @change="setDataset"/>
-                <input class="nice-textbox" type="text" placeholder="Max Score" v-model="filter.max" @change="setDataset"/>								
+                <input class="nice-textbox" type="text" placeholder="Max Score" v-model="filter.max" @change="setDataset"/>
                 <select name="courses" class="courses" v-model="filter.course" @change="setDataset">
                     <option v-for="course in courses" :key="courses._id">
                         {{ course._id }}
@@ -111,7 +115,7 @@
         },
         subDomainTextFormat: function(date, value) {
             if (date instanceof Date) {
-                return date.getHours() + ":00"; 
+                return date.getHours() + ":00";
             }
             return new Date(date).getHours() + ":00";
         },
@@ -133,10 +137,12 @@
             },
             max: 0,
             resizeTO: {},
-            loading: false
+            loading: false,
+            log: ''
         },
         methods: {
             init: function () {
+                this.getUser();
                 this.loading = true;
                 this.setDataset();
                 window.addEventListener('resize', (event) => {
@@ -153,6 +159,13 @@
                 // $(window).bind('resizeEnd', function () {
                 //     this.responsiveHeatmap(this.cal.options);
                 // });
+            },
+            getUser: function() {
+              axios.get("api/log")
+                .then(response => {
+                  this.log = response.data.user;
+                }) //Promise
+                .catch(error => (console.log(error))) //Gestione errori approssimativa
             },
             setDataset: function () {
                 let postData = {
@@ -175,7 +188,7 @@
                     }).catch(error => (console.log(error))) //Gestione errori approssimativa
             },
             makeHeatmap: function () {
-                if (typeof calendar == "object") {  
+                if (typeof calendar == "object") {
                     $('#cal-heatmap').html('');
                     calendar = calendar.destroy();
                 }
@@ -188,7 +201,7 @@
                 let tileNumber = Math.floor((width + options.domainGutter) / (4*options.cellSize + 3*options.cellPadding + options.domainGutter));
                 tileNumber = Math.min(Math.max(tileNumber, 1), 7);
                 console.log("width:" + width + ", n:" + tileNumber);
-                
+
                 let now = new Date();
                 options.data = this.dataset;
                 options.legend = this.getLegend();
@@ -209,7 +222,7 @@
             },
             parser: function(data) {
                 var actualData = {};
-                
+
                 return actualData;
 
             }

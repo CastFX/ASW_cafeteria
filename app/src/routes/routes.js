@@ -17,6 +17,7 @@ module.exports = function(app) {
 	app.get("/api/contactUs", isAdminLoggedIn, controller.get_contact_us);
 	app.get("/admin/contactUs", isAdminLoggedIn, controller.show_contact_us);
 
+	app.get('/api/log', controller.who_logged);
 
 	app.route('/api/corsi')
 		.get(controller.list_corsi);

@@ -61,6 +61,11 @@ exports.confirm_email = async (req, res) => {
 	}
 }
 
+exports.who_logged = (req, res) => {
+	res.json({user:req.user._id});
+};
+
+
 exports.send_forgot_email = async(req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
