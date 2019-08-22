@@ -28,19 +28,8 @@
   color: white;
 }
 
-.media {
-  margin: 10px;
-  box-shadow: 5px 10px 8px #888888;
-  background-color: #faf9f5;
-}
-.media .imageClass {
-  width: 120px;
-  min-height: 110px;
-  margin: 2px;
-}
-
-#ticketList {
-  padding-top: 5%;
+.list-group {
+  margin-top: 30px;
 }
 
 @media (min-width: 768px) {
@@ -65,53 +54,22 @@
   display: none;
 }
 
-.text-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: auto;
+.p-4 {
+  font: 10px sans-serif;
 }
 
-.float {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 30px;
-  right: 30px;
-  background: #343a40;
-  color: #FFF;
-  border-radius: 50px;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
+.subtitleContact {
+  color: white;
+  font-size: 180%;
 }
-.float:focus {
-  outline-style: none;
-}
-.float .my-float {
-  font-size: 35px;
-  margin-top: 3px;
+
+.titleCollapseContact {
+  color: white;
+  font-size: 150%;
 }
 
 .inputSearch {
   width: 150px;
-}
-
-.iconArrow {
-  font-size: 30px;
-}
-
-.buttonSubmit, .buttonSearch {
-  color: white;
-  font-weight: bold;
-}
-
-.bodyAdmin {
-  margin-bottom: 100px;
-}
-
-.titleCollapseAdmin {
-  color: white;
-  font-size: 150%;
 }
 
 .modal-mask {
@@ -205,30 +163,8 @@
   background-color: #9555af;
 }
 
-.lifeOnImage {
-  margin-left: -81px;
-  margin-top: 50px;
-  margin-right: 81px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.p-4 {
-  font: 10px sans-serif;
-}
-
-.subtitleTicketsAdmin, .subtitleTicketsQR {
-  color: white;
-  font-size: 180%;
-}
-
 .buttonContainer {
   margin-top: 30px;
 }
 
-.utentiTicketSelect {
-  min-width: 150px;
-}
-
-/*# sourceMappingURL=ticket.css.map */
+/*# sourceMappingURL=contactus.css.map */

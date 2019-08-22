@@ -178,6 +178,19 @@ exports.get_home_data = async (req, res) => {
 	});
 }
 
+exports.show_contact_us = function(req, res) {
+	res.sendFile(appRoot + '/www/contactUs.html');
+};
+
+exports.get_contact_us = function(req, res) {
+	UserMessages.find({}, function(err, messages) {
+		if (err)
+			res.send(err);
+		res.json(messages);
+	});
+};
+
+
 exports.contact_us = async (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {

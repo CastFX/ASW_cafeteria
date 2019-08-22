@@ -333,6 +333,16 @@
                 </section>
                 <!-- Contact us section starts here -->
                 <section id="ContactUs">
+                  <modal v-cloak v-if="successMsgModal" @close="successMsgModal = false, error=''">
+                    <img slot="image" v-show="false">
+                    <h3 slot="header"><span class="congratz">Message Sent!</span></h3>
+                    <h5 v-cloak slot="body">Thanks for your message!</h5>
+                  </modal>
+                  <modal v-cloak v-if="errorMsgModal" @close="errorMsgModal = false, error=''">
+                    <img slot="image" v-show="false">
+                    <h3 slot="header"><span class="congratz">Attention!</span></h3>
+                    <h5 v-cloak slot="body">{{error}}</h5>
+                  </modal>
                     <div class="container contact-container">
                         <h3 class="contact-title">Get In Touch</h3>
                         <div class="contact-outer-wrapper">
@@ -485,7 +495,9 @@ Vue.use(VueQrcodeReader)
             errorModal: false,
             errorCamera: '',
             successModal: false,
-            successLife: 0
+            successLife: 0,
+            successMsgModal: false,
+            errorMsgModal: false
         },
         methods: {
             startGame: function () {
@@ -574,11 +586,15 @@ Vue.use(VueQrcodeReader)
             contactUs: async function () {
                 axios.post("/api/contactUs", this.contactUsData)
                     .then(response => {
-                        console.log(response);
                         if (response.data.errors && response.data.errors.length > 0) {
-                            //todo error modal
+                            for (i = 0; i<response.data.errors.length; i++){
+                              this.error += "["+response.data.errors[i].msg+"]";
+                              this.error += "\n";
+                            }
+                            this.errorMsgModal = true;
                         } else {
-                            //todo success modal
+                            this.error = '';
+                            this.successMsgModal = true;
                             this.contactUsData = {
                                 fullName: "",
                                 email: "",
@@ -588,7 +604,8 @@ Vue.use(VueQrcodeReader)
                             };
                         }
                     }).catch(error => {
-                        //todo error modal
+                        this.error = error;
+                        this.errorMsgModal = true;
                     });
             },
             loadData: async function () {
