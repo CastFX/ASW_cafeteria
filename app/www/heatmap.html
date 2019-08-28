@@ -43,7 +43,7 @@
             </div>
             <nav class="navbar">
                 <a class="navbar-brand" href="/heatmap">Heatmap</a>
-                <a href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
+                <a v-if="log!='admin'" href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
                 <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse"
                     data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
                     aria-expanded="false" aria-label="Toggle navigation">

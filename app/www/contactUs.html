@@ -34,6 +34,7 @@
     </button>
   </nav>
   <div class="container d-flex justify-content-center buttonContainer">
+    <label v-cloak for="inputMsg" v-show="false">Search User</label>
     <input class="form-control inputSearch" id="inputMsg" placeholder="Search User" v-model="utenteChoice">
     <button id="buttonSearch" @click="listMessage()"> <i class="fa fa-search"></i> </button>
     <button @click="resetUser()"> <i class="fa fa-close"></i> </button>
@@ -51,9 +52,9 @@
               </div>
               <p class="mb-1">{{msg.message}}</p>
               <small>
-                <b>Email</b>: {{msg.email}}
-                <b>Contact</b>: {{msg.contact}}
-                <b>Company</b>: {{msg.company}}
+                <strong>Email</strong>: {{msg.email}}
+                <strong>Contact</strong>: {{msg.contact}}
+                <strong>Company</strong>: {{msg.company}}
               </small>
              </a>
           </div>
@@ -75,7 +76,7 @@
   </modal>
 
   <modal v-cloak v-if="errorModal" @close="errorModal = false">
-    <img slot="image" v-show="false">
+    <img slot="image" v-show="false" alt="hidden">
     <h3 slot="header"><span class="congratz">Attention!</span></h3>
     <h5 v-cloak slot="body">{{error}}</h5>
   </modal>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
-<meta charset="utf-8">
 <head>
-
+  <title>Pie Chart</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
@@ -16,7 +16,6 @@
 
 
 </head>
-<title>Pie Chart</title>
 <body>
   <div id="app">
     <div class="collapse collapser" id="navbarToggleExternalContent">
@@ -45,6 +44,7 @@
       <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setUserTicketsTotal()"> Total Tickets </button>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
+      <label v-cloak for="utenti-find" v-show="false">search user</label>
       <select v-cloak name="utentiSelect" class="utenti" id="utenti-find" v-model="utenteChoice">
         <option v-for="utente in utentiSelect" v-bind:value="utente._id" :key="utente._id">{{ utente._id }}</option>
       </select>

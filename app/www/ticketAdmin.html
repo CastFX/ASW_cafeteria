@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-
-  <title>QR Admin</title>
+  <title>Ticket Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,6 +29,7 @@
   </div>
   <nav class="navbar">
     <a class="navbar-brand" href="/admin/userTickets">Tickets</a>
+    <label v-cloak for="inputTicketID" v-show="false">insert ticket code</label>
     <input class="form-control order-2 inputSearch ml-auto" id="inputTicketID" placeholder="Insert ticket code" v-model="ticketChoice">
     <button class="btn buttonSubmit order-3" id="buttonSubmitID" v-on:click.prevent="submitTicket()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>
     <button class="navbar-toggler order-4 ml-auto" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@
   </nav>
   <div v-cloak v-if="dataReady">
     <div class="container d-flex justify-content-center buttonContainer">
+      <label v-cloak for="utenti-find" v-show="false">find user</label>
       <select v-cloak name="utentiSelect" class="utentiTicketSelect" id="utenti-find" v-model="utenteChoice">
         <option v-for="utente in utentiSelect" v-bind:value="utente._id" :key="utente._id">{{ utente._id }}</option>
       </select>
@@ -54,7 +55,7 @@
     						             Discount {{item.idTipoTicket.type}} of {{item.idTipoTicket.discount}}%
     						     </h5>
     					       <p class="mb-0">
-                       User: <b>{{item.idUtente}}</b>
+                       User: <strong>{{item.idUtente}}</strong>
                      </p>
                      <div class ='media-bottom mt-2 mb-2'>
                         <button type="button" class="btn btn-outline-primary btn-sm align-self-center" data-toggle="modal" data-target=".bd-example-modal-sm" @click="showAlert(item)">Get Code</button>
@@ -79,7 +80,7 @@
   </modal>
 
   <modal v-cloak v-if="errorModal" @close="errorModal = false">
-    <img slot="image" v-show="false">
+    <img slot="image" v-show="false" alt="hidden">
     <h3 slot="header"><span class="congratz">Attention!</span></h3>
     <h5 v-cloak slot="body">{{error}}</h5>
   </modal>
@@ -95,13 +96,13 @@
         </div>
         <div class="modal-body">
           <p class="error">{{ error }}</p>
-          <p class="decode-result">Last result: <b>{{ result }}</b></p>
+          <p class="decode-result">Last result: <strong>{{ result }}</strong></p>
           <div class="text-center" v-if="loading">
             <div class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <qrcode-stream @decode="onDecode" @init="onInit"/>
+          <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
         </div>
       </div>
     </div>
