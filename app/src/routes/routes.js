@@ -3,9 +3,11 @@ module.exports = function(app) {
 	var validator = require("../controllers/validator");
   	var passport = require('passport');
 
-	app.route('/')
-		.get(controller.home);
+	// app.route('/')
+	// 	.get(controller.home);
 
+
+	app.get('/', isUser, controller.home);
 	app.get('/login', isNotLoggedIn, controller.show_login);
 
 	app.get("/email/confirm/:hash", controller.confirm_email);
@@ -85,6 +87,19 @@ module.exports = function(app) {
         return next();
     }
     	response.redirect('/');
+	}
+
+	function isUser(request, response, next) {
+    // passport adds this to the request object
+  	if (!request.isAuthenticated()) {
+        return next();
+    } else {
+			if (request.isAuthenticated() && request.user._id == "admin") {
+				response.redirect('/admin/userTickets')
+			} else {
+					return next();
+			}
+		}
 	}
 
 
