@@ -22,6 +22,7 @@
   <nav class="navbar">
      <a class="navbar-brand" href="/tickets">Tickets</a>
      <a href="/" class="btn btn-default homeButton"><i class="fa fa-home homeIcon"></i></a>
+    <label v-cloak for="inputSearchID" v-show="false">Input Search</label>
     <input class="form-control order-2 inputSearch ml-auto" id="inputSearchID" placeholder="Search" v-model="search">
     <button class="btn buttonSearch order-3" id="buttonSearchID" @click="listTicket()"><i class="fa fa-search searchIcon"></i></button>
   </nav>

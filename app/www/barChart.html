@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
-<meta charset="utf-8">
 <head>
-
+  <title>Ranking Chart</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
@@ -14,10 +14,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-
 </head>
-<title>Bar Chart</title>
 <body>
   <div id="app">
     <div class="pos-f-t">
@@ -41,13 +38,14 @@
       <button class="btn btn-outline-primary btn-sm align-self-center" @click="setDataset()"> Total Ranking </button>
     </div>
     <div class="container d-flex justify-content-center buttonContainer">
-      <input type="month" name="monthPicker" v-model="date">
+      <label v-cloak for="monthPicker" v-show="false">Pick Month</label>
+      <input type="month" name="monthPicker" id="monthPicker" v-model="date">
       <button class="btn btn-outline-secondary btn-sm align-self-center" @click="setDatasetMonth()"> Month Ranking </button>
     </div>
 
     <modal v-cloak v-if="error!=''" @close="error = ''">
       <h3 slot="header"><span class="congratz">Attention!</span></h3>
-      <img slot="image" v-show="false">
+      <img slot="image" v-show="false" alt="hidden">
       <h5 v-cloak slot="body">{{error}}</h5>
     </modal>
 

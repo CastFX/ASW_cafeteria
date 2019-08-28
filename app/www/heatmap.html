@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="it">
-<meta charset="utf-8">
 
 <head>
-
+    <title>Most active days - Heatmap</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
@@ -24,10 +24,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="/static/js/cal-heatmap.js"></script>
-
 </head>
-<title>Most active days - Heatmap</title>
-
 <body>
     <div id="app">
         <div class="pos-f-t">
@@ -69,9 +66,12 @@
             </div>
         </div>
         <div class="filters">
-                <input class="nice-textbox" type="text" placeholder="Min Score" v-model="filter.min" @change="setDataset"/>
-                <input class="nice-textbox" type="text" placeholder="Max Score" v-model="filter.max" @change="setDataset"/>
-                <select name="courses" class="courses" v-model="filter.course" @change="setDataset">
+                <label v-cloak for="minScore" v-show="false">Min Score</label>
+                <input id="minScore" class="nice-textbox" type="text" placeholder="Min Score" v-model="filter.min" @change="setDataset"/>
+                <label v-cloak for="maxScore" v-show="false">Max Score</label>
+                <input id="maxScore" class="nice-textbox" type="text" placeholder="Max Score" v-model="filter.max" @change="setDataset"/>
+                <label v-cloak for="selectCourse" v-show="false">Select Course</label>
+                <select v-cloak id="selectCourse" name="courses" class="courses" v-model="filter.course" @change="setDataset">
                     <option v-for="course in courses" :key="courses._id">
                         {{ course._id }}
                     </option>

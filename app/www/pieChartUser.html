@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
-<meta charset="utf-8">
 <head>
-
+  <title>Pie Chart</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
@@ -13,10 +13,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
 </head>
-<title>Pie Chart</title>
 <body>
   <div id="app">
     <div class="pos-f-t">
@@ -48,10 +45,10 @@
       <button @click="setUserTicketsTotal()" class="btn btn-outline-secondary btn-sm align-self-center"> Total Tickets </button>
     </div>
     <div class="container d-flex justify-content-center">
-      <p v-cloak class="risparmiUser"> <b> You saved: {{risparmioUsed}} Euro </b> </p>
+      <p v-cloak class="risparmiUser"> <strong> You saved: {{risparmioUsed}} Euro </strong> </p>
     </div>
     <div class="container d-flex justify-content-center">
-      <p v-cloak class="risparmiUser"> <b> You potentially save: {{risparmio}} Euro </b> </p>
+      <p v-cloak class="risparmiUser"> <strong> You potentially save: {{risparmio}} Euro </strong> </p>
     </div>
     <div id="chart"></div>
   </div>
@@ -233,9 +230,9 @@ var app = new Vue({
                           return (d.enabled) ? d.count : 0; // UPDATED
                       }));
                       var percent = Math.round(1000 * d.data.count / total) / 10;
-                      tooltip.select('.label').html("<b>Tipo</b>: "+d.data.label);
-                      tooltip.select('.count').html("<b>Tot</b>: "+d.data.count);
-                      tooltip.select('.percent').html("<b>%</b>: "+percent + '%');
+                      tooltip.select('.label').html("<strong>Tipo</strong>: "+d.data.label);
+                      tooltip.select('.count').html("<strong>Tot</strong>: "+d.data.count);
+                      tooltip.select('.percent').html("<strong>%</strong>: "+percent + '%');
                       tooltip.style('display', 'block')
                       tooltip.style('min-width', '150px');
                   });

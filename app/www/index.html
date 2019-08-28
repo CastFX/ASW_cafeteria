@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <title>ASW-Cafeteria Home</title>
     <meta charset="utf-8">
@@ -213,7 +213,8 @@
                       <h2>Redeem</h2>
                   </div>
                   <div class="redeemForm text-center">
-                    <input @keyup.enter="redeemLife()" class="inputRedeem" placeholder="Redeem code" v-model="result">
+                    <label v-cloak for="inputRedeem" v-show="false">Input Redeem</label>
+                    <input @keyup.enter="redeemLife()" id="inputRedeem" class="inputRedeem" placeholder="Redeem code" v-model="result">
                   <!--  <button class="buttonRedeem" @click="redeemLife()"><i class="fa fa-arrow-circle-right iconArrow"></i></button>-->
                   </div>
                   <div class="text-center">
@@ -231,24 +232,24 @@
                         </div>
                         <div class="modal-body">
                           <p class="error">{{ errorCamera }}</p>
-                          <p class="decode-result">Last result: <b>{{ result }}</b></p>
+                          <p class="decode-result">Last result: <strong>{{ result }}</strong></p>
                           <div class="text-center" v-if="loading">
                             <div class="spinner-border" role="status">
                               <span class="sr-only">Loading...</span>
                             </div>
                           </div>
-                          <qrcode-stream @decode="onDecode" @init="onInit"/>
+                          <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
                         </div>
                       </div>
                     </div>
                   </div>
                   <modal v-cloak v-if="errorModal" @close="errorModal = false">
-                    <img slot="image" v-show="false">
+                    <img slot="image" v-show="false" alt="hidden">
                     <h3 slot="header"><span class="congratz">Attention!</span></h3>
                     <h5 v-cloak slot="body">{{error}}</h5>
                   </modal>
                   <modal v-cloak v-if="successModal" @close="closeModalSuccess()">
-                    <img slot="image" v-show="false">
+                    <img slot="image" v-show="false" alt="hidden">
                     <h3 slot="header"><span class="congratz">Congrats!</span></h3>
                     <h5 v-cloak slot="body">You earned {{successLife}} life!</h5>
                   </modal>
@@ -256,12 +257,12 @@
                 <!-- Contact us section starts here -->
                 <section id="ContactUs">
                   <modal v-cloak v-if="successMsgModal" @close="successMsgModal = false, error=''">
-                    <img slot="image" v-show="false">
+                    <img slot="image" v-show="false" alt="hidden">
                     <h3 slot="header"><span class="congratz">Message Sent!</span></h3>
                     <h5 v-cloak slot="body">Thanks for your message!</h5>
                   </modal>
                   <modal v-cloak v-if="errorMsgModal" @close="errorMsgModal = false, error=''">
-                    <img slot="image" v-show="false">
+                    <img slot="image" v-show="false" alt="hidden">
                     <h3 slot="header"><span class="congratz">Attention!</span></h3>
                     <h5 v-cloak slot="body">{{error}}</h5>
                   </modal>
