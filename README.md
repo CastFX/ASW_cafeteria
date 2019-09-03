@@ -1,5 +1,8 @@
 # ASW_cafeteria
 
+Live demo @ https://asw1819.christianserra.dev
+Trello @ https://trello.com/b/6ZnmlOos/asw-caffetteria
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
