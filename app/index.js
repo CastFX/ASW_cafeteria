@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var favicon = require('serve-favicon');
+var path = require('path');
 var Corsi = require('./src/models/corsiModels');
 var Utenti = require('./src/models/utenteModels');
 var Tickets = require('./src/models/ticketModels');
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicons', 'favicon.gif')));
 
 const session = require("express-session");
 
