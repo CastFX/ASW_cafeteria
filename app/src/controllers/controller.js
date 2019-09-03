@@ -168,7 +168,7 @@ get_rankings = async(year, month, day) => {
 
 exports.get_home_data = async (req, res) => {
 	const now = new Date();
-	const data = await get_rankings(now.getFullYear(), now.getMonth());
+	const data = await get_rankings(now.getFullYear(), now.getMonth() + 1);
 	if (data.error) {
 		console.log(data.error);
 		res.json(data.error);
