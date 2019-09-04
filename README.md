@@ -4,6 +4,11 @@ Live demo @ https://asw1819.christianserra.dev
 
 Trello @ https://trello.com/b/6ZnmlOos/asw-caffetteria
 
+# Attention
+
+To test the full functionalities of the app, use the live demo that is provided of a secure connection.
+Without a secure connection QR scan functionalities are not permitted.
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
