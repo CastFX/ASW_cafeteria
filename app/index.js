@@ -40,7 +40,7 @@ function pausecomp(millis)
     while(curDate-date < millis);
 }
 console.log('Taking a break...');
-pausecomp(5000);
+pausecomp(10000);
 console.log('Ten seconds later, ...'); //connessione al db mongoose.set('useFindAndModify', false);
 mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 	'mongodb://mongodb:27017/dbcoffee',

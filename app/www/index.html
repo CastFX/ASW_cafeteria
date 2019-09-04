@@ -549,11 +549,17 @@ Vue.use(VueQrcodeReader)
             }
         },
         async mounted() {
-            await this.loadData();
-            if (this.isLoggedIn) {
-                await this.loadHighscoresAndLives();
+            try {
+                await this.loadData();
+                if (this.isLoggedIn) {
+                    await this.loadHighscoresAndLives();
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setTimeout(() => this.dataReady = true, 1500);
             }
-            setTimeout(() => this.dataReady = true, 1500);
+
 
         }
     });
