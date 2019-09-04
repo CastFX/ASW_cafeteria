@@ -260,6 +260,16 @@ exports.list_userTickets = function(req, res) {
 	});
 };
 
+//TICKET TOTALI RELATIVI ALL'UTENTE LOGGATO
+exports.list_userTicketsTotal = function(req, res) {
+	Tickets.find({userid: req.user._id}, function(err, tickets) {
+		if (err)
+			res.send(err);
+		res.json(tickets);
+	});
+};
+
+
 //TICKET RELATIVI A TUTTI GLI UTENTI PER L'ADMIN
 exports.list_adminUserTicketsTotal = function(req, res) {
 	UserTickets.find()

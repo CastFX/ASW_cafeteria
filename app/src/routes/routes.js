@@ -29,7 +29,10 @@ module.exports = function(app) {
 		.post(validator.new_user, controller.new_utente);
 
 	app.route('/api/tickets')
-		.get(controller.list_tickets);
+		.get(isAdminLoggedIn, controller.list_tickets);
+
+	app.route('/api/userTicketsTotal')
+		.get(controller.list_userTicketsTotal);
 
 	app.get('/api/userTickets', isLoggedIn, controller.list_userTickets);
 	app.delete('/api/userTickets/:id', isAdminLoggedIn, controller.delete_ticket);
