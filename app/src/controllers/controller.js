@@ -107,7 +107,7 @@ exports.reset_password = async(req, res) => {
 			resetPasswordToken: req.params.token,
 			resetPasswordExpires: { $gt: Date.now() }
 		});
-		const hashedPass = sha512(req.body.password, salt);
+		const hashedPass = sha512(req.body.password);
 		user.password = hashedPass.passwordHash;
 		user.sale = hashedPass.salt;
 		user.resetPasswordToken = undefined;
@@ -319,13 +319,13 @@ exports.new_qr = async function(req, res) {
 		return res.json({errors: errors.array()});
 	}
 	try {
-		var hashedQR = sha512(req.body.life, salt);
+		var hashedQR = sha512(req.body.life);
 		var new_qr = {
 			_id: hashedQR.passwordHash,
 			life: req.body.life
 		};
 		await new Qr(new_qr).save();
-		res.status(201).json({msg: "QR creato", qr: new_qr});
+		res.status(201).json({msg: "Created QR code", qr: new_qr});
 	} catch (error) {
 		console.log(error);
 		res.status(501).json({errors: [error]});
@@ -458,12 +458,13 @@ exports.list_utenti = function(req, res) {
 };
 
 
-var length = 32;
-var salt = Crypto.randomBytes(Math.ceil(length/2))
-	.toString('hex') /** convert to hexadecimal format */
-	.slice(0,length);   /** return required number of characters */
-
 var sha512 = function(password, salt){
+	if (!salt) {
+		const length = 32;
+		salt = Crypto.randomBytes(Math.ceil(length/2))
+			.toString('hex') /** convert to hexadecimal format */
+			.slice(0,length);
+	}
 	var hash = Crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
 	hash.update(password);
 	var value = hash.digest('hex');
@@ -501,7 +502,7 @@ exports.new_utente = async function(req, res) {
 	if (!errors.isEmpty()) {
 		return res.json({errors: errors.array()});
 	}
-	var hashedPass = sha512(req.body.password, salt);
+	var hashedPass = sha512(req.body.password);
 	var new_user = {
 		_id: req.body._id,
 		email: req.body.email,
