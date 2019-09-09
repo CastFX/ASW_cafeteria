@@ -156,12 +156,13 @@ var app = new Vue({
     },
     makeBarChart: function(){
     if (screen.width < 768) {
-      var margin = {top: 100, right: 20, bottom: 30, left: 80};
+      var margin = {top: 100, right: 20, bottom: 30, left: 120};
       width = 800 - margin.left - margin.right;
-      height = 1000 - margin.top - margin.bottom;
+      height = 800 - margin.top - margin.bottom;
       fontSizeX = "220%";
       fontSizeY = "220%";
-      score = "0.50em";
+      score = "-0.9em";
+      scoreX = "-0.3em";
     } else {
       var margin = {top: 10, right: 20, bottom: 30, left: 80};
       width = 800 - margin.left - margin.right;
@@ -169,6 +170,7 @@ var app = new Vue({
       fontSizeX = "100%";
       fontSizeY = "100%";
       score = "0.40em";
+      scoreX = "0";
     }
 
     var isf = "Ing. S. Info.";
@@ -229,9 +231,9 @@ var app = new Vue({
           .style("font-size",fontSizeY)
           .call(yAxis)
         .append("text")
-          .attr("transform", "rotate(-90)")
           .attr("y", 6)
           .attr("dy", score)
+          .attr("dx", scoreX)
           .style("text-anchor", "end")
           .text("Score");
 
