@@ -44,19 +44,10 @@ pausecomp(10000);
 console.log('Ten seconds later, ...'); //connessione al db mongoose.set('useFindAndModify', false);
 mongoose.set('connectTimeoutMS', 30); mongoose .connect(
 	'mongodb://mongodb:27017/dbcoffee',
-	//'mongodb://localhost:27017/dbcoffee',
+	//'mongodb://localhost:27017/dbcoffee', 
 	//'mongodb://localhost/dbcoffee',
 	// 'mongodb://asw_mongodb_1.asw_interna:27017/dbsa', ANDAVA BENE
 	{ useNewUrlParser: true }) .then(() => console.log('MongoDB Connected')) .catch((err) => console.log(err));
-/* sembrava andare mongoose.connect(
-	'mongodb://asw_mongodb_1.asw_interna:27017/dbsa',
-	{ useNewUrlParser: true, useFindAndModify: false, connectTimeoutMS: 30 },
-	function (err) {
-		if (err){ console.log('Errore in connect');handleError(err); }
-		else { console.log('connect SEMBRA OK'); }
-	}
-);
-*/
 // OK  mongoose.connect('mongodb://mongodb/dbsa', { useNewUrlParser: true, useFindAndModify: false });
 //mongoose.connect('mongodb://username:password@host:port', { useNewUrlParser: true, useFindAndModify: false });
 
